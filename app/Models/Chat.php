@@ -181,8 +181,28 @@ class Chat extends Model
             return null;
         }
         $thread = $sender . "-" . $receiver . "-" . $product;
+        $thread = null;
+        $chat = Chat::where([
+            'sender' => $sender,
+            'receiver' => $receiver,
+            'product_id' => $product,
+        ])->first();
+        if($chat!=null){
+            $thread = $chat->thread;
+        }
+        if($thread == null){
+            $chat = Chat::where([
+                'receiver' => $sender,
+                'sender' => $receiver,
+                'product_id' => $product,
+            ])->first();
+        }
 
-        $results = DB::select(
+        if($thread == null){
+            $thread = $sender . "-" . $receiver . "-" . $product;
+        }
+        return $thread; 
+        /* $results = DB::select(
             'select * from chats where 
                 (sender = :sender AND
                 receiver = :receiver AND
@@ -208,6 +228,6 @@ class Chat extends Model
             $thread = $results[0]->thread;
         }
 
-        return $thread;
+        return $thread; */
     }
 }

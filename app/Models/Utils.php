@@ -309,18 +309,14 @@ class Utils
                     $img['error'] = $files['error'][$i];
                     $img['size'] = $files['size'][$i];
                     $ext = pathinfo($img['name'], PATHINFO_EXTENSION);
-
-
-
+ 
                     $file_name = time() . "-" . Utils::make_slug($img['name']) . "." . $ext;
                     $path = 'public/storage/' . $file_name;
 
                     $res = move_uploaded_file($img['tmp_name'], $path);
                     if (!$res) {
                         continue;
-                    }
-
-
+                    } 
 
                     $thumn_name = 'thumb_' . $file_name;
                     $path_optimized = 'public/storage/' . $thumn_name;
@@ -367,11 +363,7 @@ class Utils
         $image->auto_handle_exif_orientation = false;
         $image->source_path = "" . $params['source'];
         $image->target_path = "" . $params['target'];
-
-
-
-
-
+ 
 
         if (isset($params['quality'])) {
             $image->jpeg_quality = $params['quality'];
