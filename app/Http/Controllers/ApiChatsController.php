@@ -16,12 +16,8 @@ use Illuminate\Support\Facades\DB;
 
 class ApiChatsController
 {
-
-
-
     public function send_message(Request $request)
     {
-
         $sender = 0;
         $receiver = 0;
         $product_id = 0;
@@ -42,7 +38,6 @@ class ApiChatsController
         ) {
             return Utils::response(['message' => 'Sender or receiver was not set.', 'status' => 0]);
         }
-
 
         $msg_resp = Utils::send_message($_POST);
         if ($msg_resp != null) {
