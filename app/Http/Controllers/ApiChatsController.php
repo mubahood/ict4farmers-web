@@ -44,9 +44,8 @@ class ApiChatsController
         }
 
 
-        return $_POST;
         $msg_resp = Utils::send_message($_POST);
-        if ($msg_resp != null) {
+        if ($msg_resp == null) {
             return Utils::response(['message' => $msg_resp, 'status' => 0]);
         }
 
