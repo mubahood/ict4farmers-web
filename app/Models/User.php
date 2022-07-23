@@ -127,13 +127,9 @@ class User extends Authenticatable
 
     public function getAvatarAttribute($avatar)
     {
-        return url('public/storage/' . $avatar);
+        return url( $avatar);
     }
 
-
-    protected $appends = [
-        'avatar',
-    ];
 
     /**
      * The attributes that should be cast.
