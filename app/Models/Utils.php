@@ -216,12 +216,12 @@ class Utils
             return "Product not found";
         }
 
-
         $chat = new Chat();
         $chat->sender = $sender;
         $chat->receiver = $receiver;
         $chat->product_id = $product_id;
-        $chat->body = isset($msg['body']) ? $msg['body'] : ""; 
+        $chat->body = isset($msg['body']) ? $msg['body'] : "";
+        $chat->thread = "";
         $chat->received = false;
         $chat->seen = false;
         $chat->receiver_pic = $receiver_user->avatar;
@@ -234,15 +234,13 @@ class Utils
         $chat->file = "";
         $chat->image = "";
         $chat->audio = "";
+
         $chat->thread = Chat::get_chat_thread_id($chat->sender, $chat->receiver, $chat->product_id);
 
-        return $chat->save();
-        if ($chat->save()) {
-            return "SUCCESS";
+        if (!$chat->save()) {
             return "Failed to save message.";
         }
 
-        return "FAILED";
         return null;
     }
 
