@@ -216,7 +216,7 @@ class Utils
             return "Product not found";
         }
 
-        return "Good to send";
+
         $chat = new Chat();
         $chat->sender = $sender;
         $chat->receiver = $receiver;
@@ -235,8 +235,9 @@ class Utils
         $chat->file = "";
         $chat->image = "";
         $chat->audio = "";
-
         $chat->thread = Chat::get_chat_thread_id($chat->sender, $chat->receiver, $chat->product_id);
+        return $chat->thread;
+
 
         if (!$chat->save()) {
             return "Failed to save message.";
