@@ -236,6 +236,7 @@ class Utils
         $chat->audio = "";
         $chat->thread = Chat::get_chat_thread_id($chat->sender, $chat->receiver, $chat->product_id);
 
+        return "BEFORE SEND";
         if ($chat->save()) {
             return "SUCCESS";
             return "Failed to save message.";
