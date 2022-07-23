@@ -43,11 +43,10 @@ class ApiChatsController
             return Utils::response(['message' => 'Sender or receiver was not set.', 'status' => 0]);
         }
 
-        return Utils::response(['message' => 'Sender or receiver was not set. 1111', 'status' => 0]);
 
         $msg_resp = Utils::send_message($_POST);
         if ($msg_resp != null) {
-            return Utils::response(['message' => $msg_resp, 'status' => 0]);
+            return Utils::response(['message' => 'Failed to send', 'status' => 0]);
         }
 
         return Utils::response(['message' => "Sent successfully", 'status' => 1]);
