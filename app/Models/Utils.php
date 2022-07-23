@@ -236,13 +236,13 @@ class Utils
         $chat->image = "";
         $chat->audio = "";
         $chat->thread = Chat::get_chat_thread_id($chat->sender, $chat->receiver, $chat->product_id);
-        return $chat->thread;
-
 
         if (!$chat->save()) {
+            return "FAILED";
             return "Failed to save message.";
         }
 
+        return "SUCCESS";
         return null;
     }
 
