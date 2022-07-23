@@ -216,6 +216,7 @@ class Utils
             return "Product not found";
         }
 
+        return "Good to send";
         $chat = new Chat();
         $chat->sender = $sender;
         $chat->receiver = $receiver;
