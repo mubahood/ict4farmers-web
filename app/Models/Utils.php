@@ -221,8 +221,7 @@ class Utils
         $chat->sender = $sender;
         $chat->receiver = $receiver;
         $chat->product_id = $product_id;
-        $chat->body = isset($msg['body']) ? $msg['body'] : "";
-        $chat->thread = "";
+        $chat->body = isset($msg['body']) ? $msg['body'] : ""; 
         $chat->received = false;
         $chat->seen = false;
         $chat->receiver_pic = $receiver_user->avatar;
@@ -237,12 +236,12 @@ class Utils
         $chat->audio = "";
         $chat->thread = Chat::get_chat_thread_id($chat->sender, $chat->receiver, $chat->product_id);
 
-        if (!$chat->save()) {
-            return "FAILED";
+        if ($chat->save()) {
+            return "SUCCESS";
             return "Failed to save message.";
         }
 
-        return "SUCCESS";
+        return "FAILED";
         return null;
     }
 
