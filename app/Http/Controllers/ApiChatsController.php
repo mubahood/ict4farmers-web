@@ -22,6 +22,8 @@ class ApiChatsController
     public function send_message(Request $request)
     {
 
+        return Utils::response(['message' => 'Sender or receiver was not set.', 'status' => 0]);
+        
         $sender = 0;
         $receiver = 0;
         $product_id = 0;
