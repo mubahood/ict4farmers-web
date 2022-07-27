@@ -825,6 +825,7 @@ class ApiProductsController
             if ($_FILES != null) {
                 if (count($_FILES) > 0) {
 
+                    $raw_images = [];
                     foreach ($_FILES as $img) {
                         if (
                             (isset($img['name'])) &&
