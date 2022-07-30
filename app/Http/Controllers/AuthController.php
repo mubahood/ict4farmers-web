@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\Utils;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 
@@ -126,8 +127,6 @@ class AuthController extends Controller
             die();
         }
 
-
-
         $_u['username'] = $email;
         $_u['password'] = $password;
 
@@ -183,7 +182,25 @@ class AuthController extends Controller
         $new_user->last_name = $request->last_name;
         $new_user->avatar = 'avatar.jpg';
 
-        $new_user->save();
+        // $new_user->save();
+
+
+
+        if ($new_user->save()) {
+            DB::table('admin_role_users')->insert([
+                'role_id' => 2,
+                'user_id' => $new_user->id
+            ]);
+        } else {
+            $errors['username'] = "Failed to created your account. Please try again.";
+            return redirect('register')
+                ->withErrors($errors)
+                ->withInput();
+            // die();
+        }
+
+
+
 
         $_u['username'] = $email;
         $_u['password'] = $password_1;
