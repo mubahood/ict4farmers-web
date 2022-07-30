@@ -9,7 +9,10 @@ use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
+// use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Auth;
+
 
 class ProductController extends AdminController
 {
@@ -128,6 +131,14 @@ class ProductController extends AdminController
 
                 return $data;
             })->sortable();
+
+
+            // if (Request::get('view') !== 'table') {
+            //     $grid->setView('admin.grid.card');
+            // }
+    
+
+
         return $grid;
     }
 

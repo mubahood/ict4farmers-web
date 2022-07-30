@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Banner;
 use App\Models\FarmersGroup;
-use App\Models\Product;
-use App\Models\Profile;
 use App\Models\User;
 use App\Models\Utils;
-//use Encore\Admin\Auth\Database\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use Encore\Admin\Auth\Database\Administrator;
+use Illuminate\Support\Str;
+
 
 class ApiUsersController
 {
@@ -301,9 +301,8 @@ class ApiUsersController
         }
     }
 
-    public function create_account(Request $request)
+    public function create_account0(Request $request)
     {
-
         if (
             $request->email == null ||
             $request->name == null ||
@@ -341,6 +340,90 @@ class ApiUsersController
             'status' => 1,
             'message' => "Account created successfully.",
             'data' => $_user
+        ]);
+    }
+
+
+    public function create_account(Request $request)
+    {
+        if ($request->name == null) {
+            return Utils::response([
+                'status' => 0,
+                'message' => "You must provide a Name. {$request->name}",
+                'data' => $request
+            ]);
+        }
+        elseif ($request->phone_number == null) {
+            return Utils::response([
+                'status' => 0,
+                'message' => "You must provide a Phone Number. {$request->phone_number}",
+                'data' => $request
+            ]);
+        }
+        elseif ($request->password == null) {
+            return Utils::response([
+                'status' => 0,
+                'message' => "You must provide a Password. {$request->password}",
+                'data' => $request
+            ]);
+        }
+
+        // $data = $request->only(
+        //     'name', 
+        //     'phone_number', 
+        //     'password', 
+        //     'password_confirmation'
+        // );
+
+        // $post_data = Validator::make($data, [
+        //     'name' => 'required|max:8|min:4',
+        //     'phone_number' => 'required|max:8|min:4',
+        //     'password' => 'required|max:100|min:3',
+        //     'password_confirmation' => 'required|max:100|min:3'
+        // ]);
+
+        // if ($request->input("password") != $request->input("password_confirmation")) {
+        //     $errors['password_confirmation'] = "Passwords did not match.";
+
+        //     return Utils::response([
+        //         'status' => 0,
+        //         'message' => "Passwords did not match."
+        //     ]);
+        // }
+
+        $old_user_phone = User::where('phone_number',  $request->input("phone_number"))->first();
+        
+        if ($old_user_phone) {
+            return Utils::response([
+                'status' => 0,
+                'message' => "An account with the same phone number you provided already exists."
+            ]);
+        }
+
+        $user = new User();            
+            $user->name = $request->input("name");
+            $user->phone_number = $request->input("phone_number");
+            $user->username = $request->input("phone_number");
+            $user->password = Hash::make($request->input("password"));
+            
+        if ($user->save()) {
+            DB::table('admin_role_users')->insert([
+                'role_id' => 2,
+                'user_id' => $user->id
+            ]);
+        }
+
+        else {
+            return Utils::response([
+                'status' => 0,
+                'message' => "Failed to created your account. Please try again."
+            ]);
+        }
+
+        return Utils::response([
+            'status' => 1,
+            'message' => "Account created successfully.",
+            'data' => $user
         ]);
     }
 }
