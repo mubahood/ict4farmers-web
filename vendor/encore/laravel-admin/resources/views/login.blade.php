@@ -32,20 +32,22 @@
   <div class="login-logo">
     <a href="{{ admin_url('/') }}"><b>{{config('admin.name')}}</b></a>
   </div>
+
   <!-- /.login-logo -->
   <div class="login-box-body">
-    <p class="login-box-msg">{{ trans('admin.login') }}</p>
+    <h4 class="login-box-msg"><b>{{ trans('admin.login') }}</b></h4>
 
     <form action="{{ admin_url('auth/login') }}" method="post">
       <div class="form-group has-feedback {!! !$errors->has('username') ?: 'has-error' !!}">
 
-        @if($errors->has('username'))
-          @foreach($errors->get('username') as $message)
+        @if($errors->has('phone_number'))
+          @foreach($errors->get('phone_number') as $message)
             <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{{$message}}</label><br>
           @endforeach
         @endif
 
-        <input type="text" class="form-control" placeholder="{{ trans('admin.username') }}" name="username" value="{{ old('username') }}">
+        <label>Phone Number *</label>
+        <input type="text" class="form-control" placeholder="Enter your phone number" name="username" value="{{ old('username') }}">
         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback {!! !$errors->has('password') ?: 'has-error' !!}">
@@ -56,8 +58,10 @@
           @endforeach
         @endif
 
-        <input type="password" class="form-control" placeholder="{{ trans('admin.password') }}" name="password">
+        <label>Password *</label>
+        <input type="password" class="form-control" placeholder="Enter your password" name="password">
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+        <p><small>Fields marked by * are required</small></p>
       </div>
       <div class="row">
         <div class="col-xs-8">
@@ -73,7 +77,7 @@
         <!-- /.col -->
         <div class="col-xs-4">
           <input type="hidden" name="_token" value="{{ csrf_token() }}">
-          <button type="submit" class="btn btn-primary btn-block btn-flat">{{ trans('admin.login') }}</button>
+          <button type="submit" class="btn btn-success btn-block">Login</button>
         </div>
         <!-- /.col -->
       </div>
