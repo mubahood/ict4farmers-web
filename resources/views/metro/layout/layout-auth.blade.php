@@ -8,7 +8,7 @@
                 <a href="{{ url("/") }}" class="mb-12 ">
                     <img alt="Logo" src="{{ url('/') }}/logo.png" class="h-40px" />
                 </a>
-                <div class="w-md-600px bg-body rounded shadow-lg p-5 py-md-10 px-md-10 mx-auto border border-primary">
+                <div class="w-md-500px bg-body rounded shadow-lg p-2 py-md-4 px-md-10 mx-auto border border-primary">
                     @yield('content')
                 </div>
             </div>

@@ -353,6 +353,7 @@ class ApiUsersController
                 'data' => $request
             ]);
         }
+        
         elseif ($request->phone_number == null) {
             return Utils::response([
                 'status' => 0,

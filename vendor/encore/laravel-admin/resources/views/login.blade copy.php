@@ -34,37 +34,41 @@
   </div>
 
   <!-- /.login-logo -->
-  <div class="login-box-body well">
-  <div class="card-header">
-    <h4 class="login-box-msg">{{ trans('admin.login') }}</h4><br>
+  <div class="login-box-body">
+    <h4 class="login-box-msg"><b>{{ trans('admin.login') }}</b></h4>
 
     <form action="{{ admin_url('auth/login') }}" method="post">
-      <div class="form-group has-feedback {!! !$errors->has('phone_number') ?: 'has-error' !!}">
+      <div class="form-group has-feedback {!! !$errors->has('username') ?: 'has-error' !!}">
 
-        <!-- @if($errors->has('phone_number'))
+        @if($errors->has('phone_number'))
           @foreach($errors->get('phone_number') as $message)
             <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{{$message}}</label><br>
           @endforeach
-        @endif -->
+        @endif
 
         <label>Phone Number *</label>
-        <input type="text" class="form-control" placeholder="Enter your phone number" name="phone_number" value="{{ old('phone_number') }}">
+        <input type="text" class="form-control" placeholder="Enter your phone number" name="username" value="{{ old('username') }}">
         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback {!! !$errors->has('password') ?: 'has-error' !!}">
 
+        @if($errors->has('password'))
+          @foreach($errors->get('password') as $message)
+            <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{{$message}}</label><br>
+          @endforeach
+        @endif
 
         <label>Password *</label>
         <input type="password" class="form-control" placeholder="Enter your password" name="password">
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-        <!-- <p><small>Fields marked by * are required</small></p> -->
+        <p><small>Fields marked by * are required</small></p>
       </div>
       <div class="row">
         <div class="col-xs-8">
           @if(config('admin.auth.remember'))
           <div class="checkbox icheck">
             <label>
-              <input type="checkbox" name="remember" value="1" {{ (!old('phone_number') || old('remember')) ? 'checked' : '' }}>
+              <input type="checkbox" name="remember" value="1" {{ (!old('username') || old('remember')) ? 'checked' : '' }}>
               {{ trans('admin.remember_me') }}
             </label>
           </div>
@@ -81,14 +85,12 @@
       </div>
     </form>
 
-    <br>
     <div>
-          <p>Already have an account? <a href="{{ url('register') }}">Register</a></p>
+          <p>Already have an account? <a href="{{ route('register') }}">Sign in</a></p>
         </div>
   </div>
   <!-- /.login-box-body -->
 
-  </div>
 </div>
 <!-- /.login-box -->
 

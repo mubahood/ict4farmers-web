@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
-use App\Models\ProductReview;
-use App\Models\Profile;
 use App\Models\User;
 use App\Models\Utils;
 use Illuminate\Http\Request;
@@ -13,10 +10,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 
-
 class AuthController extends Controller
 {
-
     public function update_profile(Request $r)
     {
         $id = ((int)($r->id));
@@ -96,6 +91,7 @@ class AuthController extends Controller
         return view('metro.auth.login');
     }
 
+
     public function register()
     {
         return view('metro.auth.register');
@@ -103,118 +99,91 @@ class AuthController extends Controller
 
     public function do_login(Request $request)
     {
-
-        $this->validate($request, [
-            'email' => 'required|max:100|min:3',
-            'password_1' => 'required|max:200|min:4',
+        $this->validate(
+            $request, [
+            'phone_number' => 'required|min:4',
+            'password' => 'required|min:4',
         ]);
 
+        $phone_number = $request->phone_number;
+        $password = $request->password;
 
-        $password = $request->password_1;
-        $email = $request->email;
+        $old_user = User::where('phone_number', $phone_number)->first();
 
-
-        $old_user = User::where('email', $email)->first();
         if ($old_user == null) {
-            $old_user = User::where('username', $email)->first();
+            $old_user = User::where('phone_number', $phone_number)->first();
         }
 
         if ($old_user  == null) {
-            $errors['email'] = "Account with email address you provided does not exist.";
+            $errors['phone_number'] = "An account with the provided phone number does not exist.";
             return redirect('login')
                 ->withErrors($errors)
                 ->withInput();
-            die();
+            // die();
         }
 
-        $_u['username'] = $email;
+        $_u['phone_number'] = $phone_number;
         $_u['password'] = $password;
 
         if (Auth::attempt($_u, true)) {
             return redirect('dashboard');
         } else {
-            $errors['password_1'] = "You entered a wrong password.";
+            $errors['password'] = "You entered a wrong password.";
             return redirect('login')
                 ->withErrors($errors)
                 ->withInput();
         }
-        die();
+        // die();
     }
+
 
     public function store(Request $request)
     {
-
-        $this->validate($request, [
-            'first_name' => 'required|max:45|min:3',
-            'last_name' => 'required|max:45|min:3',
-            'email' => 'required|max:100|min:3',
-            'password_1' => 'required|max:200|min:4',
-            'password_2' => 'required|max:200|min:4',
+        $request->validate([
+            'name' => 'required|min:4',
+            'phone_number' => 'required|unique:users|numeric|min:4',
+            'password' => 'required|confirmed|min:4'
         ]);
 
-        $password_2 = $request->password_2;
-        $password_1 = $request->password_1;
-        $email = $request->email;
+        $admin = new User();
+        $admin->name = $request->name;
+        $admin->username = $request->phone_number;
+        $admin->phone_number = $request->phone_number;
+        $admin->password = Hash::make($request->input("password"));
 
-        if ($password_2 != $password_1) {
-            $errors['password_2'] = "Confirmation password did not match.";
-            return redirect('register')
-                ->withErrors($errors)
-                ->withInput();
-            die();
-        }
-
-        $old_user = User::where('email', $email)->first();
-
-        if ($old_user) {
-            $errors['email'] = "User with same email address already exist.";
-            return redirect('register')
-                ->withErrors($errors)
-                ->withInput();
-            die();
-        }
-
-        $new_user = new User();
-        $new_user->email = $email;
-        $new_user->username = $email;
-        $new_user->password = password_hash($password_1, PASSWORD_DEFAULT);
-        $new_user->name = $request->first_name;
-        $new_user->last_name = $request->last_name;
-        $new_user->avatar = 'avatar.jpg';
-
-        // $new_user->save();
-
-
-
-        if ($new_user->save()) {
+        if ($admin->save()) {
             DB::table('admin_role_users')->insert([
                 'role_id' => 2,
-                'user_id' => $new_user->id
+                'user_id' => $admin->id
             ]);
-        } else {
-            $errors['username'] = "Failed to created your account. Please try again.";
+        } 
+        else {
+            $errors['phone_number'] = "Failed to created your account. Please try again.";
             return redirect('register')
                 ->withErrors($errors)
                 ->withInput();
             // die();
         }
 
+        $password = $request->password;
+        $_u['phone_number'] = $request->phone_number;
+        $_u['password'] = $password;
+        $remember = $request->get('remember', true);
 
-
-
-        $_u['username'] = $email;
-        $_u['password'] = $password_1;
-
-        if (Auth::attempt($_u, true)) {
-            return redirect('dashboard');
-        } else {
-            $errors['password'] = "Failed to log you in.";
-            return redirect('login')
-                ->withErrors($errors)
-                ->withInput();
+        if (Auth::attempt($_u, $remember)) {
+            admin_toastr(trans('admin.login_successful'));
+            $request->session()->regenerate();
+            return redirect()->intended('admin');
+            die();
         }
-        die();
+
+        return back()->withErrors([
+            'phone_number' => 'The provided credentials do not match our records.',
+        ]);
+        
+        return view('metro.auth.register');
     }
+
 
     public function show($id)
     {
