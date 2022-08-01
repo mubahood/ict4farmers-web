@@ -35,14 +35,14 @@ class MainController extends Controller
     public function index()
     {
 
-        /* $time_start = microtime(true);
+        $time_start = microtime(true); 
 
         $x = 0;
-        ini_set('max_execution_time', -1); //unlimit
+        ini_set ( 'max_execution_time', -1); //unlimit
         foreach (User::all() as $key => $u) {
             $time_end = microtime(true);
             $execution_time = ($time_end - $time_start);
-            echo '<b>Total Execution Time:</b> ' . ($execution_time / 60) . 'Mins & ' . ($execution_time) . 'Seconds <br><br>';
+            echo '<b>Total Execution Time:</b> '.($execution_time/60).'Mins & '.($execution_time).'Seconds <br><br>';
 
 
             $x++;
@@ -52,7 +52,7 @@ class MainController extends Controller
             echo "AFTER  |||=>  {$u->phone_number} <== ||| <hr>";
         }
         die("done");
- */
+
         /* 
         \OneSignal::sendNotificationToExternalUser(
             "Some Message",

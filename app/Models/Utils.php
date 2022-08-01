@@ -24,26 +24,30 @@ class Utils
         if (substr($phone_number, 0, 4) != "+256") {
             return false;
         }
-        
+
         if (strlen($phone_number) != 13) {
             return false;
         }
-      
+
         return true;
     }
     public static function prepare_phone_number($phone_number)
     {
-        if (strlen($phone_number) > 10) {
+
+        if (strlen($phone_number) > 11) {
             $phone_number = str_replace("+", "", $phone_number);
             $phone_number = substr($phone_number, 3, strlen($phone_number));
         } else {
             if (substr($phone_number, 0, 1) == "0") {
                 $phone_number = substr($phone_number, 1, strlen($phone_number));
+
             }
         }
+    
         if (strlen($phone_number) != 9) {
             return "";
         }
+
         $phone_number = "+256" . $phone_number;
         return $phone_number;
     }
