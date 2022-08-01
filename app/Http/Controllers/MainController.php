@@ -35,7 +35,7 @@ class MainController extends Controller
     public function index()
     {
 
-        $time_start = microtime(true);
+        /* $time_start = microtime(true);
 
         $x = 0;
         ini_set('max_execution_time', -1); //unlimit
@@ -52,7 +52,7 @@ class MainController extends Controller
             echo "AFTER  |||=>  {$u->phone_number} <== ||| <hr>";
         }
         die("done");
-
+ */
         /* 
         \OneSignal::sendNotificationToExternalUser(
             "Some Message",
