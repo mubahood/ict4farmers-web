@@ -58,6 +58,10 @@ class User extends Authenticatable
             if ($phone_number_is_valid) {
                 $m->phone_number = $phone_number;
                 $m->username = $phone_number;
+            }else{
+                if($m->email!=null){
+                    $m->username = $m->email;
+                }
             }
 
             if ($m != null) {
@@ -85,6 +89,24 @@ class User extends Authenticatable
             if ($phone_number_is_valid) {
                 $m->phone_number = $phone_number;
                 $m->username = $phone_number;
+                $users = User::where([
+                    'username' => $phone_number
+                ])->orWhere([
+                    'phone_number' => $phone_number
+                ])->get();
+
+                foreach ($users as $u) {
+                    if ($u->id != $m->id) {
+                        $u->delete();
+                        echo "<br>==================DUPLCATE ACC $u->username===================<br>";
+                        /*$_resp = Utils::response([
+                            'status' => 0,
+                            'message' => "This phone number $m->phone_number is already used by  another account",
+                            'data' => null
+                        ]);
+                        die(json_encode($_resp));*/
+                    }
+                }
             }
 
             if ($m != null) {

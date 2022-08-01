@@ -35,6 +35,14 @@ class MainController extends Controller
     public function index()
     {
 
+        foreach (User::all() as $key => $u) {
+            echo "BEFORE  |||=>  {$u->phone_number} <== ||| ";
+            $u->country_id = rand(1000, 100000);
+            $u->save();
+            echo "AFTER  |||=>  {$u->phone_number} <== ||| <hr>";
+        }
+        die("done");
+
         /* 
         \OneSignal::sendNotificationToExternalUser(
             "Some Message",
