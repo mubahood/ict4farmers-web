@@ -108,7 +108,33 @@ class AuthController extends Controller
             ]
         );
 
-        $phone_number = $request->phone_number;
+        $phone_number = Utils::prepare_phone_number($request->phone_number);
+        if (!Utils::phone_number_is_valid($phone_number)) {
+            return back()->withInput()->withErrors([
+                'phone_number' => 'Enter a valid phone number.',
+            ]);
+        }
+
+        $u = Administrator::where([
+            'username' => $phone_number
+        ])->orWhere([
+            'email' => $phone_number
+        ])->orWhere([
+            'phone_number' => $phone_number
+        ])->first();
+        if ($u == null) {
+            return back()->withInput()->withErrors([
+                'phone_number' => 'Phone number not found.',
+            ]);
+        }
+
+        if (!password_verify($request->password, $u->password)) {
+            return back()->withInput()->withErrors([
+                'password' => 'You entered a wrong password.',
+            ]);
+        }
+
+
         $password = $request->password;
 
         $old_user = User::where('phone_number', $phone_number)->first();
