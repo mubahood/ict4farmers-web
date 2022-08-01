@@ -344,12 +344,12 @@ class ApiUsersController
             ]);
         }
 
-        $phone_number = Utils::prepare_phone_number($request->input("phone_number"));
+        $phone_number = Utils::prepare_phone_number($request->input("email"));
         $phone_number_is_valid = Utils::phone_number_is_valid($phone_number);
         if (!$phone_number_is_valid) {
             return Utils::response([
                 'status' => 0,
-                'message' => "Please enter a valid phone number. {$request->email} <= "
+                'message' => "Please enter a valid phone number."
             ]);
         }
 
