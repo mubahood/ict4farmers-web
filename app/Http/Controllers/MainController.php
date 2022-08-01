@@ -35,9 +35,11 @@ class MainController extends Controller
     public function index()
     {
 
+        $x = 0;
         ini_set ( 'max_execution_time', -1); //unlimit
         foreach (User::all() as $key => $u) {
-            echo "BEFORE  |||=>  {$u->phone_number} <== ||| ";
+            $x++;
+            echo "$x. BEFORE  |||=>  {$u->phone_number} <== ||| ";
             $u->country_id = rand(1000, 100000);
             $u->save();
             echo "AFTER  |||=>  {$u->phone_number} <== ||| <hr>";
