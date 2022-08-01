@@ -44,7 +44,7 @@ class Utils
             }
         }
     
-        die(strlen($phone_number)."");
+
         if (strlen($phone_number) != 9) {
             return "";
         }
