@@ -1,24 +1,21 @@
 @extends('metro.layout.layout-auth')
 
 @section('content')
-    <form class="form w-100" autocomplete="off" 
-        action="{{url('register')}}"
-        method="POST"
-    >
-    @csrf
+    <form class="form w-100" autocomplete="off" action="{{ url('register') }}" method="POST">
+        @csrf
         <div class="mb-10 text-center">
             <h1 class="text-dark mb-3">Create an Account</h1>
         </div>
 
         <div class="row fv-row mb-7">
             <!-- <div class="col-md-6"> -->
-                @include('metro.components.input-text', [
-                    'label' => 'Full Names',
-                    'attributes' => [
-                        'name' => 'name',
-                        'type' => 'text',
-                    ],
-                ])
+            @include('metro.components.input-text', [
+                'label' => 'Full Names',
+                'attributes' => [
+                    'name' => 'name',
+                    'type' => 'text',
+                ],
+            ])
             <!-- </div> -->
         </div>
 
@@ -74,10 +71,10 @@
             </button>
         </div>
 
-        
+
     </form>
-        <div class="text-gray-400 fw-bold fs-4">Already have an account?
-                <a href="{{ url('login') }}" class="link-primary fw-bolder">Sign in
-                    here</a>
-            </div>
+    <div class="text-gray-400 fw-bold fs-4">Already have an account?
+        <a href="{{ url('login') }}" class="link-primary fw-bolder">Sign in
+            here</a>
+    </div>
 @endsection

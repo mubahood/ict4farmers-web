@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Utils;
+use Encore\Admin\Auth\Database\Administrator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -100,10 +101,12 @@ class AuthController extends Controller
     public function do_login(Request $request)
     {
         $this->validate(
-            $request, [
-            'phone_number' => 'required|min:4',
-            'password' => 'required|min:4',
-        ]);
+            $request,
+            [
+                'phone_number' => 'required|min:4',
+                'password' => 'required|min:4',
+            ]
+        );
 
         $phone_number = $request->phone_number;
         $password = $request->password;
@@ -139,16 +142,36 @@ class AuthController extends Controller
 
     public function store(Request $request)
     {
+
+        $phone_number = Utils::prepare_phone_number($request->phone_number);
+        if (!Utils::phone_number_is_valid($phone_number)) {
+            return back()->withInput()->withErrors([
+                'phone_number' => 'Enter a valid phone number.',
+            ]);
+        }
+        $u = Administrator::where([
+            'username' => $phone_number
+        ])->orWhere([
+            'email' => $phone_number
+        ])->orWhere([
+            'phone_number' => $phone_number
+        ])->first();
+        if ($u != null) {
+            return back()->withInput()->withErrors([
+                'phone_number' => 'Account with same phone number already exist.',
+            ]);
+        }
+
+
         $request->validate([
-            'name' => 'required|min:4',
-            'phone_number' => 'required|unique:users|numeric|min:4',
+            'name' => 'required|min:2',
             'password' => 'required|confirmed|min:4'
         ]);
 
         $admin = new User();
         $admin->name = $request->name;
-        $admin->username = $request->phone_number;
-        $admin->phone_number = $request->phone_number;
+        $admin->username = $phone_number;
+        $admin->phone_number = $phone_number;
         $admin->password = Hash::make($request->input("password"));
 
         if ($admin->save()) {
@@ -156,8 +179,7 @@ class AuthController extends Controller
                 'role_id' => 2,
                 'user_id' => $admin->id
             ]);
-        } 
-        else {
+        } else {
             $errors['phone_number'] = "Failed to created your account. Please try again.";
             return redirect('register')
                 ->withErrors($errors)
@@ -166,7 +188,7 @@ class AuthController extends Controller
         }
 
         $password = $request->password;
-        $_u['phone_number'] = $request->phone_number;
+        $_u['phone_number'] = $phone_number;
         $_u['password'] = $password;
         $remember = $request->get('remember', true);
 
@@ -180,7 +202,7 @@ class AuthController extends Controller
         return back()->withErrors([
             'phone_number' => 'The provided credentials do not match our records.',
         ]);
-        
+
         return view('metro.auth.register');
     }
 
