@@ -349,7 +349,7 @@ class ApiUsersController
         if (!$phone_number_is_valid) {
             return Utils::response([
                 'status' => 0,
-                'message' => "Please enter a valid phone number. {$request->phone_number} <= "
+                'message' => "Please enter a valid phone number. {$request->email} <= "
             ]);
         }
 
