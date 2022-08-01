@@ -362,7 +362,7 @@ class ApiUsersController
         if ($old_user_phone) {
             return Utils::response([
                 'status' => 0,
-                'message' => "An account with the same phone number you provided already exists."
+                'message' => "An account with the same phone number {$phone_number} you provided already exists."
             ]);
         }
 
