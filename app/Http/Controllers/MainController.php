@@ -35,9 +35,16 @@ class MainController extends Controller
     public function index()
     {
 
+        $time_start = microtime(true);
+
         $x = 0;
-        ini_set ( 'max_execution_time', -1); //unlimit
+        ini_set('max_execution_time', -1); //unlimit
         foreach (User::all() as $key => $u) {
+            $time_end = microtime(true);
+            $execution_time = ($time_end - $time_start);
+            echo '<b>Total Execution Time:</b> ' . ($execution_time / 60) . 'Mins & ' . ($execution_time) . 'Seconds <br><br>';
+
+
             $x++;
             echo "$x. BEFORE  |||=>  {$u->phone_number} <== ||| ";
             $u->country_id = rand(1000, 100000);
