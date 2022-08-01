@@ -51,6 +51,15 @@ class User extends Authenticatable
         parent::boot();
 
         self::creating(function ($m) {
+
+
+            $phone_number = Utils::prepare_phone_number($m->phone_number);
+            $phone_number_is_valid = Utils::phone_number_is_valid($phone_number);
+            if ($phone_number_is_valid) {
+                $m->phone_number = $phone_number;
+                $m->username = $phone_number;
+            }
+
             if ($m != null) {
                 if ($m->location_id != null) {
                     $loc = Location::find($m->location_id);
@@ -70,6 +79,14 @@ class User extends Authenticatable
         });
 
         self::updating(function ($m) {
+
+            $phone_number = Utils::prepare_phone_number($m->phone_number);
+            $phone_number_is_valid = Utils::phone_number_is_valid($phone_number);
+            if ($phone_number_is_valid) {
+                $m->phone_number = $phone_number;
+                $m->username = $phone_number;
+            }
+
             if ($m != null) {
                 if ($m->location_id != null) {
                     $loc = Location::find($m->location_id);
@@ -127,7 +144,7 @@ class User extends Authenticatable
 
     public function getAvatarAttribute($avatar)
     {
-        if($avatar == null){
+        if ($avatar == null) {
             return url('no_image.jpg');
         }
         return url($avatar);

@@ -21,12 +21,14 @@ class Utils
 
     public static function phone_number_is_valid($phone_number)
     {
-        if (strlen($phone_number) != 13) {
-            return false;
-        }
         if (substr($phone_number, 0, 4) != "+256") {
             return false;
         }
+        
+        if (strlen($phone_number) != 13) {
+            return false;
+        }
+      
         return true;
     }
     public static function prepare_phone_number($phone_number)

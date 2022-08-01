@@ -37,6 +37,16 @@ class ApiUsersController
     public function verify_phone(Request $request)
     {
 
+        $phone_number = Utils::prepare_phone_number($request->phone_number);
+        $phone_number_is_valid = Utils::phone_number_is_valid($phone_number);
+        if (!$phone_number_is_valid) {
+            return Utils::response([
+                'status' => 0,
+                'message' => "Please enter a valid phone number."
+            ]);
+        }
+
+
         //sms verification added
         $id = (int) ($request->id ? $request->id : "0");
         $u = User::find($id);
@@ -57,7 +67,7 @@ class ApiUsersController
                 $u->save();
                 return Utils::response([
                     'status' => 1,
-                    'message' => "CODE was sent to your number {$u->phone_number} successfully.",
+                    'message' => "CODE was sent to your number {$phone_number} successfully.",
                     'data' => $u
                 ]);
             }
@@ -66,14 +76,14 @@ class ApiUsersController
         if ($u->phone_number_verified == 1) {
             return Utils::response([
                 'status' => 1,
-                'message' => "Your number {$u->phone_number} was verified successfully.",
+                'message' => "Your number {$phone_number} was verified successfully.",
                 'data' => $u
             ]);
         }
 
         $u->verification_code = rand(1000, 9999) . "";
         $resp = Utils::send_sms([
-            'to' => $u->phone_number,
+            'to' => $phone_number,
             'message' => 'Your ICT4Farmers verification code is ' . $u->verification_code
         ]);
 
@@ -82,12 +92,12 @@ class ApiUsersController
             $u->save();
             return Utils::response([
                 'status' => 1,
-                'message' => "Your number {$u->phone_number} was verified successfully.",
+                'message' => "Your number {$phone_number} was verified successfully.",
                 'data' => $u
             ]);
         }
 
-        $u->phone_number = $request->phone_number;
+        $u->phone_number = $phone_number;
         $u->phone_number_verified = 1;
         $u->save();
 
