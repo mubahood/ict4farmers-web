@@ -134,21 +134,31 @@ class ApiUsersController
         $email = (string) ($request->email ? $request->email : "");
         $password = (string) ($request->password ? $request->password : "");
 
-        $_u = User::where('phone_number', $email)->get();
+        $phone_number = Utils::prepare_phone_number($email);
+        $phone_number_is_valid = Utils::phone_number_is_valid($phone_number);
+        if (!$phone_number_is_valid) {
+            return Utils::response([
+                'status' => 0,
+                'message' => "Please enter a valid phone number."
+            ]);
+        }
+
+
+        $_u = User::where('phone_number', $phone_number)->get();
         $u = null;
         if (isset($_u[0])) {
             $u = $_u[0];
         }
 
         if ($u == null) {
-            $_u = User::where('username', $email)->get();
+            $_u = User::where('username', $phone_number)->get();
             if (isset($_u[0])) {
                 $u = $_u[0];
             }
         }
 
         if ($u == null) {
-            $_u = User::where('email', $email)->get();
+            $_u = User::where('email', $phone_number)->get();
             if (isset($_u[0])) {
                 $u = $_u[0];
             }
@@ -301,48 +311,6 @@ class ApiUsersController
         }
     }
 
-    public function create_account0(Request $request)
-    {
-        if (
-            $request->email == null ||
-            $request->name == null ||
-            $request->password == null
-        ) {
-            return Utils::response([
-                'status' => 0,
-                'message' => "You must provide Name, email and password. {$request->name}",
-                'data' => $request
-            ]);
-        }
-
-
-        $u['name'] = $request->input("name");
-        $u['username'] = trim($request->input("email"));
-        $u['phone_number'] = trim($request->input("email"));
-        $u['email'] = '';
-
-        $old_user = User::where('username', $u['username'])
-            ->orWhere('phone_number', $u['username'])
-            ->first();
-
-        if ($old_user != null) {
-            return Utils::response([
-                'status' => 0,
-                'message' => "A account with same phone number you provided already exist."
-            ]);
-        }
-
-        $u['password'] = Hash::make(trim($request->input("password")));
-        $user = User::create($u);
-        $_user = User::find($user->id);
-
-        return Utils::response([
-            'status' => 1,
-            'message' => "Account created successfully.",
-            'data' => $_user
-        ]);
-    }
-
 
     public function create_account(Request $request)
     {
@@ -366,10 +334,19 @@ class ApiUsersController
             ]);
         }
 
+        $phone_number = Utils::prepare_phone_number($request->input("email"));
+        $phone_number_is_valid = Utils::phone_number_is_valid($phone_number);
+        if (!$phone_number_is_valid) {
+            return Utils::response([
+                'status' => 0,
+                'message' => "Please enter a valid phone number."
+            ]);
+        }
+
         $old_user_phone =
-            User::where('phone_number',  $request->input("email"))
-            ->orWhere('phone_number',  $request->input("email"))
-            ->orWhere('username',  $request->input("email"))
+            User::where('phone_number',  $phone_number)
+            ->orWhere('phone_number',  $phone_number)
+            ->orWhere('username',  $phone_number)
             ->first();
 
         if ($old_user_phone) {
@@ -381,8 +358,8 @@ class ApiUsersController
 
         $user = new User();
         $user->name = $request->input("name");
-        $user->phone_number = $request->input("email");
-        $user->username = $request->input("username");
+        $user->phone_number = $phone_number;
+        $user->username = $phone_number;
         $user->password = Hash::make($request->input("password"));
 
         if ($user->save()) {

@@ -18,6 +18,33 @@ use function PHPUnit\Framework\fileExists;
 
 class Utils
 {
+
+    public static function phone_number_is_valid($phone_number)
+    {
+        if (strlen($phone_number) != 13) {
+            return false;
+        }
+        if (substr($phone_number, 0, 4) != "+256") {
+            return false;
+        }
+        return true;
+    }
+    public static function prepare_phone_number($phone_number)
+    {
+        if (strlen($phone_number) > 10) {
+            $phone_number = str_replace("+", "", $phone_number);
+            $phone_number = substr($phone_number, 3, strlen($phone_number));
+        } else {
+            if (substr($phone_number, 0, 1) == "0") {
+                $phone_number = substr($phone_number, 1, strlen($phone_number));
+            }
+        }
+        if (strlen($phone_number) != 9) {
+            return "";
+        }
+        $phone_number = "+256" . $phone_number;
+        return $phone_number;
+    }
     public static function send_sms($data)
     {
 
@@ -273,7 +300,7 @@ class Utils
             return "";
         }
 
-        $path = Storage::putFile('/public/storage', $file['tmp_name']); 
+        $path = Storage::putFile('/public/storage', $file['tmp_name']);
         return $path;
     }
     public static function upload_images($files)
@@ -309,14 +336,14 @@ class Utils
                     $img['error'] = $files['error'][$i];
                     $img['size'] = $files['size'][$i];
                     $ext = pathinfo($img['name'], PATHINFO_EXTENSION);
- 
+
                     $file_name = time() . "-" . Utils::make_slug($img['name']) . "." . $ext;
                     $path = 'public/storage/' . $file_name;
 
                     $res = move_uploaded_file($img['tmp_name'], $path);
                     if (!$res) {
                         continue;
-                    } 
+                    }
 
                     $thumn_name = 'thumb_' . $file_name;
                     $path_optimized = 'public/storage/' . $thumn_name;
@@ -363,7 +390,7 @@ class Utils
         $image->auto_handle_exif_orientation = false;
         $image->source_path = "" . $params['source'];
         $image->target_path = "" . $params['target'];
- 
+
 
         if (isset($params['quality'])) {
             $image->jpeg_quality = $params['quality'];
