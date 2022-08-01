@@ -19,6 +19,24 @@ use function PHPUnit\Framework\fileExists;
 class Utils
 {
 
+    public static function check_roles($u)
+    {
+        if ($u == null) {
+            return false;
+        }
+
+        $roles = DB::table('admin_role_users')->where([
+            'role_id' => 2,
+            'user_id' => $u->id
+        ])->get();
+
+        if (count($roles) < 1) {
+            DB::table('admin_role_users')->insert([
+                'role_id' => 2,
+                'user_id' => $u->id
+            ]);
+        }
+    }
     public static function phone_number_is_valid($phone_number)
     {
         if (substr($phone_number, 0, 4) != "+256") {

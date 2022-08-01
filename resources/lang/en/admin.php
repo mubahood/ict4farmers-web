@@ -2,7 +2,7 @@
 
 return [
     'online'                => 'Online',
-    'login'                 => 'ICT4Farmers Web Login',
+    'login'                 => 'Login to ICT4Farmers - Dashboard',
     'logout'                => 'Logout',
     'setting'               => 'Setting',
     'name'                  => 'Name',

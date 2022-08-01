@@ -2,6 +2,8 @@
 
 namespace Encore\Admin\Controllers;
 
+use App\Models\Utils;
+use Encore\Admin\Auth\Database\Administrator;
 use Encore\Admin\Facades\Admin;
 use Encore\Admin\Form;
 use Encore\Admin\Layout\Content;
@@ -42,10 +44,46 @@ class AuthController extends Controller
      */
     public function postLogin(Request $request)
     {
-        $this->loginValidator($request->all())->validate();
+        $phone_number = Utils::prepare_phone_number($request->phone_number);
+        if (!Utils::phone_number_is_valid($phone_number)) {
+            return back()->withInput()->withErrors([
+                'phone_number' => 'Enter a valid phone number.',
+            ]);
+        }
 
-        $credentials = $request->only([$this->username(), 'password']);
-        $remember = $request->get('remember', false);
+        $u = Administrator::where([
+            'username' => $phone_number
+        ])->orWhere([
+            'email' => $phone_number
+        ])->orWhere([
+            'phone_number' => $phone_number
+        ])->first();
+        if ($u == null) {
+            return back()->withInput()->withErrors([
+                'phone_number' => 'Phone number not found.',
+            ]);
+        }
+
+        if (!password_verify($request->password, $u->password)) {
+            return back()->withInput()->withErrors([
+                'password' => 'You entered a wrong password.',
+            ]);
+        }
+
+        $u->username = $phone_number;
+        //$u->email = $phone_number;
+        $u->phone_number = $phone_number;
+        $u->save();
+
+        $credentials = [
+            'username' => $phone_number,
+            'password' => $request->password
+        ];
+
+        //$this->loginValidator($request->all())->validate();
+        //$credentials = $request->only([$this->username(), 'password']);
+        $remember = $request->get('remember', true);
+        $remember = true;
 
         if ($this->guard()->attempt($credentials, $remember)) {
             return $this->sendLoginResponse($request);
