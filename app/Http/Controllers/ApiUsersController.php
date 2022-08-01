@@ -352,16 +352,13 @@ class ApiUsersController
                 'message' => "You must provide a Name. {$request->name}",
                 'data' => $request
             ]);
-        }
-        
-        elseif ($request->phone_number == null) {
+        } elseif ($request->email == null) {
             return Utils::response([
                 'status' => 0,
-                'message' => "You must provide a Phone Number. {$request->phone_number}",
+                'message' => "You must provide a Phone Number. {$request->email}",
                 'data' => $request
             ]);
-        }
-        elseif ($request->password == null) {
+        } elseif ($request->password == null) {
             return Utils::response([
                 'status' => 0,
                 'message' => "You must provide a Password. {$request->password}",
@@ -369,31 +366,12 @@ class ApiUsersController
             ]);
         }
 
-        // $data = $request->only(
-        //     'name', 
-        //     'phone_number', 
-        //     'password', 
-        //     'password_confirmation'
-        // );
+        $old_user_phone =
+            User::where('phone_number',  $request->input("email"))
+            ->orWhere('phone_number',  $request->input("email"))
+            ->orWhere('username',  $request->input("email"))
+            ->first();
 
-        // $post_data = Validator::make($data, [
-        //     'name' => 'required|max:8|min:4',
-        //     'phone_number' => 'required|max:8|min:4',
-        //     'password' => 'required|max:100|min:3',
-        //     'password_confirmation' => 'required|max:100|min:3'
-        // ]);
-
-        // if ($request->input("password") != $request->input("password_confirmation")) {
-        //     $errors['password_confirmation'] = "Passwords did not match.";
-
-        //     return Utils::response([
-        //         'status' => 0,
-        //         'message' => "Passwords did not match."
-        //     ]);
-        // }
-
-        $old_user_phone = User::where('phone_number',  $request->input("phone_number"))->first();
-        
         if ($old_user_phone) {
             return Utils::response([
                 'status' => 0,
@@ -401,20 +379,18 @@ class ApiUsersController
             ]);
         }
 
-        $user = new User();            
-            $user->name = $request->input("name");
-            $user->phone_number = $request->input("phone_number");
-            $user->username = $request->input("phone_number");
-            $user->password = Hash::make($request->input("password"));
-            
+        $user = new User();
+        $user->name = $request->input("name");
+        $user->phone_number = $request->input("email");
+        $user->username = $request->input("username");
+        $user->password = Hash::make($request->input("password"));
+
         if ($user->save()) {
             DB::table('admin_role_users')->insert([
                 'role_id' => 2,
                 'user_id' => $user->id
             ]);
-        }
-
-        else {
+        } else {
             return Utils::response([
                 'status' => 0,
                 'message' => "Failed to created your account. Please try again."
