@@ -34,7 +34,7 @@ class Utils
     public static function prepare_phone_number($phone_number)
     {
 
-        if (strlen($phone_number) > 11) {
+        if (strlen($phone_number) > 12) {
             $phone_number = str_replace("+", "", $phone_number);
             $phone_number = substr($phone_number, 3, strlen($phone_number));
         } else {
