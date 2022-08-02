@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\WizardItem as ModelsWizardItem;
+use Encore\Admin\Auth\Database\Administrator;
 use GuzzleHttp\Client;
 use Hamcrest\Arrays\IsArray;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -18,6 +20,172 @@ use function PHPUnit\Framework\fileExists;
 
 class Utils
 {
+
+    public static function get_wizard_actions($user_id)
+    {
+        $u = Administrator::find($user_id);
+        if ($u == null) {
+            return [];
+        }
+        $items = [];
+
+        ################################################
+        $item  = new WizardItem();
+        $item->is_done = Utils::is_profile_complete($u);
+        $item->id = 1;
+        $item->title = 'Complete your profile';
+        $item->action_text = 'COMPLETE PROFILE';
+        $item->screen = 'AccountEdit';
+        if ($item->is_done) {
+            $item->sub_title = 'Done';
+        } else {
+            $item->sub_title = 'Your profile is incomplete';
+        }
+        $item->description = 'Completion of your profile will help us analyze data.';
+        $items[] = $item;
+        ################################################
+
+
+        ################################################
+        $farms = Farm::where([
+            'administrator_id' => $user_id
+        ])->get();
+        $item  = new WizardItem();
+        if (count($farms) < 1) {
+            $item->is_done = 0;
+            $item->sub_title = "You have no any farm registered.";
+        } else {
+            $item->sub_title = 'You have ' . count($farms) . " farms.";
+            $item->is_done = 1;
+        }
+        $item->id = 2;
+        $item->title = 'Farm creation';
+        $item->action_text = "CREATE FARM";
+        $item->screen = 'FarmCreateScreen';
+        $item->description = 'In this context, a farm an area of land and its buildings, used for growing crops and rearing animals.';
+        $items[] = $item;
+        ################################################
+
+        ################################################
+        $enterprises = Garden::where([
+            'administrator_id' => $user_id
+        ])->get();
+        $item  = new WizardItem();
+        if (count($enterprises) < 1) {
+            $item->is_done = 0;
+            $item->sub_title = "You have no any enterprise registered.";
+        } else {
+            $item->sub_title = 'You have ' . count($enterprises) . " enterprises.";
+            $item->is_done = 1;
+        }
+        $item->id = 3;
+        $item->title = 'Enterprise creation';
+        $item->action_text = "CREATE ENTERPRISE";
+        $item->screen = 'GardenCreateScreen';
+        $item->description = 'An enterpirse is a piece of a project on your farm. It can be a garden, poultry project or any other.';
+        $items[] = $item;
+        ################################################
+
+        ################################################
+        $users = User::where([
+            'owner_id' => $user_id
+        ])->get();
+
+        $item  = new WizardItem();
+        if (count($users) < 1) {
+            $item->is_done = 0;
+            $item->sub_title = "You have no added any worker.";
+        } else {
+            $item->sub_title = 'You have ' . count($enterprises) . " worker.";
+            $item->is_done = 1;
+        }
+        $item->id = 4;
+        $item->title = 'Worker creation';
+        $item->action_text = "CREATE WORKER";
+        $item->screen = 'WorkerCreateScreen';
+        $item->description = 'Worker is a person who does a specified type of work at your enterprises.';
+        $items[] = $item;
+        ################################################
+
+        ################################################
+        $activities = GardenActivity::where([
+            'administrator_id' => $user_id
+        ])->get();
+
+        $item  = new WizardItem();
+        if (count($activities) < 1) {
+            $item->is_done = 0;
+            $item->sub_title = "You have not scheduled any activity.";
+        } else {
+            $item->sub_title = 'You scheduled ' . count($activities) . " activities.";
+            $item->is_done = 1;
+        }
+        $item->id = 5;
+        $item->title = 'Activity scheduling';
+        $item->action_text = "SCHEDULE ACTIVITY";
+        $item->screen = 'GardenActivityCreateScreen';
+        $item->description = 'Use this activity scheduling to schedule all your enterprise activities in one place.';
+        $items[] = $item;
+        ################################################
+
+
+        ################################################
+        $products = Product::where([
+            'user_id' => $user_id
+        ])->get();
+
+        $item  = new WizardItem();
+        if (count($products) < 1) {
+            $item->is_done = 0;
+            $item->sub_title = "You have not posted any product.";
+        } else {
+            $item->sub_title = 'You posted ' . count($products) . " products.";
+            $item->is_done = 1;
+        }
+        $item->id = 6;
+        $item->title = 'Products & Services';
+        $item->action_text = "POST PRODUCT";
+        $item->screen = 'ProductAddForm';
+        $item->description = 'Buy and sell your farm products and services using ICT4farmers platform.';
+        $items[] = $item;
+        ################################################
+
+
+        ################################################
+        $products = Product::where([
+            'user_id' => $user_id
+        ])->get();
+
+        $item  = new WizardItem();
+        $item->is_done = 0;
+        $item->title = 'Docs';
+        $item->sub_title = "Learn how to to use ICT4Farmers system.";
+        $item->id = 7;
+        $item->action_text = "LEARN";
+        $item->screen = '';
+        $item->description = 'Learn how to to use ICT4Farmers system.';
+        $items[] = $item;
+        ################################################
+
+
+
+        return $items;
+    }
+
+    public static function is_profile_complete($p)
+    {
+        if (
+            ($p->first_name == null) ||
+            ($p->last_name == null) ||
+            ($p->address == null) ||
+            (strlen($p->address) < 4) ||
+            (strlen($p->first_name) < 3) ||
+            ($p->profile_is_complete !=  1)
+        ) {
+            return false;
+        }
+        return true;
+    }
 
     public static function check_roles($u)
     {

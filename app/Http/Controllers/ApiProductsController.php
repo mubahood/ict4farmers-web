@@ -10,7 +10,7 @@ use App\Models\Farm;
 use App\Models\FinancialRecord;
 use App\Models\Garden;
 use App\Models\GardenActivity;
-use App\Models\GardenProductionRecord; 
+use App\Models\GardenProductionRecord;
 use App\Models\Image;
 use App\Models\Location;
 use App\Models\PestCase;
@@ -26,6 +26,18 @@ use Illuminate\Support\Facades\Hash;
 
 class ApiProductsController
 {
+
+
+
+    public function wizard_items()
+    {
+        $user_id = ((int)($_GET['user_id']));
+        if (!isset($_GET['user_id'])) {
+            return [];
+        }
+
+        return Utils::get_wizard_actions($user_id);
+    }
 
 
 
@@ -175,7 +187,7 @@ class ApiProductsController
         $g = Garden::find($garden_id);
 
         if ($g == null) {
-            return Utils::response(['message' => 'Garden not #'.$garden_id.' found.', 'status' => 0]);
+            return Utils::response(['message' => 'Garden not #' . $garden_id . ' found.', 'status' => 0]);
         }
 
         $new_record = new GardenProductionRecord();
@@ -341,7 +353,7 @@ class ApiProductsController
     public function question_create(Request $r)
     {
 
-        if (!isset($r->user_id )) {
+        if (!isset($r->user_id)) {
             return Utils::response(['message' => 'User ID is required.', 'status' => 0]);
         }
 
@@ -359,8 +371,8 @@ class ApiProductsController
         $q->answer = '';
         $q->answer_images = '[]';
         $q->question_images = '[]';
-        						
- 
+
+
         $images = [];
         $uploaded_images = [];
         if (isset($_FILES)) {
@@ -465,13 +477,14 @@ class ApiProductsController
         return Farm::where(['administrator_id' => $administrator_id])->get();
     }
 
-    public function garden_activities_delete(Request $r){
+    public function garden_activities_delete(Request $r)
+    {
         $id = ((int)($r->id));
         $item = GardenActivity::find($id);
-        if($item!=null){
+        if ($item != null) {
             $item->delete();
-        }else{
-            return Utils::response(['message' => "Activity {$id} not found.", 'status' => 0]);            
+        } else {
+            return Utils::response(['message' => "Activity {$id} not found.", 'status' => 0]);
         }
         return Utils::response(['message' => 'Activity deleted.', 'status' => 1]);
     }
@@ -484,7 +497,7 @@ class ApiProductsController
         $g = Garden::find($garden_id);
 
         if ($g == null) {
-            return Utils::response(['message' => 'Garden #'.$garden_id.' not found.', 'status' => 0]);
+            return Utils::response(['message' => 'Garden #' . $garden_id . ' not found.', 'status' => 0]);
         }
 
         $act = new GardenActivity();
@@ -581,7 +594,7 @@ class ApiProductsController
 
     public function create_farm(Request $r)
     {
-        
+
         if (!isset($_POST['administrator_id'])) {
             return Utils::response(['message' => 'User ID is required.', 'status' => 0]);
         }
@@ -594,7 +607,7 @@ class ApiProductsController
         $g->latitude = $r->latitude;
         $g->longitude = $r->longitude;
 
-   
+
         if ($g->save()) {
             return Utils::response(['message' => 'Farm created successfully.', 'status' => 1]);
         } else {
@@ -952,7 +965,7 @@ class ApiProductsController
     public function locations(Request $request)
     {
         return Location::all();
-        
+
         //return Utils::get_locations();
     }
 

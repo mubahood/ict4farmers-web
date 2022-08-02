@@ -22,6 +22,7 @@ Route::post('garden-production-record', [ApiProductsController::class, 'garden_p
 Route::post('workers', [ApiProductsController::class, 'workers_create']);
 Route::post('financial-records', [ApiProductsController::class, 'financial_records_create']);
 Route::get('workers', [ApiProductsController::class, 'workers']);
+Route::get('wizard-items', [ApiProductsController::class, 'wizard_items']);
 
 Route::get('farms', [ApiProductsController::class, 'farms']);
 Route::get('gardens', [ApiProductsController::class, 'gardens']);
