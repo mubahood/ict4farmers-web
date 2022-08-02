@@ -175,11 +175,6 @@ class Utils
     public static function is_profile_complete($p)
     {
         if (
-            ($p->first_name == null) ||
-            ($p->last_name == null) ||
-            ($p->address == null) ||
-            (strlen($p->address) < 4) ||
-            (strlen($p->first_name) < 3) ||
             ($p->profile_is_complete !=  1)
         ) {
             return false;
