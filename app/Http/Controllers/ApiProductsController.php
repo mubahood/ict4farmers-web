@@ -34,7 +34,7 @@ class ApiProductsController
         $user_id = ((int)($_GET['user_id']));
         if (!isset($_GET['user_id'])) {
             return Utils::response(['message' => 'User not found.', 'status' => 0, 'data' => null]);
-        }
+        } 
 
         $data = Utils::get_wizard_actions($user_id);
         return Utils::response(['message' => 'Success.', 'status' => 1, 'data' => $data]);
