@@ -32,7 +32,7 @@ class Utils
         ################################################
         $item  = new WizardItem();
 
-        if($p->profile_is_complete ){
+        if($u->profile_is_complete ){
             $item->is_done = true;
         }else{
             $item->is_done = false;
