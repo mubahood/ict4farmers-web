@@ -275,7 +275,7 @@ class ApiUsersController
         $u->access_to_credit = (string) ($request->access_to_credit ? $request->access_to_credit : "");
         $u->district = (string) ($request->district ? $request->district : "");
         $u->sector = (string) ($request->sector ? $request->sector : "");
-
+        $u->profile_is_complete = true;
 
 
         unset($u->password);
@@ -287,7 +287,7 @@ class ApiUsersController
         unset($u->last_seen);
         unset($u->status);
         unset($u->linkedin);
-
+ 
         if (isset($_FILES)) {
             if ($_FILES != null) {
                 if (count($_FILES) > 0) {

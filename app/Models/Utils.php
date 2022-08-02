@@ -31,7 +31,12 @@ class Utils
 
         ################################################
         $item  = new WizardItem();
-        $item->is_done = Utils::is_profile_complete($u);
+
+        if($p->profile_is_complete ){
+            $item->is_done = true;
+        }else{
+            $item->is_done = false;
+        }
         $item->id = 1;
         $item->title = 'Complete your profile';
         $item->action_text = 'COMPLETE PROFILE';
