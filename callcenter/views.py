@@ -143,7 +143,6 @@ def voice(request):
         # except:
         #     print('Was unable to save')     
         
-
     # update call when its done
     if call_state == 'Completed':
         # update the call to record the voice

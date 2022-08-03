@@ -188,7 +188,6 @@ class AuthController extends Controller
             ]);
         }
 
-
         $request->validate([
             'name' => 'required|min:2',
             'password' => 'required|confirmed|min:4'
