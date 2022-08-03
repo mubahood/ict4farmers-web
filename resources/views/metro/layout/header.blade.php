@@ -58,7 +58,6 @@ if (in_array($seg_1, $dashboard_segs)) {
     $is_dashboard = true;
 }
 
-
 ?>
 <div id="kt_header" style="" class="header align-items-stretch">
     <div class="container-xxl d-flex align-items-stretch justify-content-between">
@@ -166,7 +165,7 @@ if (in_array($seg_1, $dashboard_segs)) {
                             <a href="{{ url('dashboard') }}" class="btn btn-primary btn-sm bg"
                                 style="margin-left: .8rem">My Farm Products</a>
 
-                            
+
 
                             <a href="{{ url('admin') }}"
                                 class="ms-5 btn btn-outline btn-outline-primary btn-sm text-hover-white">Manage your
@@ -183,7 +182,7 @@ if (in_array($seg_1, $dashboard_segs)) {
                                 style="margin-left: .8rem">Sell your farm
                                 Products</a>
 
-                            
+
                             <a href="{{ url('login?submit_to=admin') }}"
                                 class="ms-5 btn btn-outline btn-outline-primary btn-sm text-hover-white">Manage
                                 your farms</a>
