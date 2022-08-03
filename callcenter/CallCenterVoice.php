@@ -66,7 +66,6 @@ if (!isset($current_call)){
     $new_call->call_menu_selected = 1;
     $new_call->save();
 }
-return "No call yet";
 
 
 // Start English menu 1 ---------------------------------------------------------------------------
