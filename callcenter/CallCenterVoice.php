@@ -19,7 +19,7 @@ $apiKey = $_ENV['AT_API_KEY']; // use your sandbox app API key for development i
 $AT = new AfricasTalking($username, $apiKey);
 
 // Get the voice service
-$voice      = $AT->voice();
+$voice = $AT->voice();
 
 $session_id = $_POST["session_id"];
 $is_active = $_POST["is_active"];
@@ -146,7 +146,7 @@ if ($call_state == 'Completed') {
         $current_call->agent_phone = $agent_called;
         $current_call->save();
     } catch (\Throwable $th) {
-        throw $th;
+        throw $th->getMessage();
     }
 }
 
