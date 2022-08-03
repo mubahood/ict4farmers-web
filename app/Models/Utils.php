@@ -32,20 +32,18 @@ class Utils
         ################################################
         $item  = new WizardItem();
 
-        if($u->profile_is_complete ){
-            $item->is_done = true;
-        }else{
-            $item->is_done = false;
+        if ($u->profile_is_complete) {
+            $item->sub_title = 'Done';
+            $item->is_done = 1;
+        } else {
+            $item->is_done = 0;
+            $item->sub_title = 'Your profile is incomplete';
         }
         $item->id = 1;
         $item->title = 'Complete your profile';
         $item->action_text = 'COMPLETE PROFILE';
         $item->screen = 'AccountEdit';
-        if ($item->is_done) {
-            $item->sub_title = 'Done';
-        } else {
-            $item->sub_title = 'Your profile is incomplete';
-        }
+
         $item->description = 'Completion of your profile will help us analyze data.';
         $items[] = $item;
         ################################################
