@@ -27,6 +27,10 @@ class Utils
         if ($u == null) {
             return [];
         }
+        
+        if($u->phone_number_verified != 1){
+            return [];
+        }
         $items = [];
 
         ################################################
