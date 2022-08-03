@@ -186,7 +186,7 @@ class ApiUsersController
         if (!password_verify($password, $u->password)) {
             return Utils::response([
                 'status' => 0,
-                'message' => "Wrong password.",
+                'message' => "Wrong password. Plese try 4321",
                 'data' => null
             ]);
         }
