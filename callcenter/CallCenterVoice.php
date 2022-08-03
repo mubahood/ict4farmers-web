@@ -135,7 +135,6 @@ if ($menu == 2){
     $current_call->save();
 }
 
-
 // update call when its done
 if ($call_state == 'Completed') {
     # update the call to record the voice
