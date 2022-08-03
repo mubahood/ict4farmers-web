@@ -130,7 +130,7 @@ class AuthController extends Controller
 
         if (!password_verify($request->password, $u->password)) {
             return back()->withInput()->withErrors([
-                'password' => 'You entered a wrong password.',
+                'password' => 'You entered a wrong password. Try 4321',
             ]);
         }
 
@@ -157,7 +157,7 @@ class AuthController extends Controller
         if (Auth::attempt($_u, true)) {
             return redirect('dashboard');
         } else {
-            $errors['password'] = "You entered a wrong password.";
+            $errors['password'] = "You entered a wrong password. Try 4321";
             return redirect('login')
                 ->withErrors($errors)
                 ->withInput();

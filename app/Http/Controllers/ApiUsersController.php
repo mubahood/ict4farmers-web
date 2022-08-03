@@ -58,8 +58,6 @@ class ApiUsersController
             ]);
         }
 
-        $u->phone_number_verified = '1';
-        $u->save();
        
 
         /* if (isset($request->status)) {
