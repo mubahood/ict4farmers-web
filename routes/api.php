@@ -60,6 +60,7 @@ Route::get('locations', [ApiProductsController::class, 'locations']);
 
 Route::post('get-chats', [ApiChatsController::class, 'index']);
 Route::post('chats', [ApiChatsController::class, 'send_message']);
+Route::get('sms', [ApiChatsController::class, 'send_sms']);
 Route::post('threads', [ApiChatsController::class, 'threads']);
 
 

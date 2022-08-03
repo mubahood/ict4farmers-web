@@ -16,6 +16,16 @@ use Illuminate\Support\Facades\DB;
 
 class ApiChatsController
 {
+    public function send_sms(Request $request){
+        $res = Utils::send_sms([
+            'to' => '+256706638494',
+            'message' => 'Test message'
+        ]);
+        echo "<pre>";
+        print_r($res);
+        die("Romina");
+
+    }
     public function send_message(Request $request)
     {
         $sender = 0;

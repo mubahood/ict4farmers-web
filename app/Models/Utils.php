@@ -252,6 +252,13 @@ class Utils
             return false;
         }
 
+        $data['to'] = Utils::prepare_phone_number($data['to']);
+        $phone_number_is_valid = Utils::phone_number_is_valid($data['to']);
+        if (!$phone_number_is_valid) {
+            return false;
+        }
+
+
         $client = new Client();
         $response = $client->post('https://api.africastalking.com/version1/messaging', [
             'headers' => [

@@ -50,8 +50,6 @@ class ApiUsersController
         //sms verification added
         $id = (int) ($request->id ? $request->id : "0");
         $u = User::find($id);
-        $u->phone_number_verified = '1';
-        $u->save();
         if ($u == null) {
             return Utils::response([
                 'status' => 0,
@@ -60,7 +58,11 @@ class ApiUsersController
             ]);
         }
 
-        if (isset($request->status)) {
+        $u->phone_number_verified = '1';
+        $u->save();
+       
+
+        /* if (isset($request->status)) {
             $status = trim($request->status);
             if ($status == 'verified') {
                 $u->phone_number_verified = 1;
@@ -80,7 +82,7 @@ class ApiUsersController
                 'data' => $u
             ]);
         }
-
+ */
         $u->verification_code = rand(1000, 9999) . "";
         $resp = Utils::send_sms([
             'to' => $phone_number,
