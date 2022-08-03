@@ -58,6 +58,7 @@ if (in_array($seg_1, $dashboard_segs)) {
     $is_dashboard = true;
 }
 
+
 ?>
 <div id="kt_header" style="" class="header align-items-stretch">
     <div class="container-xxl d-flex align-items-stretch justify-content-between">
@@ -161,37 +162,38 @@ if (in_array($seg_1, $dashboard_segs)) {
                 <div class="d-none d-md-flex align-items-center ms-1 ms-lg-3">
                     <div class="d-flex align-items-center ms-1 ms-lg-3" id="kt_header_user_menu_toggle">
 
-                        @if ($is_logged_in) 
-
+                        @if ($is_logged_in)
                             <a href="{{ url('dashboard') }}" class="btn btn-primary btn-sm bg"
                                 style="margin-left: .8rem">My Farm Products</a>
 
+                            
 
                             <a href="{{ url('admin') }}"
-                            class="ms-5 btn btn-outline btn-outline-primary btn-sm text-hover-white">Manage
-                            your farms</a>
+                                class="ms-5 btn btn-outline btn-outline-primary btn-sm text-hover-white">Manage your
+                                farms</a>
 
 
-                            <a href="{{ url('admin') }}"
+                            {{-- <a href="{{ url('login?submit_to=admin') }}"
                                 class="btn btn-icon btn-sm btn-secondary p-0 border border-primary rounded-circle"
                                 style="margin-left: .7rem" data-bs-toggle="tooltip" data-bs-trigger="hover"
                                 data-bs-dismiss-="click" title="My chats">
-                                <i class="bi bi-chat fs-4 text-primary"></i></a>
+                                <i class="bi bi-chat fs-4 text-primary"></i></a> --}}
                         @else
-                            <a href="{{ url('dashboard') }}" class="btn btn-primary btn-sm bg"
+                            <a href="{{ url('login') }}" class="btn btn-primary btn-sm bg"
                                 style="margin-left: .8rem">Sell your farm
                                 Products</a>
 
-                            <a href="{{ url('admin') }}"
+                            
+                            <a href="{{ url('login?submit_to=admin') }}"
                                 class="ms-5 btn btn-outline btn-outline-primary btn-sm text-hover-white">Manage
                                 your farms</a>
 
 
-                        <a href="javascript:;"
-                        class="btn btn-icon btn-sm btn-secondary p-0 border border-primary rounded-circle"
-                        style="margin-left: .7rem" data-bs-toggle="tooltip" data-bs-trigger="hover"
-                        data-bs-dismiss-="click" title="Help">
-                        <i class="bi bi-question-lg fs-4 text-primary"></i></a>
+                            <a href="javascript:;"
+                                class="btn btn-icon btn-sm btn-secondary p-0 border border-primary rounded-circle"
+                                style="margin-left: .7rem" data-bs-toggle="tooltip" data-bs-trigger="hover"
+                                data-bs-dismiss-="click" title="Help">
+                                <i class="bi bi-question-lg fs-4 text-primary"></i></a>
                         @endif
 
 

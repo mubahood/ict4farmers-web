@@ -72,6 +72,7 @@
                         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                         <!-- <p><small>Fields marked by * are required</small></p> -->
                     </div>
+                    <p>Forget password? <a href="{{ url('register') }}">Reset password</a></p>
                     <div class="row">
                         <div class="col-xs-8">
                             @if (config('admin.auth.remember'))

@@ -299,6 +299,9 @@ class Utils
 
 
 
+    public static function login_user($data){
+        
+    }
     public static function get_locations()
     {
         $locations = [];

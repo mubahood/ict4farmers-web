@@ -53,14 +53,14 @@ class AuthController extends Controller
 
         $u = Administrator::where([
             'username' => $phone_number
-        ])->orWhere([
+        ])->orWhere([ 
             'email' => $phone_number
         ])->orWhere([
             'phone_number' => $phone_number
         ])->first();
         if ($u == null) {
             return back()->withInput()->withErrors([
-                'phone_number' => 'Phone number not found.',
+                'phone_number' => 'Phone number not found on our database.',
             ]);
         }
 

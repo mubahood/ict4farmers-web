@@ -64,6 +64,14 @@ Route::match(['get', 'post'], 'test', ['before' => 'csrf', MainController::class
 Route::get('/sell-fast', [MainController::class, 'sell_fast']);
 Route::get('/contact', [MainController::class, 'contact']);
 
+//Reset passwords
+Route::get('/reset-password-phone', [MainController::class, 'reset_password_phone']);
+Route::post('/reset-password-phone', [MainController::class, 'reset_password_phone_post']);
+Route::get('/reset-password-code', [MainController::class, 'reset_password_code']);
+Route::post('/reset-password-code', [MainController::class, 'reset_password_code_post']);
+Route::get('/reset-password', [MainController::class, 'reset_password']);
+Route::post('/reset-password', [MainController::class, 'reset_password_post']);
+
 Route::match(['get', 'post'], '/{id}', [MainController::class, 'slugSwitcher']);
 
 

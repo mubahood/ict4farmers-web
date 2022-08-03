@@ -848,7 +848,7 @@ foreach ($banners_all as $key => $value) {
 
                     @if ($u->id < 1)
                         <a class="cursor-pointer symbol symbol-30px symbol-md-40px bg-light-primary border border-primary"
-                            href="{{ url('register') }}">
+                            href="{{ url('login') }}">
                             <img src="{{ url('user.png') }}" alt="user" />
                         </a>
                     @else

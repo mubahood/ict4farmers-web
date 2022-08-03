@@ -19,8 +19,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use GuzzleHttp\Client;
-
-
+use Illuminate\Support\Facades\Redirect;
 
 use function PHPUnit\Framework\fileExists;
 
@@ -35,7 +34,7 @@ class MainController extends Controller
     public function index()
     {
 
-       /*  $time_start = microtime(true); 
+        /*  $time_start = microtime(true); 
 
         $x = 0;
         ini_set ( 'max_execution_time', -1); //unlimit
@@ -410,11 +409,12 @@ thumbnail
                     $u->password = $hash;
                     $u->save();
 
-                    $_u['email'] = $u->email;
+                    $_u['phone_number'] = $u->email;
                     $_u['password'] = $new_password;
 
                     if (Auth::attempt($_u, true)) {
-                        header("Location: " . url("dashboard"));
+                        $_SESSION['credentials'] = $_u;
+                        return redirect()->intended(admin_url('/auth/login'));
                         die();
                     } else {
                         $errors['password'] = "Failed to log you in.";
@@ -469,6 +469,11 @@ thumbnail
             // /dd(password_hash("269435158522",PASSWORD_DEFAULT));
 
             if (Auth::attempt($u, true)) {
+
+                $_SESSION['credentials'] = $u;
+                return redirect()->intended(admin_url('/auth/login'));
+                die();
+
                 $errors['success'] = "Account created successfully!";
                 return redirect('dashboard')
                     ->withErrors($errors)
@@ -486,19 +491,26 @@ thumbnail
 
     public function login(Request  $request)
     {
+        Utils::session_start();
         if (Auth::guard()->check()) {
             return redirect("/");
         }
+        Utils::session_start();
 
 
         if (isset($_POST['phone_number'])) {
 
-            $u['email'] = $_POST['phone_number'];
+            $u['phone_number'] = $_POST['phone_number'];
             $u['password'] = $_POST['password'];
 
             // /dd(password_hash("269435158522",PASSWORD_DEFAULT));
 
             if (Auth::attempt($u, true)) {
+
+                $_SESSION['credentials'] = $u;
+                return redirect()->intended(admin_url('/auth/login'));
+                die();
+
                 $errors['success'] = "Account created successfully!";
                 return redirect('dashboard')
                     ->withErrors($errors)
@@ -519,6 +531,8 @@ thumbnail
         if (Auth::guard()->check()) {
             return redirect("/");
         }
+        Utils::session_start();
+
 
         if (
             isset($_POST['password']) &&
@@ -573,18 +587,172 @@ thumbnail
             $pro->save();
 
 
-            $credentials['email'] = $u['email'];
+            $credentials['phone_number'] = $u['email'];
             $credentials['password'] = $request->input("password");
+
 
             if (Auth::attempt($credentials, true)) {
                 $request->session()->regenerate();
-                return redirect()->intended('dashboard');
+                $_SESSION['credentials'] = $credentials;
+                return redirect()->intended(admin_url('/auth/login'));
             } else {
                 return redirect()->intended('login');
             }
         }
         return view('main.register');
     }
+
+    public function reset_password_phone()
+    {
+        return view('metro.auth.reset_password_phone');
+    }
+
+    public function reset_password_code()
+    {
+        Utils::session_start();
+        $user_id = 0;
+        if (isset($_SESSION['user_id'])) {
+            $user_id = ((int)($_SESSION['user_id']));
+        }
+        $u = Administrator::find($user_id);
+        if ($u == null) {
+            die("Session not found.");
+        }
+
+        return view('metro.auth.reset_password_code');
+    }
+
+    public function reset_password()
+    {
+        Utils::session_start();
+        $user_id = 0;
+        if (isset($_SESSION['user_id'])) {
+            $user_id = ((int)($_SESSION['user_id']));
+        }
+        $u = Administrator::find($user_id);
+        if ($u == null) {
+            die("Session not found.");
+        }
+
+        return view('metro.auth.reset_password');
+    }
+
+
+    public function reset_password_phone_post(Request $r)
+    {
+
+        $phone_number = Utils::prepare_phone_number($r->phone_number);
+        $phone_number_is_valid = Utils::phone_number_is_valid($phone_number);
+        if (!$phone_number_is_valid) {
+            $errors['phone_number'] = "Please enter a valid phone number.";
+            return Redirect::back()
+                ->withErrors($errors)
+                ->withInput();
+        }
+        $u =
+            User::where('phone_number',  $phone_number)
+            ->orWhere('username',  $phone_number)
+            ->orWhere('username',  $phone_number)
+            ->first();
+        if ($u == null) {
+            $errors['phone_number'] = "Account with that phone number was not found on our database.";
+            return Redirect::back()
+                ->withErrors($errors)
+                ->withInput();
+        }
+
+
+        Utils::session_start();
+        $_SESSION['user_id'] = $u->id;
+
+        $u->verification_code = rand(1000, 9999) . "";
+        $resp = Utils::send_sms([
+            'to' => $phone_number,
+            'message' => 'Your ICT4Farmers password reset code is ' . $u->verification_code
+        ]);
+
+        if (!$resp) {
+            $errors['phone_number'] = "We have failed to send a verification code to your number. 
+            Please contact us on +256 780 602550 and we help reset your password.";
+            return Redirect::back()
+                ->withErrors($errors)
+                ->withInput();
+        }
+
+        $u->save();
+        $errors['success'] = "We have just sent to you an SMS with a password reset code on your number {$phone_number}.";
+        return redirect(url('reset-password-code'))
+            ->withErrors($errors)
+            ->withInput();
+
+        die("done");
+    }
+
+    public function reset_password_code_post(Request $r)
+    {
+
+        Utils::session_start();
+        $user_id = 0;
+        if (isset($_SESSION['user_id'])) {
+            $user_id = ((int)($_SESSION['user_id']));
+        }
+        $u = Administrator::find($user_id);
+        if ($u == null) {
+            die("Session not found.");
+        }
+
+
+
+        $code = (trim($r->code));
+
+        if ($r->code != $u->verification_code) {
+            $errors['code'] = "Verirification code you provided did not math with the one we have sent to you.";
+            return Redirect::back()
+                ->withErrors($errors)
+                ->withInput();
+        }
+        $_SESSION['can_set_password'] = "yes";
+
+        return redirect(url('reset-password'));
+    }
+
+    public function reset_password_post(Request $r)
+    {
+
+        Utils::session_start();
+        $user_id = 0;
+        if (isset($_SESSION['user_id'])) {
+            $user_id = ((int)($_SESSION['user_id']));
+        }
+        $u = Administrator::find($user_id);
+        if ($u == null) {
+            die("Session not found.");
+        }
+
+        $password_1 = (string) (trim($r->password_1));
+        $password_2 = (string) (trim($r->password_2));
+
+        if (strlen($password_1) < 4) {
+            $errors['password_1'] = "Your password is too short.";
+            return Redirect::back()
+                ->withErrors($errors)
+                ->withInput();
+        }
+        if ($password_1 !=  $password_2) {
+            $errors['password_2'] = "Passwords did not match.";
+            return Redirect::back()
+                ->withErrors($errors)
+                ->withInput();
+        }
+
+        $u->password = password_hash($password_1, PASSWORD_DEFAULT);
+        $u->save();
+        $_SESSION['success_message'] = "Password reset successfull. Now login with your new password.";
+        return redirect(url('login'));
+    }
+
+
+
 
     public function about()
     {

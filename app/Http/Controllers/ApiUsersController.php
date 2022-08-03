@@ -58,7 +58,7 @@ class ApiUsersController
             ]);
         }
 
-       
+
 
         /* if (isset($request->status)) {
             $status = trim($request->status);
@@ -98,7 +98,7 @@ class ApiUsersController
         }
 
         $u->phone_number = $phone_number;
-        $u->phone_number_verified = 1;
+        $u->phone_number_verified = 0;
         $u->save();
 
         return Utils::response([
@@ -287,7 +287,7 @@ class ApiUsersController
         unset($u->last_seen);
         unset($u->status);
         unset($u->linkedin);
- 
+
         if (isset($_FILES)) {
             if ($_FILES != null) {
                 if (count($_FILES) > 0) {
@@ -356,7 +356,7 @@ class ApiUsersController
 
         $old_user_phone =
             User::where('phone_number',  $phone_number)
-            ->orWhere('phone_number',  $phone_number)
+            ->orWhere('username',  $phone_number)
             ->orWhere('username',  $phone_number)
             ->first();
 
