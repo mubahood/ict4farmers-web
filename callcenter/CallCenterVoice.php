@@ -67,7 +67,6 @@ if (!isset($current_call)){
     $new_call->save();
 }
 
-
 // Start English menu 1 ---------------------------------------------------------------------------
 if (($dtmf_digits == '1') && ($current_call->call_menu_selected == 1)) {
     $response = $at_xml->addChild('english_selected');
