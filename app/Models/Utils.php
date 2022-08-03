@@ -113,6 +113,8 @@ class Utils
         ################################################
         $activities = GardenActivity::where([
             'administrator_id' => $user_id
+        ])->orWhere([
+            'person_responsible' => $user_id
         ])->get();
 
         $item  = new WizardItem();
