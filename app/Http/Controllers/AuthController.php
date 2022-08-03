@@ -88,7 +88,8 @@ class AuthController extends Controller
     }
 
     public function login()
-    {
+    { 
+        session_start();
         if (isset($_GET['submit_to'])) {
             session_start();
             $_SESSION['submit_to'] = $_GET['submit_to'];
