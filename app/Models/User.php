@@ -97,6 +97,8 @@ class User extends Authenticatable
 
                 foreach ($users as $u) {
                     if ($u->id != $m->id) {
+                        $u->delete();
+                        continue;
                         $_resp = Utils::response([
                             'status' => 0,
                             'message' => "This phone number $m->phone_number is already used by another account",
