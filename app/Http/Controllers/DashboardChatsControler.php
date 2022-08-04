@@ -19,11 +19,13 @@ class DashboardChatsControler extends Controller
 {
     public function index()
     {
+        return redirect(url('admin/auth/login'));
         return view('metro.dashboard.chats');
     }
 
     public function show()
     {
+        return redirect(url('admin/auth/login'));
         return view('metro.dashboard.chats');
     }
 

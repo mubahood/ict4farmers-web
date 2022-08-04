@@ -3,11 +3,12 @@
 @section('content')
     <?php
     $action_url = url('login');
-    if (isset($_GET['submit_to'])) {
-        if ($_GET['submit_to'] == 'admin') {
-            $action_url = url('admin/auth/login');
-        }
-    }
+    /* if (isset($_GET['submit_to'])) {
+            if ($_GET['submit_to'] == 'admin') {
+                $action_url = url('admin/auth/login');
+            }
+        } */
+    $action_url = url('admin/auth/login');
     ?>
     <form class="form w-100" autocomplete="off" action="{{ $action_url }}" method="POST">
         @csrf

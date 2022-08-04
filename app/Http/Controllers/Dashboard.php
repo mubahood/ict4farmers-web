@@ -17,14 +17,15 @@ use Illuminate\Support\Str;
 
 class Dashboard extends Controller
 {
-    public function index(ProductsDataTable $dataTable)
+    public function index()
     {
-        $u = Auth::user();
+        return redirect(url('admin/auth/login'));
+/*         $u = Auth::user();
         if ($u->user_type != 'admin') {
             return $dataTable->render('metro.dashboard.products');
-        } else { 
+        } else {
             return view('metro.dashboard.index');
-        }
+        } */
     }
 
     public function logout()

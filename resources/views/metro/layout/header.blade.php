@@ -162,14 +162,14 @@ if (in_array($seg_1, $dashboard_segs)) {
                     <div class="d-flex align-items-center ms-1 ms-lg-3" id="kt_header_user_menu_toggle">
 
                         @if ($is_logged_in)
-                            <a href="{{ url('dashboard') }}" class="btn btn-primary btn-sm bg"
-                                style="margin-left: .8rem">My Farm Products</a>
+                            <a href="{{ url('admin') }}" class="btn btn-primary btn-sm bg"
+                                style="margin-left: .8rem">My Dashboad</a>
 
 
 
-                            <a href="{{ url('admin') }}"
+                            {{-- <a href="{{ url('admin') }}"
                                 class="ms-5 btn btn-outline btn-outline-primary btn-sm text-hover-white">Manage your
-                                farms</a>
+                                farms</a> --}}
 
 
                             {{-- <a href="{{ url('login?submit_to=admin') }}"
@@ -178,15 +178,13 @@ if (in_array($seg_1, $dashboard_segs)) {
                                 data-bs-dismiss-="click" title="My chats">
                                 <i class="bi bi-chat fs-4 text-primary"></i></a> --}}
                         @else
-                            <a href="{{ url('login') }}" class="btn btn-primary btn-sm bg"
-                                style="margin-left: .8rem">Sell your farm
-                                Products</a>
+                            <a href="{{ url('login') }}" class="btn btn-primary btn-sm bg" style="margin-left: .8rem">
+                                Log in here to access your dashboard</a>
 
 
-                            <a href="{{ url('login?submit_to=admin') }}"
+                            {{-- <a href="{{ url('login?submit_to=admin') }}"
                                 class="ms-5 btn btn-outline btn-outline-primary btn-sm text-hover-white">Manage
-                                your farms</a>
-
+                                your farms</a> --}}
 
                             <a href="javascript:;"
                                 class="btn btn-icon btn-sm btn-secondary p-0 border border-primary rounded-circle"

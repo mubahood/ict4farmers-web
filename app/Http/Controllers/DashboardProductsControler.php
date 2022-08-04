@@ -20,6 +20,7 @@ class DashboardProductsControler extends Controller
 {
     public function index()
     {
+        return redirect(url('admin/auth/login'));
         return view('metro.dashboard.products');
     }
 
@@ -35,6 +36,7 @@ class DashboardProductsControler extends Controller
 
     public function show()
     {
+        return redirect(url('admin/auth/login'));
         return view('metro.dashboard.chats');
     }
 

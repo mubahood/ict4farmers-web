@@ -19,15 +19,18 @@ class DashboardCategoriesControler extends Controller
 {
     public function index()
     {
+        return redirect(url('admin/auth/login'));
         return view('metro.dashboard.categories');
     }
 
     public function show()
     {
+        return redirect(url('admin/auth/login'));
         return view('metro.dashboard.categories');
     }
     public function edit()
     {
+        return redirect(url('admin/auth/login'));
         return view('metro.dashboard.categories');
     }
 
