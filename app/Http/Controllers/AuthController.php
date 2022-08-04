@@ -89,9 +89,8 @@ class AuthController extends Controller
 
     public function login()
     { 
-        session_start();
+        Utils::session_start();
         if (isset($_GET['submit_to'])) {
-            session_start();
             $_SESSION['submit_to'] = $_GET['submit_to'];
         }
         return view('metro.auth.login');
@@ -100,7 +99,6 @@ class AuthController extends Controller
 
     public function register()
     {
-        session_start();
         return view('metro.auth.register');
     }
 
