@@ -1,12 +1,8 @@
 <?php
 
-use Illuminate\Http\Request;
 use AfricasTalking\SDK\AfricasTalking;
 use App\Models\Call;
 use App\Models\Configuration;
-use Exception;
-use phpDocumentor\Reflection\PseudoTypes\True_;
-use PhpOption\None;
 
 /**
  * Remember to set the env['AT_API_KEY'] value in your .env file of the project
