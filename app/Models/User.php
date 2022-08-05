@@ -109,8 +109,8 @@ class User extends Authenticatable
                 }
             }
 
-            if ($m->user_type != null) {
-                if (strlen($m->user_type) > 3) {
+            if ($m->user_role != null) {
+                if (strlen($m->user_role) > 3) {
                     $m->profile_is_complete = 1;
                 }
             }

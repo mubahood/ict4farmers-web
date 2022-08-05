@@ -170,7 +170,9 @@ class AuthController extends Controller
     {
         $u = Auth::user();
         if ($u->profile_is_complete == 1) {
+            die("GOOD");
             if (!Utils::is_wizard_done($u->id)) {
+
                 header("Location: " . admin_url(''));
                 die();
             }
