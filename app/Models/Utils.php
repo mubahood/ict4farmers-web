@@ -21,6 +21,27 @@ use function PHPUnit\Framework\fileExists;
 class Utils
 {
 
+    public static function is_wizard_done($user_id)
+    {
+        $u = User::find($user_id);
+        if ($u == null) {
+            return false;
+        }
+
+        if ($u->phone_number_verified != 1) {
+            $u->phone_number_verified =  1;
+            $u->save();
+        }
+
+        $done = true;
+
+        foreach (Utils::get_wizard_actions($user_id) as $v) {
+            if (($v->is_done != 1) && $v->mandatory == 1) {
+                $done = false;
+            }
+        }
+        return $done;
+    }
     public static function get_wizard_actions($user_id)
     {
         $u = Administrator::find($user_id);
@@ -29,7 +50,7 @@ class Utils
         }
 
         if ($u->phone_number_verified != 1) {
-            return [];
+            //return [];
         }
         $items = [];
 
@@ -44,11 +65,13 @@ class Utils
             $item->sub_title = 'Your profile is incomplete';
         }
         $item->id = 1;
+        $item->mandatory = 1;
         $item->title = 'Complete your profile';
-        $item->action_text = 'COMPLETE PROFILE';
+        $item->action_text = 'COMPLETE MY PROFILE';
         $item->screen = 'AccountEdit';
-        $item->link = admin_url('farms/create');
-        $item->description = 'Completion of your profile will help us analyze data.';
+        $item->link = admin_url('/auth/setting');
+        $item->description = 'After you have registered successfully created your account, it’s important to complete your profile from the “my profile” section so the system can understand what you really need to use it for and customize itself for you. From here you are able to profile your personal information or rest them.
+        <br><br>Press the <b>"COMPLETE MY PROFILE"</b> button below to proceed.';
         $items[] = $item;
         ################################################
 
@@ -66,10 +89,11 @@ class Utils
             $item->is_done = 1;
         }
         $item->id = 2;
+        $item->mandatory = 1;
         $item->title = 'Farm creation';
         $item->action_text = "CREATE FARM";
         $item->screen = 'FarmCreateScreen';
-        $item->link = admin_url('farms/create'); 
+        $item->link = admin_url('farms/create');
         $item->description = 'In this context, a farm an area of land and its buildings, used for growing crops and rearing animals.';
         $items[] = $item;
         ################################################
@@ -87,6 +111,7 @@ class Utils
             $item->is_done = 1;
         }
         $item->id = 3;
+        $item->mandatory = 1;
         $item->title = 'Enterprise creation';
         $item->action_text = "CREATE ENTERPRISE";
         $item->screen = 'GardenCreateScreen';
@@ -109,6 +134,7 @@ class Utils
             $item->is_done = 1;
         }
         $item->id = 4;
+        $item->mandatory = 1;
         $item->title = 'Worker creation';
         $item->action_text = "CREATE WORKER";
         $item->link = admin_url('my-workers/create');
@@ -133,6 +159,7 @@ class Utils
             $item->is_done = 1;
         }
         $item->id = 5;
+        $item->mandatory = 1;
         $item->title = 'Activity scheduling';
         $item->action_text = "SCHEDULE ACTIVITY";
         $item->screen = 'GardenActivityCreateScreen';
@@ -155,6 +182,7 @@ class Utils
             $item->sub_title = 'You posted ' . count($products) . " products.";
             $item->is_done = 1;
         }
+        $item->mandatory = 1;
         $item->id = 6;
         $item->title = 'Products & Services';
         $item->action_text = "POST PRODUCT";
@@ -172,6 +200,7 @@ class Utils
         $item  = new WizardItem();
         $item->is_done = 0;
         $item->title = 'Docs';
+        $item->mandatory = 1;
         $item->sub_title = "Learn how to to use ICT4Farmers system.";
         $item->id = 7;
         $item->action_text = "LEARN";

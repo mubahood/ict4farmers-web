@@ -4,6 +4,7 @@ namespace App\Admin\Controllers;
 
 use App\Models\Farm;
 use App\Models\Location;
+use App\Models\Utils;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Facades\Admin;
 use Encore\Admin\Form;
@@ -27,20 +28,12 @@ class FarmController extends AdminController
      */
     protected function grid()
     {
+        if (!Utils::is_wizard_done(Auth::user()->id)) {
+            return redirect(admin_url("/"));
+        }
         $grid = new Grid(new Farm());
 
-        if (
-            Admin::user()->isRole('administrator') ||
-            Admin::user()->isRole('admin')
-        ) {
-            /*$grid->actions(function ($actions) {
-                $actions->disableEdit();
-            });*/
-        } else {
-            $grid->model()->where('administrator_id', Admin::user()->id);
-            $grid->disableRowSelector();
-        }
-
+        $grid->model()->where('administrator_id', Admin::user()->id);
 
 
         //$grid->column('id', __('Id'));

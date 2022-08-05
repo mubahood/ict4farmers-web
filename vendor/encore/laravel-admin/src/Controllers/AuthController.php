@@ -2,13 +2,18 @@
 
 namespace Encore\Admin\Controllers;
 
+use App\Models\Category;
+use App\Models\FarmersGroup;
 use App\Models\Utils;
 use Encore\Admin\Auth\Database\Administrator;
 use Encore\Admin\Facades\Admin;
 use Encore\Admin\Form;
+use Encore\Admin\Grid\Tools\Header;
 use Encore\Admin\Layout\Content;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Routing\Route;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Redirect;
@@ -53,7 +58,7 @@ class AuthController extends Controller
 
         $u = Administrator::where([
             'username' => $phone_number
-        ])->orWhere([ 
+        ])->orWhere([
             'email' => $phone_number
         ])->orWhere([
             'phone_number' => $phone_number
@@ -142,7 +147,7 @@ class AuthController extends Controller
         );
 
         return $content
-            ->title(trans('admin.user_setting'))
+            ->title('My profile')
             ->body($form->edit(Admin::user()->id));
     }
 
@@ -163,34 +168,141 @@ class AuthController extends Controller
      */
     protected function settingForm()
     {
+        $u = Auth::user();
+        if ($u->profile_is_complete == 1) {
+            if (!Utils::is_wizard_done($u->id)) {
+                header("Location: " . admin_url(''));
+                die();
+            }
+        }
+
         $class = config('admin.database.users_model');
 
         $form = new Form(new $class());
 
-        $form->display('username', trans('admin.username'));
-        $form->text('name', trans('admin.name'))->rules('required');
-        $form->image('avatar', trans('admin.avatar'));
-        $form->password('password', trans('admin.password'))->rules('confirmed|required');
-        $form->password('password_confirmation', trans('admin.password_confirmation'))->rules('required')
-            ->default(function ($form) {
-                return $form->model()->password;
+        $form->disableReset();
+        $form->disableViewCheck();
+        $form->disableEditingCheck();
+        $form->disableCreatingCheck();
+
+
+        $form->tab('BASIC INFO', function (Form $form) {
+            $u = Admin::user();
+
+            $form->hidden('profile_is_complete')->default('1')
+                ->attribute('value', '1')
+                ->value('1');
+            $form->text('first_name')->rules('required');
+            $form->text('last_name')->rules('required');
+            $form->radio('gender', 'Sex')->options(['Male' => 'Male', 'Female' => 'Female'])->rules('required');
+            $form->text('date_of_birth', 'Age')->rules('required');
+            $form->text('phone_number_2', 'Phone number 2');
+            $form->text('email', 'Email address');
+            $form->text('address', 'Premises address');
+        });
+
+
+
+        $form->tab('USER ROLE', function (Form $form) {
+            $u = Admin::user();
+
+            $form->text('name', 'Your enterprise/business name')
+                ->rules('required');
+            $form->select(
+                'production_scale',
+                'Production scale'
+            )->options([
+                'Subsistence production' => 'Subsistence production',
+                'Large Commercial Production' => 'Large Commercial Production',
+                'Small Commercial Production' => 'Small Commercial Production'
+            ])->rules('required');
+
+            $form->select('category_id', 'Sector of specialization')->options([
+                'Crop farming' => 'Crop farming',
+                'Livestock farming' => 'Livestock farming',
+                'Fisheries' => 'Fisheries',
+            ])->rules('required');
+
+            $form->radio('user_role', 'Your role')->options([
+                'Farmer' => 'Farmer',
+                'Service provider' => 'Service provider',
+            ])
+                ->when('Farmer', function ($f) {
+
+
+                    $f->select('group_id', 'Select your Farm Association')
+                        ->options(FarmersGroup::where([])->get()->pluck('name', 'id'))
+                        ->rules('required');
+                    $f->text('number_of_dependants', 'Number of dependants')->rules('required');
+
+                    return $f;
+                })
+                ->when('Farmer', function ($f) {
+
+                    $f->text('services', 'Services that you offer')->rules('required');
+
+                    return $f;
+                })->rules('required');
+
+            $form->select('access_to_credit', 'Do you have access to credit?')->options([
+                'No any access' => 'No any access',
+                'SACCO' => 'SACCO',
+                'Bank' => 'Bank',
+                'VSLA' => 'Village Savings and Loan Associate (VSLA)',
+                'Family' => 'Family',
+            ])->rules('required');
+
+
+            $form->textarea('about', 'About your farm/business');
+            $form->image('avatar', 'Business Logo or Account Image')->rules('required');
+        });
+
+
+        $form->tab('SYSTEM ACCOUNT', function (Form $form) {
+            $u = Admin::user();
+            $form->display('username', trans('admin.username'));
+            $form->display('phone_number', trans('Phone number'));
+
+
+
+
+            $form->radio('change_password', 'Change password')
+                ->options([
+                    'change_password' => 'Change password',
+                    'change_password_1' => 'Don\'t change password',
+                ])
+                ->when('change_password', function ($f) {
+
+                    $f->password('password', trans('admin.password'))->rules('confirmed|required');
+                    $f->password('password_confirmation', trans('admin.password_confirmation'))->rules('required')
+                        ->default(function ($fo) {
+                            return $fo->model()->password;
+                        });
+                    $f->setAction(admin_url('auth/setting'));
+                    $f->ignore(['password_confirmation']);
+
+                    $f->saving(function (Form $form) {
+                        if ($form->password && $form->model()->password != $form->password) {
+                            $form->password = Hash::make($form->password);
+                        }
+                    });
+
+                    return $f;
+                });
+
+            $form->ignore(['change_password']);
+
+
+            $form->saved(function () {
+                admin_toastr(trans('admin.update_succeeded'));
+                return redirect(admin_url('auth/setting'));
             });
-
-        $form->setAction(admin_url('auth/setting'));
-
-        $form->ignore(['password_confirmation']);
-
-        $form->saving(function (Form $form) {
-            if ($form->password && $form->model()->password != $form->password) {
-                $form->password = Hash::make($form->password);
-            }
         });
 
-        $form->saved(function () {
-            admin_toastr(trans('admin.update_succeeded'));
 
-            return redirect(admin_url('auth/setting'));
-        });
+
+
+
 
         return $form;
     }
