@@ -13,10 +13,13 @@ class CreateDistrictsTable extends Migration
      */
     public function up()
     {
+        Schema::drop('districts');
+        
         Schema::create('districts', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->foreign('region')->references('id')->on('regions')->onDelete('cascade');
+            $table->integer('region');
+            // $table->foreign('region')->references('id')->on('regions')->onDelete('cascade');
             $table->timestamps();
         });
     }

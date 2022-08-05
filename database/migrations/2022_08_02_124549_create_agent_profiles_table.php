@@ -13,12 +13,17 @@ class CreateAgentProfilesTable extends Migration
      */
     public function up()
     {
+        Schema::drop("agent_profiles");
+
         Schema::create('agent_profiles', function (Blueprint $table) {
             $table->id();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->integer('user_id');
+            // $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->smallInteger('contact');
-            $table->foreign('region_id')->references('id')->on('regions')->onDelete('cascade');
-            $table->foreign('district_id')->references('id')->on('districts')->onDelete('cascade');
+            $table->integer('region_id');
+            // $table->foreign('region_id')->references('id')->on('regions')->onDelete('cascade');
+            $table->integer('district_id');
+            // $table->foreign('district_id')->references('id')->on('districts')->onDelete('cascade');
             $table->string('specific_role');
             $table->timestamps();
         });

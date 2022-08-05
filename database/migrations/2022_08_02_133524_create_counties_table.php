@@ -13,10 +13,13 @@ class CreateCountiesTable extends Migration
      */
     public function up()
     {
+        // Schema::drop('counties');
+
         Schema::create('counties', function (Blueprint $table) {
             $table->id();
             $table->string('name', 100);
-            $table->foreign('district_id', 200)->references('id')->on('regions')->onDelete('cascade');
+            $table->integer('district_id');
+            // $table->foreign('district_id', 200)->references('id')->on('regions')->onDelete('cascade');
             $table->timestamps();
         });
     }
