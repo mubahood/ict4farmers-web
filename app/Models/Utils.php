@@ -90,11 +90,14 @@ class Utils
         }
         $item->id = 2;
         $item->mandatory = 1;
-        $item->title = 'Farm creation';
+        $item->title = 'Register your first farm';
         $item->action_text = "CREATE FARM";
         $item->screen = 'FarmCreateScreen';
         $item->link = admin_url('farms/create');
-        $item->description = 'In this context, a farm an area of land and its buildings, used for growing crops and rearing animals.';
+        $item->description = 'In manage your farms using this system,
+        you need to have add your farms first. Farm that you add into the system farm will give you access to enterprises. 
+        A farm will have many enterprises or call them projects for example your farm can have poultry, fishing and cattle raring.
+        <br><br>When registering your farm its highly recommend to do so on ground in order for the application to pick your graphical location, this will help the application taller services that are near you for convince. ';
         $items[] = $item;
         ################################################
 
@@ -112,11 +115,14 @@ class Utils
         }
         $item->id = 3;
         $item->mandatory = 1;
-        $item->title = 'Enterprise creation';
+        $item->title = 'Create your first enterprise';
         $item->action_text = "CREATE ENTERPRISE";
         $item->screen = 'GardenCreateScreen';
         $item->link = admin_url('gardens/create');
-        $item->description = 'An enterpirse is a piece of a project on your farm. It can be a garden, poultry project or any other.';
+        $item->description = 'An enterprise is the farming venture/project that you are carrying on your farm. 
+        For example, your poultry project, your garden, your cattle herd, among others. 
+        <br><br>Press the <b>CREATE ENTERPRISE BUTTON</b>.
+        To go ahead and add your first enterprise!';
         $items[] = $item;
         ################################################
 
@@ -232,7 +238,7 @@ class Utils
 
         $roles = DB::table('admin_role_users')->where([
             'role_id' => 2,
-            'user_id' => $u->id
+            'user_id' => $u->id 
         ])->get();
 
         if (count($roles) < 1) {

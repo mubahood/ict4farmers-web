@@ -6,15 +6,37 @@ $steps = array_reverse($steps);
 $step = $steps[0];
 $step_num = 1;
 $step_text = 1;
-$step_tot = count($steps);
+$step_tot = 1;
 $step_percentage = 0;
+$faound = false;
 foreach ($steps as $s) {
-    if ($s->is_done != 1) {
+    if ($s->id > 3) {
+        continue;
+    }
+    $step_tot++;
+
+    if (!$faound) {
+        $step_num++;
+    }
+
+    if ($s->is_done != 1 && !$faound) {
+        $faound = true;
         $step = $s;
-        $step_num = $s->id;
-        $step_percentage = (int) (($step_num / $step_tot) * 100);
     }
 }
+
+if (!$faound) {
+    $step->title = 'Congs! You have complted setting up your system!';
+    $step->description = 'WHAT NEXT? If it is your first time here, don\'t worry you can go ahead and tour the system. 
+    It is simple and straight forward to use.<br><br>
+    We have also prepared explainer videos that will train you STEP by STEP without skipping any STEP
+     to make you get the best of this software. Find <b><a href="javascript:;">expliner videos by clicking on this link</a></b> or 
+     close this dialog box by clicking the finish button and navigate to explainer videos on your left hand side tab. 
+     ';
+    $step->action_text = 'FINISH';
+    $step->link = admin_url('?completed_wizard=yes');
+}
+$step_percentage = (int) (($step_num / $step_tot) * 100);
 
 if ($step_percentage < 25) {
     $step_text = $step_percentage . '%';
@@ -47,7 +69,7 @@ if ($step_percentage < 25) {
                 <p>{!! $step->description !!}</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">EXIT</button>
+                {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">EXIT</button> --}}
                 <a type="button" id="next-button" class="btn btn-primary"
                     href="{{ $step->link }}">{{ $step->action_text }}</a>
             </div>

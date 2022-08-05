@@ -6,6 +6,7 @@ use App\Models\CropCategory;
 use App\Models\Farm;
 use App\Models\Garden;
 use App\Models\Location;
+use App\Models\Utils;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Facades\Admin;
 use Encore\Admin\Form;
@@ -29,6 +30,10 @@ class GardenController extends AdminController
      */
     protected function grid()
     {
+        if (!Utils::is_wizard_done(Auth::user()->id)) {
+            return redirect(admin_url("/"));
+        }
+
         $grid = new Grid(new Garden());
         if (
             Admin::user()->isRole('administrator') ||
@@ -43,14 +48,14 @@ class GardenController extends AdminController
         }
 
         $grid->column('created_at', __('Created'))->sortable();
-        
+
         $grid->column('name', __('Enterpeise Name'));
 
         $grid->column('administrator_id', __('Owner'))->sortable();
-        $grid->column('crop_category_id', __('Sector'))->display(function(){
-            return $this->sector->get_name(); 
+        $grid->column('crop_category_id', __('Sector'))->display(function () {
+            return $this->sector->get_name();
         })->sortable();
-         
+
         $grid->column('plant_date', __('Started'));
 
         $grid->column('location_id', __('Subcounty'))->display(function () {
@@ -71,6 +76,8 @@ class GardenController extends AdminController
      */
     protected function detail($id)
     {
+
+
         $show = new Show(Garden::findOrFail($id));
 
         $show->field('id', __('Id'));
@@ -99,6 +106,11 @@ class GardenController extends AdminController
     {
         $form = new Form(new Garden());
 
+        $form->disableReset();
+        $form->disableViewCheck();
+        $form->disableEditingCheck();
+        $form->disableCreatingCheck();
+
         $u = Auth::user();
         $form->hidden('administrator_id', __('Administrator id'))->default($u->id)->value($u->id);
 
@@ -106,7 +118,7 @@ class GardenController extends AdminController
         $form->select('farm_id', __('Farm'))
             ->help('Select a farm where this enterprise is')
             ->options(
-                Farm::where('administrator_id',$u->id)->get()->pluck('name','id')
+                Farm::where('administrator_id', $u->id)->get()->pluck('name', 'id')
             )
             ->rules('required');
 
@@ -118,7 +130,9 @@ class GardenController extends AdminController
             ->options(Location::get_subcounties())
             ->rules('required');
 
-        $form->text('name', __('Enterprise Name'))->rules('required');
+        $form->text('name', __('Enterprise Name'))
+            ->help("E.g, your poultry project, your garden, your cattle herd, etc.")
+            ->rules('required');
         $form->image('image', __('Image'));
 
         $form->date('plant_date', __('Start date'))
@@ -126,7 +140,8 @@ class GardenController extends AdminController
         $form->text('latitude', __('GPS Latitude'))->default("0.00");
         $form->text('longitude', __('GPS Longitude'))->default("0.00");
 
-        $form->textarea('details', __('Details'));
+        $form->textarea('details', __('Details'))
+            ->help("Write something about this enterprise.");
 
         return $form;
     }

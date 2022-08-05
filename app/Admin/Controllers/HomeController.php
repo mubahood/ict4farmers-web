@@ -18,139 +18,58 @@ use Encore\Admin\Layout\Row;
 use Encore\Admin\Widgets\Box;
 use Illuminate\Support\Str;
 use Excel;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
     public function index(Content $content)
     {
-        /* 
-        ini_set('memory_limit', '-1'); // enabled the full memory available.        
-        ini_set('max_execution_time', '-1');
 
-        $file_path = "farmers.xlsx";
-        if (!file_exists($file_path)) {
-            die("File DNE");
+        $u = Administrator::find(Auth::user()->id);
+        if ($u == null) {
+            die("Admin not found.");
         }
+        if (isset($_GET['completed_wizard'])) {
+            if ($_GET['completed_wizard'] == 'yes') {
 
-        $array = Excel::toArray([], $file_path);
-        $i = 0;
-        $j = 0;
-        $x = 0;
-        foreach ($array[0] as $key => $v) {
-            $j++;
-            $i++;
+                if ($u != null) {
+                    if ($u->completed_wizard != 1) {
+                        $u->completed_wizard = 1;
+                        $u->save();
+                        return redirect(admin_url("/"));
+                    } 
+                }
+            }
+        }
+  
+        if ($u->completed_wizard = 1) {
             if (
-                $i <= 1 ||
-                (count($v) < 6)
+                Admin::user()->isRole('farmer') ||
+                Admin::user()->isRole('basic-user')
             ) {
-                continue;
+                 
+                return $content
+                ->view("admin.farmer.dashboard");
+
+            } else if (
+                Admin::user()->isRole('agent')
+            ) {
+                die("agent");
+            } else if (
+                Admin::user()->isRole('admin') ||
+                Admin::user()->isRole('administrator')
+            ) {
+                die("administrator");
             }
-
-
-            $u = new Administrator();
-            $u->username = trim($v[0]);
-
-            $u->name = $v[1];
-            $u->last_name = $v[2];
-            $u->gender = $v[3];
-            $u->phone_number = $v[4];
-            $u->phone_number_2 = $v[5];
-            $u->region = $v[6];
-            $u->district_text = trim($v[7]);
-            $u->district = trim($v[7]);
-            $u->county_text = $v[8];
-            $u->sub_county_text = $v[9];
-            $u->address = $v[10];
-
-            $dis = Location::where([
-                'name' => $u->district_text
-            ])->first();
-
-            if ($dis == null) {
-                $dis = Location::find(1);
-            }
-            if ($dis == null) {
-                die("District not found");
-            }
-            $sub_county = Location::where([
-                'name' => $u->sub_county_text
-            ])->first();
-
-            if ($sub_county == null) {
-                $sub_county = Location::find(1);
-            }
-            if ($sub_county == null) {
-                die("District not found");
-            }
-
-            $u->district = $dis->id;
-            $u->sub_county = $sub_county->id;
-
-            $u->education = $v[11];
-            $u->marital_status = $v[12];
-            $u->number_of_dependants = ((int)($v[13]));
-            $u->access_to_credit = $v[15];
-            $u->experience = ((int)($v[16]));
-            $u->sector = $v[17];
-            $u->production_scale = $v[18];
-            $u->group_text = 1;
-            $u->group_id = 1;
-            $u->profile_is_complete = 0;
-            $u->company_name = $u->name;
-            $u->email = trim($u->phone_number);
-            if (strlen($u->email) < 2) {
-                $u->email = $u->name;
-            }
-            $u->username = $u->email;
-            $u->avatar = 'no_image.jpg';
-            $u->user_role = 'farmer';
-            $u->date_of_birth = rand(25, 60);
-            $u->password = password_hash('4321', PASSWORD_DEFAULT);
-
-
-            $old_user = Administrator::where([
-                'username' => $u->username
-            ])->first();
-
-            if ($old_user != null) {
-                continue;
-            }
-
-            $u->save();
-            echo $j . ". <b>USERNMAE:</b> $u->name - $u->email <hr>   ";
-            $x++; 
-           
-            continue;
-            echo $j . ". 
-            <b>USERNMAE:</b> $u->username <br>            
-            <b>NAME:</b> $u->name <br>            
-            <b>LAST NAME:</b> $u->last_name <br>            
-            <b>SEX:</b> $u->gender <br>
-            <b>Phone number:</b> $u->phone_number <br>
-            <b>Phone number  2:</b> $u->phone_number_2 <br>
-            <b>Region:</b> $u->region <br>
-            <b>District</b> $u->district_text <br>
-            <b>County</b> $u->county_text <br>
-            <b>Sub County</b> $sub_county->name <br>
-            <b>Home address</b> $u->address <br>
-            <b>Level of education</b> $u->education <br>
-            <b>Marital status</b> $u->marital_status <br>
-            <b>Number of dependents</b> $u->number_of_dependants <br>
-            <b>access_to_credit</b> $u->access_to_credit <br>
-            <b>Farming Experience in years</b> $u->experience <br>
-            <b>sector</b> $u->sector <br>
-            <b>Production scale</b> $u->production_scale <br>
-            <b>Farmers organization</b> $u->group_text <br>
-
-            <hr>";
+        } else {
+            return $content
+                ->view("admin.wizard.main");
         }
+    }
+}
 
 
- */
-
-
-        //die("romina");
-
+/*
 
         return $content
             ->title('Dashboard')
@@ -374,22 +293,4 @@ class HomeController extends Controller
                 });
             });
 
-        /*         return $content
-            ->title('Dashboard')
-            ->description('Description...')
-            ->row(Dashboard::title())
-            ->row(function (Row $row) {
-                $row->column(6, function (Column $column) {
-                    $column->append(Dashboard::environment());
-                });
-
-                $row->column(3, function (Column $column) {
-                    $column->append(Dashboard::extensions());
-                });
-
-                $row->column(3, function (Column $column) {
-                    $column->append(Dashboard::dependencies());
-                });
-            }); */
-    }
-}
+*/

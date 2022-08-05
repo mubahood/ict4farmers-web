@@ -93,18 +93,18 @@ class FarmController extends AdminController
         if ($form->isCreating()) {
             $form->hidden('administrator_id', __('Administrator id'))->value($user->id);
         }
+        $form->text('name', __('Farm Name'))->rules('required');
 
-        $form->select('location_id', __('Sub-county'))
+        $form->select('location_id', __('Farm Location (Sub-county)'))
             ->options(Location::get_subcounties())
             ->rules('required');
 
-        $form->text('name', __('Farm Name'))->rules('required');
 
 
         //        $form->latlong('latitude', 'longitude', 'Position')->default(['lat' => 90, 'lng' => 90]);
-        $form->text('latitude', __('Latitude'))->rules('required')->default('0.00');
-        $form->text('longitude', __('Longitude'))->rules('required')->default('0.00');
-        $form->textarea('details', __('Details'))->help("Write something about this farm");
+        $form->text('latitude', __('GPS Latitude'))->rules('required')->default('0.00');
+        $form->text('longitude', __('GPS Longitude'))->rules('required')->default('0.00');
+        $form->textarea('details', __('Farm Details'))->help("Write something about this farm");
 
         return $form;
     }

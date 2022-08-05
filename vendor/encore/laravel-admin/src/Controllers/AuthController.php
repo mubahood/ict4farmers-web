@@ -182,7 +182,7 @@ class AuthController extends Controller
                 } else {
                     die("Account not found");
                 }
-            }
+            } 
         }
         $x = User::find($u->id);
 
