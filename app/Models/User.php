@@ -109,11 +109,12 @@ class User extends Authenticatable
                 }
             }
 
-            if ($m->user_role != null) {
-                if (strlen($m->user_role) > 3) {
+            if ($m->first_name != null) {
+                if (strlen($m->first_name) > 3) {
                     $m->profile_is_complete = 1;
                 }
             }
+
 
             if ($m != null) {
                 if ($m->location_id != null) {

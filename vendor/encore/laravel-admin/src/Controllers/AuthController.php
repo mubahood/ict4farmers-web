@@ -4,6 +4,7 @@ namespace Encore\Admin\Controllers;
 
 use App\Models\Category;
 use App\Models\FarmersGroup;
+use App\Models\User;
 use App\Models\Utils;
 use Encore\Admin\Auth\Database\Administrator;
 use Encore\Admin\Facades\Admin;
@@ -168,10 +169,26 @@ class AuthController extends Controller
      */
     protected function settingForm()
     {
+
         $u = Auth::user();
-        if ($u->profile_is_complete == 1) {
-            die("GOOD");
-            if (!Utils::is_wizard_done($u->id)) {
+        $x = User::find($u->id);
+
+        $group_id = ((int)($x->group_id));
+        if ($x->first_name != null) {
+            if (strlen($x->first_name) > 3) {
+                if ($x != null) {
+                    $x->profile_is_complete =  1;
+                    $x->save();
+                } else {
+                    die("Account not found");
+                }
+            }
+        }
+        $x = User::find($u->id);
+
+
+        if ($x->profile_is_complete == '1') {
+            if (!Utils::is_wizard_done($x->id)) {
 
                 header("Location: " . admin_url(''));
                 die();
@@ -190,10 +207,6 @@ class AuthController extends Controller
 
         $form->tab('BASIC INFO', function (Form $form) {
             $u = Admin::user();
-
-            $form->hidden('profile_is_complete')->default('1')
-                ->attribute('value', '1')
-                ->value('1');
             $form->text('first_name')->rules('required');
             $form->text('last_name')->rules('required');
             $form->radio('gender', 'Sex')->options(['Male' => 'Male', 'Female' => 'Female'])->rules('required');
