@@ -27,8 +27,8 @@ class Utils
         if ($u == null) {
             return [];
         }
-        
-        if($u->phone_number_verified != 1){
+
+        if ($u->phone_number_verified != 1) {
             return [];
         }
         $items = [];
@@ -47,7 +47,7 @@ class Utils
         $item->title = 'Complete your profile';
         $item->action_text = 'COMPLETE PROFILE';
         $item->screen = 'AccountEdit';
-
+        $item->link = admin_url('farms/create');
         $item->description = 'Completion of your profile will help us analyze data.';
         $items[] = $item;
         ################################################
@@ -69,6 +69,7 @@ class Utils
         $item->title = 'Farm creation';
         $item->action_text = "CREATE FARM";
         $item->screen = 'FarmCreateScreen';
+        $item->link = admin_url('farms/create'); 
         $item->description = 'In this context, a farm an area of land and its buildings, used for growing crops and rearing animals.';
         $items[] = $item;
         ################################################
@@ -89,6 +90,7 @@ class Utils
         $item->title = 'Enterprise creation';
         $item->action_text = "CREATE ENTERPRISE";
         $item->screen = 'GardenCreateScreen';
+        $item->link = admin_url('gardens/create');
         $item->description = 'An enterpirse is a piece of a project on your farm. It can be a garden, poultry project or any other.';
         $items[] = $item;
         ################################################
@@ -109,6 +111,7 @@ class Utils
         $item->id = 4;
         $item->title = 'Worker creation';
         $item->action_text = "CREATE WORKER";
+        $item->link = admin_url('my-workers/create');
         $item->screen = 'WorkerCreateScreen';
         $item->description = 'Worker is a person who does a specified type of work at your enterprises.';
         $items[] = $item;
@@ -133,6 +136,7 @@ class Utils
         $item->title = 'Activity scheduling';
         $item->action_text = "SCHEDULE ACTIVITY";
         $item->screen = 'GardenActivityCreateScreen';
+        $item->link = admin_url('garden-activities/create');
         $item->description = 'Use this activity scheduling to schedule all your enterprise activities in one place.';
         $items[] = $item;
         ################################################
@@ -299,8 +303,8 @@ class Utils
 
 
 
-    public static function login_user($data){
-        
+    public static function login_user($data)
+    {
     }
     public static function get_locations()
     {

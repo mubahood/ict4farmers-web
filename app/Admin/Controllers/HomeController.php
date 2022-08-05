@@ -155,6 +155,7 @@ class HomeController extends Controller
         return $content
             ->title('Dashboard')
             ->description('Description...')
+            ->view("admin.wizard.main")
             ->row(function (Row $row) {
 
 

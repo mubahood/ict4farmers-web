@@ -3,7 +3,7 @@
         'name' => 'laravel/laravel',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'f4167137fa1bdd9a10e345bc5520542fc746325f',
+        'reference' => 'b70753f877809d48e3ce9ebd393786360fefefaf',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -529,6 +529,15 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
+        'laravel-admin-ext/latlong' => array(
+            'pretty_version' => 'v1.2.4',
+            'version' => '1.2.4.0',
+            'reference' => '5d9b6c0b7af07cd51542c62d902f2402be98b3f8',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../laravel-admin-ext/latlong',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'laravel/framework' => array(
             'pretty_version' => 'v8.83.23',
             'version' => '8.83.23.0',
@@ -541,7 +550,7 @@
         'laravel/laravel' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'f4167137fa1bdd9a10e345bc5520542fc746325f',
+            'reference' => 'b70753f877809d48e3ce9ebd393786360fefefaf',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
