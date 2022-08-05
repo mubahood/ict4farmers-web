@@ -11,7 +11,7 @@ return [
     | login page.
     |
     */
-    'name' => 'Jotrace',
+    'name' => 'ICT4farmers',
 
     /*
     |--------------------------------------------------------------------------
@@ -22,7 +22,7 @@ return [
     | `img` tag, eg '<img src="http://logo-url" alt="Admin logo">'.
     |
     */
-    'logo' => '<b>Jotrace</b>',
+    'logo' => '<b>ICT4farmers</b>',
 
     /*
     |--------------------------------------------------------------------------
@@ -34,7 +34,7 @@ return [
     | '<img src="http://logo-url" alt="Admin logo">'.
     |
     */
-    'logo-mini' => '<b>Jotrace</b>',
+    'logo-mini' => '<b>ICT4farmers</b>',
 
     /*
     |--------------------------------------------------------------------------
@@ -95,7 +95,7 @@ return [
     | If your page is going to be accessed via https, set it to `true`.
     |
     */
-    'https' => env('ADMIN_HTTPS', FALSE),
+    'https' => env('ADMIN_HTTPS', TRUE),
 
     /*
     |--------------------------------------------------------------------------
@@ -132,7 +132,7 @@ return [
         'remember' => true,
 
         // Redirect to the specified URI when user is not authorized.
-        // 'redirect_to' => url('login?submit_to=admin'),
+        'redirect_to' => url('login?submit_to=admin'),
 
         // The URIs that should be excluded from authorization.
         'excepts' => [
@@ -150,7 +150,7 @@ return [
     | disk and upload path.
     |
     */
-    'upload' => [
+   'upload' => [
 
         // Disk in `config/filesystem.php`.
         'disk' => 'admin',
@@ -361,7 +361,7 @@ return [
     | Enable/Disable sidebar menu search
     |--------------------------------------------------------------------------
     */
-    'enable_menu_search' => true,
+    'enable_menu_search' => false,
 
     /*
     |--------------------------------------------------------------------------
