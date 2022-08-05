@@ -18,7 +18,7 @@ class FarmController extends AdminController
      *
      * @var string
      */
-    
+
     protected $title = 'My Farms';
     /**
      * Make a grid builder.
@@ -31,8 +31,8 @@ class FarmController extends AdminController
 
         if (
             Admin::user()->isRole('administrator') ||
-            Admin::user()->isRole('admin') 
-            ) {          
+            Admin::user()->isRole('admin')
+        ) {
             /*$grid->actions(function ($actions) {
                 $actions->disableEdit();
             });*/
@@ -40,23 +40,23 @@ class FarmController extends AdminController
             $grid->model()->where('administrator_id', Admin::user()->id);
             $grid->disableRowSelector();
         }
-        
+
 
 
         //$grid->column('id', __('Id'));
         //$grid->column('updated_at', __('Updated at'));
-        $grid->column('created_at', __('Created'))->sortable(); 
+        $grid->column('created_at', __('Created'))->sortable();
         $grid->column('name', __('Farm Name'))->sortable();
-        
-        $grid->column('administrator_id', __('Owner'))->display(function(){
-            return $this->owner->name; 
+
+        $grid->column('administrator_id', __('Owner'))->display(function () {
+            return $this->owner->name;
         })->sortable();
-        $grid->column('location_id', __('Subcounty'))->display(function(){
-            return $this->location->get_name(); 
+        $grid->column('location_id', __('Subcounty'))->display(function () {
+            return $this->location->get_name();
         })->sortable();
-        $grid->column('latitude', __('GPS'))->display(function(){
-            return $this->latitude.", ".$this->longitude; 
-        }); 
+        $grid->column('latitude', __('GPS'))->display(function () {
+            return $this->latitude . ", " . $this->longitude;
+        });
         //$grid->column('details', __('Details'));
 
         return $grid;
@@ -102,16 +102,15 @@ class FarmController extends AdminController
         }
 
         $form->select('location_id', __('Sub-county'))
-        ->options(Location::get_subcounties())
-        ->rules('required'); 
- 
-        $form->text('name', __('Farm Name'))->rules('required'); 
-       // $form->latlong('latitude', 'longitude', 'Position')->height(500);
-        $form->latlong('latitude', 'longitude', 'Position')->default(['lat' => 90, 'lng' => 90]);
+            ->options(Location::get_subcounties())
+            ->rules('required');
+
+        $form->text('name', __('Farm Name'))->rules('required');
 
 
-        /* $form->text('latitude', __('Latitude'))->rules('required')->default('0.00');
-        $form->text('longitude', __('Longitude'))->rules('required')->default('0.00'); */
+        //        $form->latlong('latitude', 'longitude', 'Position')->default(['lat' => 90, 'lng' => 90]);
+        $form->text('latitude', __('Latitude'))->rules('required')->default('0.00');
+        $form->text('longitude', __('Longitude'))->rules('required')->default('0.00');
         $form->textarea('details', __('Details'))->help("Write something about this farm");
 
         return $form;
