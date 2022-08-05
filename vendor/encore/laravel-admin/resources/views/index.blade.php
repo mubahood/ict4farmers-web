@@ -7,7 +7,19 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ Admin::title() }} @if($header) | {{ $header }}@endif</title>
     <!-- Tell the browser to be responsive to screen width -->
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-PNLCGK3S63"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+    
+      gtag('config', 'G-PNLCGK3S63');
+    </script>
+
+    
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport"> 
+
 
     @if(!is_null($favicon = Admin::favicon()))
     <link rel="shortcut icon" href="{{$favicon}}">
