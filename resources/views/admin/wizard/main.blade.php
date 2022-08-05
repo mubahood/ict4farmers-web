@@ -34,9 +34,7 @@ if ($step_percentage < 25) {
             </div>
             <div class="modal-body">
 
-
                 <h2 class="text-center text-primary">STEP {{ $step_num }} of {{ $step_tot }}</h2>
-
                 <div class="progress" style="; height: 30px">
                     <div class="progress-bar " role="progressbar"
                         style="width: {{ $step_percentage }}%; 30px; font-size:20px; padding-top: 5px;"

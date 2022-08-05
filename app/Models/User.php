@@ -109,6 +109,12 @@ class User extends Authenticatable
                 }
             }
 
+            if ($m->user_type != null) {
+                if (strlen($m->user_type) > 3) {
+                    $m->profile_is_complete = 1;
+                }
+            }
+
             if ($m != null) {
                 if ($m->location_id != null) {
                     $loc = Location::find($m->location_id);
