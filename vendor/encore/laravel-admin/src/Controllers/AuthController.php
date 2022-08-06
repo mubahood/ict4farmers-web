@@ -182,17 +182,16 @@ class AuthController extends Controller
                 } else {
                     die("Account not found");
                 }
-            } 
+            }
         }
         $x = User::find($u->id);
 
+        if (($x->completed_wizard != 1) &&
+            ($x->profile_is_complete == 1)
+        ) {
 
-        if ($x->profile_is_complete == '1') {
-            if (!Utils::is_wizard_done($x->id)) {
-
-                header("Location: " . admin_url(''));
-                die();
-            }
+            header("Location: " . admin_url(''));
+            die();
         }
 
         $class = config('admin.database.users_model');
