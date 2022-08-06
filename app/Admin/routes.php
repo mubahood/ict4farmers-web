@@ -31,6 +31,7 @@ Route::group([
     $router->resource('questions', QuestionController::class);
 
     $router->resource('agent-users', AgentUsersController::class);
+    $router->resource('my-workers', MyWorkersController::class);
     $router->resource('chats', ChatController::class);
     $router->resource('mobile-app', BannerMobileController::class);
     $router->resource('web-app', BannerWebController::class);

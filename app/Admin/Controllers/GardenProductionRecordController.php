@@ -31,17 +31,7 @@ class GardenProductionRecordController extends AdminController
     {
         $grid = new Grid(new GardenProductionRecord());
 
-        if (
-            Admin::user()->isRole('administrator') ||
-            Admin::user()->isRole('admin')
-        ) {
-            /*$grid->actions(function ($actions) {
-                $actions->disableEdit();
-            });*/
-        } else {
-            $grid->model()->where('administrator_id', Admin::user()->id);
-            $grid->disableRowSelector();
-        }
+        $grid->model()->where('administrator_id', Admin::user()->id);
 
         //$grid->column('id', __('Id'))->sortable();
         $grid->column('created_at', __('Created'))->sortable();
