@@ -102,7 +102,28 @@ class Utils
         ################################################
 
         ################################################
-        
+        $enterprises = Garden::where([
+            'administrator_id' => $user_id
+        ])->get();
+        $item_enterprise  = new WizardItem();
+        if (count($enterprises) < 1) {
+            $item_enterprise->is_done = 0;
+            $item_enterprise->sub_title = "You have no any enterprise registered.";
+        } else {
+            $item_enterprise->sub_title = 'You have ' . count($enterprises) . " enterprises.";
+            $item_enterprise->is_done = 1;
+        }
+        $item_enterprise->id = 3;
+        $item_enterprise->mandatory = 1;
+        $item_enterprise->title = 'Create your first enterprise';
+        $item_enterprise->action_text = "CREATE ENTERPRISE";
+        $item_enterprise->screen = 'GardenCreateScreen';
+        $item_enterprise->link = admin_url('gardens/create');
+        $item_enterprise->description = 'An enterprise is the farming venture/project that you are carrying on your farm. 
+        For example, your poultry project, your garden, your cattle herd, among others. 
+        <br><br>Press the <b>CREATE ENTERPRISE BUTTON</b>.
+        To go ahead and add your first enterprise!';
+        $items[] = $item_enterprise;
         ################################################
 
         ################################################
@@ -217,7 +238,7 @@ class Utils
 
         $roles = DB::table('admin_role_users')->where([
             'role_id' => 2,
-            'user_id' => $u->id 
+            'user_id' => $u->id
         ])->get();
 
         if (count($roles) < 1) {
