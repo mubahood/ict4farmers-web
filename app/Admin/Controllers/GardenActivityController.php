@@ -65,7 +65,13 @@ class GardenActivityController extends AdminController
         })->sortable();
 
         $grid->column('due_date', __('To be done before'));
-        $grid->column('done_status', __('Is done'));
+
+        $grid->column('done_status')->radio([
+            0 => 'Done',
+            1 => 'Not Done',
+        ]);
+        $grid->column('done_details', __('Comment'))->editable();
+
 
         return $grid;
     }
@@ -141,7 +147,7 @@ class GardenActivityController extends AdminController
         $form->textarea('details', __('Activity Description'));
 
 
- 
+
 
         $form->hidden('done_by', __('Done by'))->default(0);
         $form->hidden('is_generated',)->default(0);
