@@ -30,7 +30,7 @@ class GardenProductionRecordController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new GardenProductionRecord());
-        
+
         if (
             Admin::user()->isRole('administrator') ||
             Admin::user()->isRole('admin')
@@ -47,7 +47,7 @@ class GardenProductionRecordController extends AdminController
         $grid->column('created_at', __('Created'))->sortable();
 
         $grid->column('garden_id', __('Enterprise'))->display(function () {
-            return $this->enterprise->name; 
+            return $this->enterprise->name;
         })->sortable();
 
 
@@ -56,10 +56,10 @@ class GardenProductionRecordController extends AdminController
         })->sortable();
 
         $grid->column('description', __('Description'))->display(function ($data) {
-            return  Str::substr($data, 0, 100)."....";
+            return  Str::substr($data, 0, 100) . "....";
         })->sortable();
 
- 
+
         // $grid->column('images', __('Images'));
         // $grid->column('created_by_id', __('Created by'));
         return $grid;
@@ -95,7 +95,10 @@ class GardenProductionRecordController extends AdminController
     protected function form()
     {
         $form = new Form(new GardenProductionRecord());
- 
+        $form->disableReset();
+        $form->disableViewCheck();
+        $form->disableEditingCheck();
+
         $u = Auth::user();
         $form->select('garden_id', __('Select Enterprise'))
             ->options(
@@ -104,8 +107,12 @@ class GardenProductionRecordController extends AdminController
             ->rules('required');
 
         $form->hidden('created_by_id', __('created_by_id'))->default($u->id)->value($u->id);
-        $form->textarea('description', __('Description'))->rules('required');
-        //$form->images('images', __('Images'));
+        $form->textarea('description', __('Record Description'))->rules('required');
+
+        $form->hidden('administrator_id', __('Administrator id'))->default($u->id);
+
+        //$form->images('images', __('Images')); 
+
 
         return $form;
     }
