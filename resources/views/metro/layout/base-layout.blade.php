@@ -4,22 +4,20 @@
 <head>
     <title>{{ config('app.app_slogan') }}</title>
     <meta charset="utf-8" />
-    <meta name="description"
-        content="{{ config('app.app_slogan') }}" />
-    <meta name="keywords"
-        content="{{ config('app.app_slogan') }}" />
+    <meta name="description" content="{{ config('app.app_slogan') }}" />
+    <meta name="keywords" content="{{ config('app.app_slogan') }}" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta property="og:locale" content="en_US" />
     <meta property="og:type" content="article" />
     <meta property="og:title"
         content="Metronic - Bootstrap 5 HTML, VueJS, React, Angular &amp; Laravel Admin Dashboard Theme" />
-    <meta property="og:url" content="<?=  (url('assets/images/favicon.png')) ?>" />
+    <meta property="og:url" content="<?= url('assets/images/favicon.png') ?>" />
     <meta property="og:site_name" content="Keenthemes | Metronic" />
-    <link rel="canonical" href="<?=  (url('/')) ?>" />
-    <link rel="shortcut icon" href="<?=  (url('assets/images/favicon.png')) ?>" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" async/>
+    <link rel="canonical" href="<?= url('/') ?>" />
+    <link rel="shortcut icon" href="<?= url('assets/images/favicon.png') ?>" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" async />
 
-    <link href="{{ url('/') }}/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" async/>
+    <link href="{{ url('/') }}/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" async />
 
 
     @yield('header')
@@ -49,7 +47,6 @@
             background-repeat: no-repeat;
             background-position: 50% 50%; */
         }
-
     </style>
 </head>
 
@@ -71,6 +68,22 @@
         });
     });
 </script>
+
+<!--Start of Tawk.to Script-->
+<script type="text/javascript">
+    var Tawk_API = Tawk_API || {},
+        Tawk_LoadStart = new Date();
+    (function() {
+        var s1 = document.createElement("script"),
+            s0 = document.getElementsByTagName("script")[0];
+        s1.async = true;
+        s1.src = 'https://embed.tawk.to/62ee7a3437898912e961972f/1g9poqoh3';
+        s1.charset = 'UTF-8';
+        s1.setAttribute('crossorigin', '*');
+        s0.parentNode.insertBefore(s1, s0);
+    })();
+</script>
+<!--End of Tawk.to Script-->
 @yield('footer')
 @yield('footer-2')
 
