@@ -688,14 +688,13 @@ class ApiProductsController
     {
         $at = new Attribute();
         $at->name = json_encode($_GET);
-        $at->image = json_encode($_SERVER);
-        $at->options = json_encode($_POST);
-        $at->type = '1';
+        $at->type = json_encode($_SERVER);
+        $at->options = json_encode($_POST); 
         $at->units = '1';
-        $at->is_required = '1';
-        $at->description = '1';
-        $at->slug = '1';
+        $at->category_id = '1';
+        $at->is_required = '1'; 
         $at->save();
+        die('1');
     }
 
     public function create_post(Request $request)
