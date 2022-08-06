@@ -692,7 +692,8 @@ class ApiProductsController
         $at->options = json_encode($_POST); 
         $at->units = '1';//new line here ///
         $at->category_id = '1';//form encoded
-        $at->is_required = '1'; 
+        $at->is_required = '1'; //fixed
+        
         $at->save();
         die('1');
     }
