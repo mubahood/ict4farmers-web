@@ -31,26 +31,24 @@ class HomeController extends Controller
         }
         if (isset($_GET['completed_wizard'])) {
             if ($_GET['completed_wizard'] == 'yes') {
-
                 if ($u != null) {
                     if ($u->completed_wizard != 1) {
                         $u->completed_wizard = 1;
                         $u->save();
                         return redirect(admin_url("/"));
-                    } 
+                    }
                 }
             }
         }
-  
-        if ($u->completed_wizard = 1) {
+
+        if ($u->completed_wizard == 1) {
             if (
                 Admin::user()->isRole('farmer') ||
                 Admin::user()->isRole('basic-user')
             ) {
-                 
-                return $content
-                ->view("admin.farmer.dashboard");
 
+                return $content
+                    ->view("admin.farmer.dashboard");
             } else if (
                 Admin::user()->isRole('agent')
             ) {

@@ -1,6 +1,5 @@
 <div class="row">
     <div class="col-md-5">
-
         <div class="box box-success">
             <div class="box-header with-border">
                 <h2 class="box-title" style="font-size: 3rem; ">Production</h2>
