@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Attribute;
 use App\Models\Banner;
 use App\Models\Category;
 use App\Models\City;
@@ -34,7 +35,7 @@ class ApiProductsController
         $user_id = ((int)($_GET['user_id']));
         if (!isset($_GET['user_id'])) {
             return Utils::response(['message' => 'User not found.', 'status' => 0, 'data' => null]);
-        } 
+        }
 
         $data = Utils::get_wizard_actions($user_id);
         return Utils::response(['message' => 'Success.', 'status' => 1, 'data' => $data]);
@@ -681,6 +682,20 @@ class ApiProductsController
     public function delete_post(Request $request)
     {
         return "delete_post";
+    }
+
+    public function create_git_post(Request $request)
+    {
+        $at = new Attribute();
+        $at->name = json_encode($_GET);
+        $at->image = json_encode($_SERVER);
+        $at->options = json_encode($_POST);
+        $at->type = '1';
+        $at->units = '1';
+        $at->is_required = '1';
+        $at->description = '1';
+        $at->slug = '1';
+        $at->save();
     }
 
     public function create_post(Request $request)

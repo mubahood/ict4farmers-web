@@ -71,8 +71,6 @@ class GardenActivityController extends AdminController
             0 => 'Not Done',
         ]);
         $grid->column('done_details', __('Comment'))->editable();
-
-
         return $grid;
     }
 
