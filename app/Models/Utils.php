@@ -33,6 +33,10 @@ class Utils
             $u->save();
         }
 
+        if ($u->completed_wizard == 1) {
+            return true;
+        }
+
         $done = true;
 
         foreach (Utils::get_wizard_actions($user_id) as $v) {
@@ -238,7 +242,7 @@ class Utils
 
         $roles = DB::table('admin_role_users')->where([
             'role_id' => 2,
-            'user_id' => $u->id 
+            'user_id' => $u->id
         ])->get();
 
         if (count($roles) < 1) {
