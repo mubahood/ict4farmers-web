@@ -67,8 +67,8 @@ class GardenActivityController extends AdminController
         $grid->column('due_date', __('To be done before'));
 
         $grid->column('done_status')->radio([
-            0 => 'Done',
-            1 => 'Not Done',
+            1 => 'Done',
+            0 => 'Not Done',
         ]);
         $grid->column('done_details', __('Comment'))->editable();
 
