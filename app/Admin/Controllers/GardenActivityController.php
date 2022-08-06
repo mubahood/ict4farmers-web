@@ -2,12 +2,15 @@
 
 namespace App\Admin\Controllers;
 
+use App\Models\Garden;
 use App\Models\GardenActivity;
+use App\Models\User;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Facades\Admin;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
+use Illuminate\Support\Facades\Auth;
 
 class GardenActivityController extends AdminController
 {
@@ -16,7 +19,7 @@ class GardenActivityController extends AdminController
      *
      * @var string
      */
-    protected $title = 'Garden activities';
+    protected $title = 'Enterprise activies';
 
     /**
      * Make a grid builder.
@@ -25,7 +28,7 @@ class GardenActivityController extends AdminController
      */
     protected function grid()
     {
-        $grid = new Grid(new GardenActivity()); 
+        $grid = new Grid(new GardenActivity());
 
         if (
             Admin::user()->isRole('administrator') ||
@@ -50,20 +53,20 @@ class GardenActivityController extends AdminController
         //$grid->column('done_images', __('Done images'));
         //$grid->column('garden_id', __('Enterprise'));
         //$grid->column('garden_production_record_id', __('Garden production record id'));
-        
+
         $grid->column('created_at', __('Created'));
         $grid->column('garden_id', __('Enterprise'))->display(function () {
-            return $this->enterprise->name; 
+            return $this->enterprise->name;
         })->sortable();
         $grid->column('name', __('Activity'));
-        
+
         $grid->column('person_responsible', __('Assigned to'))->display(function () {
-            return $this->assigned_to->name; 
+            return $this->assigned_to->name;
         })->sortable();
 
-        $grid->column('due_date', __('To be done before')); 
-        $grid->column('done_status', __('Is done')); 
-        
+        $grid->column('due_date', __('To be done before'));
+        $grid->column('done_status', __('Is done'));
+
         return $grid;
     }
 
@@ -107,20 +110,48 @@ class GardenActivityController extends AdminController
     {
         $form = new Form(new GardenActivity());
 
-        $form->textarea('name', __('Name'));
-        $form->textarea('due_date', __('Due date'));
-        $form->textarea('details', __('Details'));
-        $form->number('administrator_id', __('Administrator id'));
-        $form->number('person_responsible', __('Person responsible'));
-        $form->number('done_by', __('Done by'));
-        $form->switch('is_generated', __('Is generated'));
-        $form->textarea('is_done', __('Is done'));
-        $form->textarea('done_status', __('Done status'));
-        $form->textarea('done_details', __('Done details'));
-        $form->textarea('done_images', __('Done images'));
-        $form->number('position', __('Position'));
-        $form->number('garden_id', __('Garden id'))->default(1);
-        $form->number('garden_production_record_id', __('Garden production record id'));
+        $u = Auth::user();
+
+        $form->disableReset();
+        $form->disableViewCheck();
+        $form->disableEditingCheck();
+
+        $workers = [];
+        $workers[$u->id] = "Me";
+        foreach (User::where(['owner_id' => $u->id])->get() as $w) {
+            $workers[$w->id] = $w->name;
+        }
+
+        $form->text('name', __('Activity title'))->rules('required');
+
+        $form->select('garden_id', 'Enterprise')
+            ->options(Garden::where([
+                'administrator_id' => $u->id
+            ])->get()->pluck('name', 'id'))
+            ->rules('required');
+
+
+        $form->select('person_responsible', 'Assign to')
+            ->options($workers)
+            ->rules('required');
+
+        $form->date('due_date', __('Activity date'))->rules('required');
+        $form->hidden('administrator_id', __('Administrator id'))->default($u->id);
+
+        $form->textarea('details', __('Activity Description'));
+
+
+ 
+
+        $form->hidden('done_by', __('Done by'))->default(0);
+        $form->hidden('is_generated',)->default(0);
+        $form->hidden('is_done',)->default(0);
+        $form->hidden('done_status',)->default(0);
+        $form->hidden('done_details',)->default('');
+        $form->hidden('done_images',)->default('[]');
+        $form->hidden('position',)->default(0);
+        $form->hidden('garden_production_record_id',)->default(0);
+
 
         return $form;
     }
