@@ -102,7 +102,7 @@ class Utils
         ################################################
 
         ################################################
- 
+        
         ################################################
 
         ################################################
@@ -115,7 +115,7 @@ class Utils
             $item->is_done = 0;
             $item->sub_title = "You have no added any worker.";
         } else {
-            $item->sub_title = 'You have ' . count($enterprises) . " worker.";
+            $item->sub_title = 'You have ' . count($users) . " worker.";
             $item->is_done = 1;
         }
         $item->id = 4;
