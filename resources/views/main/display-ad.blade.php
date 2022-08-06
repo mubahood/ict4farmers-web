@@ -28,6 +28,7 @@ $is_logged_in = false;
 $user = Auth::user();
 $message_link = '/login';
 $message_text = 'Start converstion';
+$message_link = 'https://play.google.com/store/apps/details?id=net.eighttechnologes.ict4farmers&hl=en&gl=US';
 if ($user != null) {
     if (isset($user->id)) {
         $is_logged_in = true;

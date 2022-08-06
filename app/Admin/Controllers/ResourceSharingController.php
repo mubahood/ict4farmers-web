@@ -122,7 +122,8 @@ class ResourceSharingController extends AdminController
                 $call = '<a href="tel:0779755798" >Call 0779755798</a>';
                 $data = $call;
                 if ($this->user_id != $u->id) {
-                    $data .=  '<br>OR<br><a href="' . $link . '" >Send Message</a>';
+                    $link = 'https://play.google.com/store/apps/details?id=net.eighttechnologes.ict4farmers&hl=en&gl=US';
+                    $data .=  '<br>OR<br><a href="' . $link . '" >Download ICT4FARMERS MOBILE APP to Send Message this seller</a>';
                 }
 
                 return $data;

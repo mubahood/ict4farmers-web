@@ -30,6 +30,7 @@ $message_text = "This is your product.";
 }else{
 $chat_thred = Chat::Chat::get_chat_thread_id($user->id,$pro->user_id,$pro->id);
 $message_link = "/messages/".$chat_thred;
+$message_link = 'https://play.google.com/store/apps/details?id=net.eighttechnologes.ict4farmers&hl=en&gl=US';
 }
 }
 }
