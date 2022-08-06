@@ -2,7 +2,7 @@
 use App\Models\Utils;
 
 $steps = Utils::get_wizard_actions(Admin::user()->id);
-$steps = array_reverse($steps);
+//$steps = array_reverse($steps);
 $step = $steps[0];
 $step_num = 1;
 $step_text = 1;
