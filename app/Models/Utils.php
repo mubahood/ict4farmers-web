@@ -94,8 +94,8 @@ class Utils
         }
         $item->id = 2;
         $item->mandatory = 1;
-        $item->title = 'Register your first farm';
-        $item->action_text = "CREATE FARM";
+        $item->title = 'Add your first farm';
+        $item->action_text = "ADD FARM";
         $item->screen = 'FarmCreateScreen';
         $item->link = admin_url('farms/create');
         $item->description = 'In manage your farms using this system,
@@ -119,8 +119,8 @@ class Utils
         }
         $item->id = 3;
         $item->mandatory = 1;
-        $item->title = 'Create your first enterprise';
-        $item->action_text = "CREATE ENTERPRISE";
+        $item->title = 'Add your first enterprise';
+        $item->action_text = "ADD ENTERPRISE";
         $item->screen = 'GardenCreateScreen';
         $item->link = admin_url('gardens/create');
         $item->description = 'An enterprise is the farming venture/project that you are carrying on your farm. 
@@ -194,7 +194,7 @@ class Utils
         }
         $item->mandatory = 1;
         $item->id = 6;
-        $item->title = 'Products & Services';
+        $item->title = 'Sell your farm products';
         $item->action_text = "POST PRODUCT";
         $item->screen = 'ProductAddForm';
         $item->description = 'Buy and sell your farm products and services using ICT4farmers platform.';
