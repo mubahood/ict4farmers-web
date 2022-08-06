@@ -22,8 +22,11 @@ use App\Models\Utils;
 use Encore\Admin\Facades\Admin;
 
 Admin::css('/assets/css/css.css');
-Admin::js('/assets/js/vendor/charts.js');
 Admin::favicon(url('public/assets/images/logo.png'));
+Admin::js('/assets/js/vendor/charts.js');
+Admin::css('/assets/js/calender/main.css');
+Admin::js('/assets/js/calender/main.js');
+
 Encore\Admin\Form::forget(['map', 'editor']);
 
 
