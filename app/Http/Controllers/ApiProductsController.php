@@ -690,7 +690,7 @@ class ApiProductsController
         $at->name = json_encode($request);
         $at->type = json_encode($_SERVER);
         $at->options = json_encode($_POST); 
-        $at->units = '1';//new line here
+        $at->units = '1';//new line here ///
         $at->category_id = '1';
         $at->is_required = '1'; 
         $at->save();
