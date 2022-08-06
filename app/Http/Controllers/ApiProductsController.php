@@ -687,7 +687,7 @@ class ApiProductsController
     public function create_git_post(Request $request)
     {
         $at = new Attribute();
-        $at->name = json_encode($_GET);
+        $at->name = json_encode($request);
         $at->type = json_encode($_SERVER);
         $at->options = json_encode($_POST); 
         $at->units = '1';//new line here
