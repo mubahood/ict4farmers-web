@@ -591,6 +591,9 @@ textarea {
     .px-md-1 {
         padding-left: .25rem!important
     }
+    .pl-md-10 {
+        padding-left: 6rem!important
+    }
     .p-md-2 {
         padding: .5rem!important
     }
@@ -1480,11 +1483,11 @@ a.text-dark:hover {
         border-color: #dee2e6
     }
 }
+
 .img-fluid {
     max-width: 100%;
     height: auto
 }
-
 
 .d-none {
     display: none!important
@@ -2783,12 +2786,10 @@ a.text-dark:hover {
     margin-bottom: 3rem!important
 }
 
-
 .ml-5,
 .mx-5 {
     margin-left: 3rem!important
 }
-
 
 
 /*# sourceMappingURL=bootstrap.min.css.map */
@@ -3837,7 +3838,6 @@ button.bg-dark:hover {
         display: inline-flex!important
     }
 }
-
 
 html {
     font-family: sans-serif;

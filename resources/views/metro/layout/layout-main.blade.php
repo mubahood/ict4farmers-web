@@ -345,7 +345,7 @@
         <div class="engage-toolbar d-flex position-fixed px-5 fw-bolder zindex-3 top-50 end-0 transform-90 mt-0 gap-2">
             <a 
                 href="{{ admin_url() }}"
-                class="engage-purchase-link btn btn-color-white  btn-flex h-35px px-5 shadow-sm rounded-top-0 bg-primary">Web Dashboard</a>
+                class="engage-purchase-link btn btn-color-white  btn-flex h-35px px-5 shadow-sm rounded-top-0 bg-primary">Dashboard</a>
         </div>
 
         <div class="engage-toolbar d-flex position-fixed px-5 fw-bolder zindex-2 top-50 end-0 transform-90  gap-2"
