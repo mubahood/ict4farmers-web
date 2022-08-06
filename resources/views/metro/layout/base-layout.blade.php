@@ -16,8 +16,17 @@
     <link rel="canonical" href="<?= url('/') ?>" />
     <link rel="shortcut icon" href="<?= url('assets/images/favicon.png') ?>" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" async />
-
     <link href="{{ url('/') }}/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" async />
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-PNLCGK3S63"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+    
+        gtag('config', 'G-PNLCGK3S63');
+    </script>
 
 
     @yield('header')
