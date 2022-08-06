@@ -493,7 +493,7 @@ pre code {
     position: relative;
     width: 100%;
     min-height: 1px;
-    padding-right: 15px; 
+    padding-right: 15px;
     padding-left: 15px
 }
 
@@ -4368,7 +4368,6 @@ input[type=submit].btn-block {
     color: #fff
 }
 
-
 .progress-bar-animated {
     -webkit-animation: progress-bar-stripes 1s linear infinite;
     animation: progress-bar-stripes 1s linear infinite
@@ -5365,7 +5364,6 @@ button.close {
     padding-bottom: 20px;
     color: #fff;
     text-align: center
-
 }
 
 .container-refresh {

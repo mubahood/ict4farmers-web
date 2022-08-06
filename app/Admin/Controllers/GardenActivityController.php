@@ -9,6 +9,7 @@ use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Facades\Admin;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
+use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
 use Illuminate\Support\Facades\Auth;
 
@@ -20,6 +21,14 @@ class GardenActivityController extends AdminController
      * @var string
      */
     protected $title = 'Enterprise activies';
+
+
+    public function calendar(Content $content)
+    {
+        return $content
+            ->view("admin.farmer.calendar");
+    }
+
 
     /**
      * Make a grid builder.
@@ -71,6 +80,7 @@ class GardenActivityController extends AdminController
             0 => 'Not Done',
         ]);
         $grid->column('done_details', __('Comment'))->editable();
+
         return $grid;
     }
 
