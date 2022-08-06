@@ -72,7 +72,7 @@ class Utils
         $item->link = admin_url('/auth/setting');
         $item->description = 'After you have registered successfully created your account, it’s important to complete your profile from the “my profile” section so the system can understand what you really need to use it for and customize itself for you. From here you are able to profile your personal information or rest them.
         <br><br>Press the <b>"COMPLETE MY PROFILE"</b> button below to proceed.';
-        $items[] = $item;
+        $items[$item->id] = $item;
         ################################################
 
 
@@ -98,7 +98,7 @@ class Utils
         you need to have add your farms first. Farm that you add into the system farm will give you access to enterprises. 
         A farm will have many enterprises or call them projects for example your farm can have poultry, fishing and cattle raring.
         <br><br>When registering your farm its highly recommend to do so on ground in order for the application to pick your graphical location, this will help the application taller services that are near you for convince. ';
-        $items[] = $item;
+        $items[$item->id] = $item;
         ################################################
 
         ################################################
@@ -123,7 +123,7 @@ class Utils
         For example, your poultry project, your garden, your cattle herd, among others. 
         <br><br>Press the <b>CREATE ENTERPRISE BUTTON</b>.
         To go ahead and add your first enterprise!';
-        $items[] = $item_enterprise;
+        $items[$item_enterprise->id] = $item_enterprise;
         ################################################
 
         ################################################
@@ -146,7 +146,7 @@ class Utils
         $item->link = admin_url('my-workers/create');
         $item->screen = 'WorkerCreateScreen';
         $item->description = 'Worker is a person who does a specified type of work at your enterprises.';
-        $items[] = $item;
+        $items[$item->id] = $item;
         ################################################
 
         ################################################
@@ -171,7 +171,7 @@ class Utils
         $item->screen = 'GardenActivityCreateScreen';
         $item->link = admin_url('garden-activities/create');
         $item->description = 'Use this activity scheduling to schedule all your enterprise activities in one place.';
-        $items[] = $item;
+        $items[$item->id] = $item;
         ################################################
 
 
@@ -194,7 +194,7 @@ class Utils
         $item->action_text = "POST PRODUCT";
         $item->screen = 'ProductAddForm';
         $item->description = 'Buy and sell your farm products and services using ICT4farmers platform.';
-        $items[] = $item;
+        $items[$item->id] = $item;
         ################################################
 
 
@@ -212,7 +212,7 @@ class Utils
         $item->action_text = "LEARN";
         $item->screen = '';
         $item->description = 'Learn how to to use ICT4Farmers system.';
-        $items[] = $item;
+        $items[$item->id] = $item;
         ################################################
 
 
