@@ -102,28 +102,7 @@ class Utils
         ################################################
 
         ################################################
-        $enterprises = Garden::where([
-            'administrator_id' => $user_id
-        ])->get();
-        $item  = new WizardItem();
-        if (count($enterprises) < 1) {
-            $item->is_done = 0;
-            $item->sub_title = "You have no any enterprise registered.";
-        } else {
-            $item->sub_title = 'You have ' . count($enterprises) . " enterprises.";
-            $item->is_done = 1;
-        }
-        $item->id = 3;
-        $item->mandatory = 1;
-        $item->title = 'Create your first enterprise';
-        $item->action_text = "CREATE ENTERPRISE";
-        $item->screen = 'GardenCreateScreen';
-        $item->link = admin_url('gardens/create');
-        $item->description = 'An enterprise is the farming venture/project that you are carrying on your farm. 
-        For example, your poultry project, your garden, your cattle herd, among others. 
-        <br><br>Press the <b>CREATE ENTERPRISE BUTTON</b>.
-        To go ahead and add your first enterprise!';
-        $items[] = $item;
+ 
         ################################################
 
         ################################################
