@@ -40,6 +40,7 @@ class GardenActivityController extends AdminController
     }
     public function calendar(Content $content)
     {
+        
         $events = Utils::prepare_calendar_events(Admin::user()->id);
 
         return $content

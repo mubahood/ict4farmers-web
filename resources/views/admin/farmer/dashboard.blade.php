@@ -190,7 +190,7 @@ $steps = Utils::get_wizard_actions(Admin::user()->id);
 
 
 
-<script>
+<script> 
     $(document).ready(function() {
         var data = JSON.parse('<?= json_encode($events) ?>');
 
