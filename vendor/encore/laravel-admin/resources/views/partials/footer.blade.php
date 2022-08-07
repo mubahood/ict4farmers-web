@@ -28,6 +28,5 @@
         @endif
 
     </div>
-    <strong>Powered by <a href="https://8technologies.net" target="_blank">8Technologies consults</a></strong>
+    <strong>Powered by <a href="https://8technologies.net" target="_blank">Eight Tech Consults Limited</a></strong>
 </footer>
-
