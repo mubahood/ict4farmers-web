@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\WizardItem as ModelsWizardItem;
+use Carbon\Carbon;
 use Encore\Admin\Auth\Database\Administrator;
 use GuzzleHttp\Client;
 use Hamcrest\Arrays\IsArray;
@@ -21,6 +22,62 @@ use function PHPUnit\Framework\fileExists;
 class Utils
 {
 
+    public static function prepare_calendar_events($administrator_id)
+    {
+        $events = [];
+        $activities = GardenActivity::where(['administrator_id' => $administrator_id])
+            ->orWhere(['person_responsible' => $administrator_id])
+            ->get();
+
+
+        foreach ($activities as $act) {
+            //$ev['display'] = 'list-item';
+            $ev['title'] = $act->name;
+            $ev['start'] = Carbon::parse($act->due_date)->format('Y-m-d');
+            $details = "<b>Description:</b> " . $act->details . '<br>';
+            $details .= "<b>Enterprise:</b> " . $act->enterprise->name . '<br>';
+            $details .= "<b>Due to:</b> " . $ev['start'] . '<br>';
+
+
+            $ev['is_done'] = $act->is_done;
+            if ($act->is_done == 1 || $act->is_done == true) {
+                $ev['is_done'] = 1;
+                $ev['classNames'] = ['bg-success', 'border-success', 'text-white'];
+
+                if ($act->done_status == 1 || $act->done_status == true) {
+                    $details .= "<b>Activity status:</b> Done<br>";
+                } else {
+                    $details .= "<b>Activity status:</b> Not Done (Missed)<br>";
+                }
+            } else {
+                $ev['is_done'] = 0;
+                $details .= "<b>Activity status:</b>Pending<br>";
+                $ev['classNames'] = ['bg-danger', 'border-danger', 'text-white'];
+            }
+
+
+
+            $details .= "<b>Status remarks:</b> " . $act->done_details . '<br>';
+            $details .= "<b>Person responsible:</b> " . $act->assigned_to->name . '<br>';
+
+            $ev['details'] = $details;
+            $ev['administrator_id'] = $act->administrator_id;
+            $ev['done_status'] = $act->done_status;
+            $ev['done_details'] = $act->done_details;
+            $ev['garden_id'] = $act->garden_id;
+            $ev['activity_id'] = $act->id;
+            $ev['id'] = count($events);
+            $ev['person_responsible'] = $act->person_responsible;
+            $ev['type'] = 'Scheduled activity';
+
+            //$ev['textColor'] = 'red';
+
+            $events[] = $ev;
+        }
+
+
+        return $events;
+    }
     public static function is_wizard_done($user_id)
     {
         $u = User::find($user_id);

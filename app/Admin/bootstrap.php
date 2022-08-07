@@ -24,8 +24,13 @@ use Encore\Admin\Facades\Admin;
 Admin::css('/assets/css/css.css');
 Admin::favicon(url('public/assets/images/logo.png'));
 Admin::js('/assets/js/vendor/charts.js');
+
 Admin::css('/assets/js/calender/main.css');
 Admin::js('/assets/js/calender/main.js');
+
+Admin::css('/css/jquery-confirm.min.css');
+Admin::js('/js/jquery-confirm.min.js');
+
 
 Encore\Admin\Form::forget(['map', 'editor']);
 

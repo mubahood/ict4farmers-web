@@ -5,6 +5,7 @@ namespace App\Admin\Controllers;
 use App\Models\Garden;
 use App\Models\GardenActivity;
 use App\Models\User;
+use App\Models\Utils;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Facades\Admin;
 use Encore\Admin\Form;
@@ -23,10 +24,28 @@ class GardenActivityController extends AdminController
     protected $title = 'Enterprise activies';
 
 
+    public function calender_activity_edit()
+    {
+        $id = ((int)($_GET['id']));
+        $act = GardenActivity::find($id);
+        if ($act == null) {
+            die("Activity not found.");
+        }
+        $act->done_status = $_GET['done_status'];
+        $act->done_details = $_GET['done_details'];
+        $act->is_done = 1;
+        $act->save();
+        header('Location: ' . admin_url('calendar'));
+        die();
+    }
     public function calendar(Content $content)
     {
+        $events = Utils::prepare_calendar_events(Admin::user()->id);
+
         return $content
-            ->view("admin.farmer.calendar");
+            ->view("admin.farmer.calendar", [
+                'events' => $events
+            ]);
     }
 
 

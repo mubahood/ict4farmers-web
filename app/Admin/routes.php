@@ -22,9 +22,10 @@ Route::group([
     $router->resource('farms', FarmController::class);
     $router->resource('financial-records', FinancialRecordController::class);
     $router->resource('garden-production-records', GardenProductionRecordController::class);
-    
+
     $router->resource('garden-activities', GardenActivityController::class);
     $router->get('calendar', 'GardenActivityController@calendar')->name('calendar');
+    $router->get('calender-activity-edit', 'GardenActivityController@calender_activity_edit');
 
     $router->resource('pests-listing', PestListingController::class);
     $router->resource('pest-cases-listing', PestCaseListingController::class);
