@@ -150,6 +150,7 @@ class Utils
         $item->link = admin_url('my-workers/create');
         $item->screen = 'WorkerCreateScreen';
         $item->description = 'Worker is a person who does a specified type of work at your enterprises.';
+        $item->is_done = 1;
         $items[] = $item;
         ################################################
 
@@ -175,6 +176,7 @@ class Utils
         $item->screen = 'GardenActivityCreateScreen';
         $item->link = admin_url('garden-activities/create');
         $item->description = 'Use this activity scheduling to schedule all your enterprise activities in one place.';
+        $item->is_done = 1;
         $items[] = $item;
         ################################################
 
@@ -198,6 +200,7 @@ class Utils
         $item->action_text = "POST PRODUCT";
         $item->screen = 'ProductAddForm';
         $item->description = 'Buy and sell your farm products and services using ICT4farmers platform.';
+        $item->is_done = 1;
         $items[] = $item;
         ################################################
 
@@ -216,6 +219,7 @@ class Utils
         $item->action_text = "LEARN";
         $item->screen = '';
         $item->description = 'Learn how to to use ICT4Farmers system.';
+        $item->is_done = 1;
         $items[] = $item;
         ################################################
 
