@@ -4,7 +4,7 @@
     <div class="col-md-8">
         <div class="card border-white">
             <div class="card-body">
-                <div id='loading'>loading...</div>
+                <div id='loading'>Refresh this page to see the calender...</div>
                 <div id='calendar'></div>
             </div>
         </div>

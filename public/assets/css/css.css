@@ -4057,3 +4057,6 @@ button:focus {
     outline: 1px dotted;
     outline: 5px auto -webkit-focus-ring-color
 }
+#pjax-container{
+    background-color: #d2f3e0;
+}

@@ -4,6 +4,7 @@ namespace App\Admin\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\FinancialRecord;
+use App\Models\Garden;
 use App\Models\GardenActivity;
 use App\Models\GardenProductionRecord;
 use App\Models\Location;
@@ -23,10 +24,270 @@ use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
+    public function stats(Content $content)
+    {
+
+        Admin::css(url('/assets/css/css.css'));
+        Admin::css(url('/assets/css/bootstrap.css'));
+        return $content
+            ->title('Statistics')
+            ->row(function (Row $row) {
+                $row->column(3, function (Column $column) {
+
+                    $exp = FinancialRecord::where('administrator_id', Admin::user()->id)
+                        ->where('amount', '>', 0)
+                        ->sum('amount');
+
+                    $inc = (FinancialRecord::where('administrator_id', Admin::user()->id)
+                        ->where('amount', '<', 0)
+                        ->sum('amount'));
+                    $bal = $exp + $inc;
+
+                    $inc = number_format($inc);
+                    $exp = number_format($exp);
+
+                    $box  = view('widgets.box-3', [
+                        'title' => "Finance",
+                        'icon' => url('assets/images/admin/money.gif'),
+                        'count' => 'UGX. ' . number_format($bal),
+                        'link' => 'financial-records',
+                        'sub_title' => "UGX $exp total Expense, UGX $inc  Total income.",
+                    ]);
+                    $column->append($box);
+                });
+
+                $row->column(3, function (Column $column) {
+
+                    $pending = GardenActivity::where('administrator_id', Admin::user()->id)
+                        ->where('is_done', '!=', true)
+                        ->count('id');
+                    $submited = GardenActivity::where('administrator_id', Admin::user()->id)
+                        ->where('is_done', '=', true)
+                        ->count('id');
+
+                    $tot = GardenActivity::where('administrator_id', Admin::user()->id)
+                        ->count('id');
+
+                    $box  = view('widgets.box-3', [
+                        'title' => "Scheduled Activities",
+                        'icon' => url('assets/images/admin/tasks.png'),
+                        'count' => $tot,
+                        'link' => admin_url('garden-activities'),
+                        'sub_title' => "$submited Activities submitted, $pending Pending activities.",
+                    ]);
+                    $column->append($box);
+                });
+
+                $row->column(3, function (Column $column) {
+
+                    $gardens = Garden::where('administrator_id', Admin::user()->id)
+                        ->count('id');
+
+                    $box  = view('widgets.box-3', [
+                        'title' => "My Enterprises",
+                        'icon' => url('assets/images/admin/enterprise.png'),
+                        'count' => $gardens,
+                        'link' => admin_url('garden-activities'),
+                        'sub_title' => '13 Maize gardens, 3 Poultry projetcs',
+                    ]);
+                    $column->append($box);
+                });
+
+
+                $row->column(3, function (Column $column) {
+                    $box  = view('widgets.box-3', [
+                        'title' => "E-Academy",
+                        'icon' => url('assets/icons/2.png'),
+                        'count' => '24',
+                        'link' => 'https://academy.unffeict4farmers.org/course/',
+                        'sub_title' => 'All people who viewed your farm products.',
+                    ]);
+                    $column->append($box);
+                });
+            })
+            ->row(function (Row $row) {
+                $row->column(6, function (Column $column) {
+                    $data = [];
+                    $lables = [];
+                    $income = [];
+                    $expense = [];
+                    $days_ago = 30;
+                    for ($i = 0; $i < $days_ago; $i++) {
+
+                        $min_day = new Carbon();
+                        $max_day = new Carbon();
+
+                        $min_day->subDays($days_ago);
+                        $max_day->subDays(($days_ago - 1));
+
+                        $min_day->addDays($i);
+                        $max_day->addDays($i);
+                        $min = $min_day->format('Y-m-d H:i:s');
+                        $max = $max_day->format('Y-m-d H:i:s');
+                        $lables[] = $max_day->format('d M-Y');
+                        $_income = 0;
+                        $_expense = 0;
+                        $recs = FinancialRecord::whereBetween('created_at', [$min, $max])->get();
+                        foreach ($recs as $rec) {
+                            if ($rec->amount < 0) {
+                                $_income += ((-1) * ((int)($rec->amount)));
+                            } else {
+                                $_expense += ((int)($rec->amount));
+                            }
+                        }
+                        $expense[] = $_expense;
+                        $income[] = $_income;
+                    }
+
+
+                    $data['lables'] = $lables;
+                    $data['income'] = $income;
+                    $data['expense'] = $expense;
+
+
+                    $box_financial  = new Box('Financial report - (Last 30 days)', view('admin.charts.bar', [
+                        'data' => $data,
+                        'link' => admin_url('financial-records')
+                    ]));
+                    $box_financial->collapsable();
+                    $column->append($box_financial);
+                });
+
+                $row->column(3, function (Column $column) {
+
+                    $data = [];
+                    $data[] = FinancialRecord::where('administrator_id', Admin::user()->id)
+                        ->where('amount', '>', 0)
+                        ->sum('amount');
+
+                    $data[] = (-1 * FinancialRecord::where('administrator_id', Admin::user()->id)
+                        ->where('amount', '<', 0)
+                        ->sum('amount'));
+
+                    $bal = $data[0] - $data[1];
+                    if ($bal < 0) {
+                        $title = "Loss: UGX" . number_format($bal);
+                    } else {
+                        $title = "Profits: UGX" . number_format($bal);
+                    }
+
+                    $box  = new Box('Profit or Loss', view('widgets.box-1', [
+                        'title' => $title,
+                        'data' => $data,
+                        'colors' => ['green', 'red'],
+                        'labels' => [
+                            'Total Income - UGX ' . number_format($data[0]),
+                            'Total Expense - UGX ' . number_format($data[1]),
+                        ],
+                    ]));
+                    $box
+                        ->style('success')
+                        ->collapsable();
+                    $column->append($box);
+                });
+                $row->column(3, function (Column $column) {
+
+                    $recs = FinancialRecord::where('administrator_id', Admin::user()->id)
+                        ->orderBy('id', 'Desc')
+                        ->limit(8)
+                        ->get();
+                    $data = [];
+                    foreach ($recs as $va) {
+                        $_data['title'] = $va->description;
+                        $_data['sub_title'] = $va->amount_text;
+                        $data[] = $_data;
+                    }
+                    $box  = new Box('Recent transactions', view('widgets.box-4', ['data' => $data]));
+                    $box
+                        ->style('success')
+                        ->collapsable();
+                    $column->append($box);
+                });
+            })
+            ->row(function (Row $row) {
+                $row->column(3, function (Column $column) {
+                    $data = [];
+                    $data[] = GardenActivity::where([
+                        'administrator_id' => Admin::user()->id,
+                        'is_done' => true,
+                    ])->count();
+
+                    $data[] = GardenActivity::where([
+                        'administrator_id' => Admin::user()->id,
+                        'is_done' => false,
+                    ])->count();
+
+                    $tot = $data[0] + $data[1];
+                    $percentage_done = 100;
+                    if ($tot > 0) {
+                        $percentage_done = ((int) ((($tot - $data[1]) / $tot) * 100));
+                    }
+
+                    $title = "$percentage_done% Activities completed";
+
+                    $box  = new Box('Production activities', view('widgets.box-1', [
+                        'title' => $title,
+                        'data' => $data,
+                        'colors' => ['green', 'red'],
+                        'labels' => [
+                            'Completed ' . number_format($data[0]),
+                            'Nont Completed ' . number_format($data[1]),
+                        ],
+                    ]));
+                    $box
+                        ->style('success')
+                        ->collapsable();
+                    $column->append($box);
+                });
+                $row->column(3, function (Column $column) {
+                    $recs = GardenActivity::where('administrator_id', Admin::user()->id)
+                        ->orderBy('id', 'Desc')
+                        ->limit(8)
+                        ->get();
+                    $data = [];
+                    foreach ($recs as $va) {
+                        $_data['title'] = Str::limit($va->name, 20);
+                        $_data['sub_title'] = $va->is_done ? "Done" : "Not done";
+                        $data[] = $_data;
+                    }
+                    $box  = new Box(' Recent scheduled acticivies', view('widgets.box-4', ['data' => $data]));
+                    $box
+                        ->style('success')
+                        ->collapsable();
+                    $column->append($box);
+                });
+                $row->column(3, function (Column $column) {
+                    $recs = GardenProductionRecord::where('administrator_id', Admin::user()->id)
+                        ->orderBy('id', 'Desc')
+                        ->limit(8)
+                        ->get();
+                    $data = [];
+                    foreach ($recs as $va) {
+                        $_data['title'] = Str::limit($va->description, 16);
+                        $_data['sub_title'] = Str::limit("By " . $va->owner->name, 10);
+                        $data[] = $_data;
+                    }
+                    $box  = new Box('Recent production records', view('widgets.box-4', ['data' => $data]));
+                    $box
+                        ->style('success')
+                        ->collapsable();
+                    $column->append($box);
+                });
+                $row->column(3, function (Column $column) {
+                    $box  = new Box('Latest E-Academy courses', view('widgets.box-1', ['data' => [
+                        ''
+                    ]]));
+                    $box
+                        ->style('success')
+                        ->collapsable();
+                    $column->append($box);
+                });
+            });
+    }
     public function index(Content $content)
     {
 
-        $u = Administrator::find(Auth::user()->id); 
+        $u = Administrator::find(Auth::user()->id);
         if ($u == null) {
             die("Admin not found.");
         }
@@ -47,13 +308,13 @@ class HomeController extends Controller
                 Admin::user()->isRole('farmer') ||
                 Admin::user()->isRole('basic-user')
             ) {
-                if(!isset($_GET['refreshed'])){
-                    header('Location: '.admin_url('?refreshed=1'));
-                   die();
+                if (!isset($_GET['refreshed'])) {
+                    header('Location: ' . admin_url('?refreshed=1'));
+                    die();
                 }
                 $events = Utils::prepare_calendar_events(Admin::user()->id);
                 return $content
-                    ->view("admin.farmer.dashboard",[
+                    ->view("admin.farmer.dashboard", [
                         'events' => $events
                     ]);
             } else if (
@@ -75,6 +336,7 @@ class HomeController extends Controller
 
 
 /*
+
 
         return $content
             ->title('Dashboard')

@@ -1,8 +1,8 @@
 <?php
 use App\Models\Utils;
-$steps = Utils::get_wizard_actions(Admin::user()->id); 
+$steps = Utils::get_wizard_actions(Admin::user()->id);
 ?>
- 
+
 <link rel="stylesheet" href="{{ url('/assets/css/bootstrap.css') }}">
 
 
@@ -174,7 +174,7 @@ $steps = Utils::get_wizard_actions(Admin::user()->id);
         <div class="box box-success">
             <div class="box-body" style="display: block;">
 
-                <div id='loading'>loading...</div>
+                <div id='loading'>Refresh this page to see the calender...</div>
 
                 <div id='calendar'></div>
 
@@ -190,7 +190,7 @@ $steps = Utils::get_wizard_actions(Admin::user()->id);
 
 
 
-<script> 
+<script>
     $(document).ready(function() {
         var data = JSON.parse('<?= json_encode($events) ?>');
 
@@ -278,7 +278,7 @@ $steps = Utils::get_wizard_actions(Admin::user()->id);
         });
 
         calendar.render();
-    }); 
+    });
 
     function submit_activity(x) {
 
