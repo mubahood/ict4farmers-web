@@ -8,6 +8,7 @@ use App\Models\GardenActivity;
 use App\Models\GardenProductionRecord;
 use App\Models\Location;
 use App\Models\Product;
+use App\Models\Utils;
 use Carbon\Carbon;
 use Encore\Admin\Auth\Database\Administrator;
 use Encore\Admin\Controllers\Dashboard;
@@ -46,9 +47,12 @@ class HomeController extends Controller
                 Admin::user()->isRole('farmer') ||
                 Admin::user()->isRole('basic-user')
             ) {
+                $events = Utils::prepare_calendar_events(Admin::user()->id);
 
                 return $content
-                    ->view("admin.farmer.dashboard");
+                    ->view("admin.farmer.dashboard", [
+                        'events' => $events
+                    ]);
             } else if (
                 Admin::user()->isRole('agent')
             ) {

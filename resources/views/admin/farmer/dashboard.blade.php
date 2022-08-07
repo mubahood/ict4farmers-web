@@ -1,6 +1,6 @@
 <?php
 use App\Models\Utils;
-$steps = Utils::get_wizard_actions(Admin::user()->id);
+$steps = Utils::get_wizard_actions(Admin::user()->id); 
 ?>
  
 <link rel="stylesheet" href="{{ url('/assets/css/bootstrap.css') }}">
@@ -86,12 +86,14 @@ $steps = Utils::get_wizard_actions(Admin::user()->id);
                                 <h3 class="my-title-1 text-center " style="">Financial records</h3>
                             </a>
 
-                            <a href="{{ admin_url('my-workers') }}" class="col-4 col-md-12  my-admin-item text-center  mb-md-5">
+                            <a href="{{ admin_url('my-workers') }}"
+                                class="col-4 col-md-12  my-admin-item text-center  mb-md-5">
                                 <img width="45%" src="{{ url('assets/images/admin/workers.png') }}">
                                 <h3 class="my-title-1 text-center ">Farm workers</h3>
                             </a>
 
-                            <a href="{{ admin_url('products') }}" class="col-4 col-md-12 my-admin-item text-center  mb-md-5">
+                            <a href="{{ admin_url('products') }}"
+                                class="col-4 col-md-12 my-admin-item text-center  mb-md-5">
                                 <img width="45%" src="{{ url('assets/images/admin/market.png') }}">
                                 <h3 class="my-title-1 text-center ">Market place</h3>
                             </a>
@@ -148,7 +150,7 @@ $steps = Utils::get_wizard_actions(Admin::user()->id);
 
 
     <div class="col-md-4">
- 
+
         <div class="card mb-4">
             <div class="card-body">
                 <h2 class=" text-primary text-bold m-0 py-2 mb-2">Getting Started Checklist</h2>
@@ -186,8 +188,43 @@ $steps = Utils::get_wizard_actions(Admin::user()->id);
 
 
 
+
+
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    $(document).ready(function() {
+        var data = JSON.parse('<?= json_encode($events) ?>');
+
+        function show_activity(x) {
+            const eve = data[x];
+
+            $.alert({
+                title: eve.type,
+                content: eve.details,
+                closeIcon: true,
+                buttons: {
+                    edit: {
+                        btnClass: 'btn-primary',
+                        text: 'UPDATE ACTIVITY STATUS',
+                        action: function() {
+                            submit_activity(eve.activity_id);
+                        }
+                    },
+                    CLOSE: function() {
+
+                    },
+                }
+            });
+
+        }
+
+        $('.activity-item').click(function(e) {
+            e.preventDefault();
+            show_activity(e.currentTarget.dataset.id);
+
+        });
+
+
+
         var calendarEl = document.getElementById('calendar');
 
         var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -197,16 +234,40 @@ $steps = Utils::get_wizard_actions(Admin::user()->id);
                 right: 'prev today next'
             },
 
-            displayEventTime: false,
-            googleCalendarApiKey: 'AIzaSyDcnW6WejpTOCffshGDDb4neIrXVUA1EAE',
-            // US Holidays
-            events: 'en.usa#holiday@group.v.calendar.google.com',
+            editable: false,
+            selectable: false,
+            selectMirror: true,
+            nowIndicator: true,
+            displayEventTime: true,
+            events: data,
 
             eventClick: function(arg) {
+
                 // opens events in a popup window
                 //window.open(arg.event.url, 'google-calendar-event', 'width=700,height=600');
-                alert("Clicked on event");
                 arg.jsEvent.preventDefault() // don't navigate in main tab
+
+                const eve = arg.event._def;
+                const activity_id = eve.extendedProps.activity_id;
+
+
+                $.alert({
+                    title: eve.extendedProps.type,
+                    content: eve.extendedProps.details,
+                    closeIcon: true,
+                    buttons: {
+                        edit: {
+                            btnClass: 'btn-primary',
+                            text: 'UPDATE ACTIVITY STATUS',
+                            action: function() {
+                                submit_activity(activity_id);
+                            }
+                        },
+                        CLOSE: function() {
+
+                        },
+                    }
+                });
             },
 
             loading: function(bool) {
@@ -217,5 +278,46 @@ $steps = Utils::get_wizard_actions(Admin::user()->id);
         });
 
         calendar.render();
-    });
+    }); 
+
+    function submit_activity(x) {
+
+        $.confirm({
+            title: 'Activity status submission',
+            content: '' +
+                '<form method="GET" action="<?= admin_url('calender-activity-edit') ?>" class="formName">' +
+
+                '<div class="form-group">' +
+                '<div class="form-check form-check-inline">' +
+                '<input required class="form-check-input" type="radio" id="done_status" name="done_status" value="1">' +
+                '<label class="form-check-label" for="done_status">Done</label></div>' +
+                '</div>' +
+
+                '<div class="form-group">' +
+                '<div class="form-check form-check-inline">' +
+                '<input required class="form-check-input" type="radio" id="done_status_not" name="done_status" value="0">' +
+                '<label class="form-check-label" for="done_status_not">Not Done (Missed)</label></div>' +
+                '</div>' +
+
+
+                '<div class="form-group">' +
+                '<label>Activity remarks</label>' +
+                '<input name="done_details" placeholder="Remarks about this activity"  class="name form-control" required />' +
+                '</div>' +
+
+                '<input name="id" type="hidden" value="' + x + '">' +
+
+
+                '<button class="btn-lg float-right btn btn-primary mt-2" type="submit">SUBMIT</button>' +
+
+
+                '</form>',
+            buttons: {
+                cancel: function() {
+                    //close
+                },
+            },
+
+        });
+    }
 </script>
