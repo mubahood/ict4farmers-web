@@ -34,6 +34,7 @@ class MainController extends Controller
     public function index()
     {
 
+ 
         /*  $time_start = microtime(true); 
 
         $x = 0;
@@ -47,7 +48,7 @@ class MainController extends Controller
             $x++;
             echo "$x. BEFORE  |||=>  {$u->phone_number} <== ||| ";
             $u->country_id = rand(1000, 100000);
-            $u->save();
+            $u->save(); 
             echo "AFTER  |||=>  {$u->phone_number} <== ||| <hr>";
         }
         die("done"); */

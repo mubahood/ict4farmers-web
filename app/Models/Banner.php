@@ -15,10 +15,17 @@ class Banner extends Model
     protected $table = 'banners';
     protected $appends = ['link'];
 
+    public function getImageAttribute($url)
+    {
+        $url = str_replace('storage/', "", $url);
+        $url = 'storage/' . $url;
+        return $url;
+    }
+
     public function getLinkAttribute()
     {
 
-        $link = url("");  
+        $link = url("");
         if ($this->type == 1) {
             $car = Category::find($this->category_id);
             if ($car != null) {
