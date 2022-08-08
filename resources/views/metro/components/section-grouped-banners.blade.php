@@ -46,7 +46,7 @@ if (isset($items[0])) {
     <div class="col-12 col-md-9">
         <div class="row">
             @foreach ($items as $item)
-                <a href="{{ $slide->link }}" class="col-6 col-md-3 border border-secondary"
+                <a href="{{ $item->link }}" class="col-6 col-md-3 border border-secondary"
                     style="background-image: url({{ $item->image }});     background-size:     cover;
             background-repeat:   no-repeat;
             background-position: center center; height: 16rem; ">

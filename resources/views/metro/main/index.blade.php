@@ -76,7 +76,7 @@ shuffle($bgs);
         <div class="d-none d-md-block col-md-3 pt-3">
             <h2 class="ps-2 h1">Top Categories</h2>
             @foreach ($top_categories as $_item)
-                <a href="#">
+                <a href="{{ url($_item->slug) }}">
                     <h3 class="fw-normal fs-4 py-1 m-0 px-3 text-gray-700 bg-hover-light text-hover-primary ">
                         {{ $_item->name }}</h3>
                 </a>

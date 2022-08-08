@@ -12,7 +12,7 @@ use Encore\Admin\Show;
 
 class BannerWebController extends AdminController
 {
-    /**
+    /** 
      * Title for current resource.
      *
      * @var string
@@ -80,6 +80,8 @@ class BannerWebController extends AdminController
      */
     protected function form()
     {
+        $c = Banner::find(58);
+        dd($c->link);
         $form = new Form(new Banner());
 
         $form->hidden('section', __('Section'))->default('web')->value('web');

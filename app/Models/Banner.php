@@ -17,7 +17,8 @@ class Banner extends Model
 
     public function getLinkAttribute()
     {
-        $link = url("");
+
+        $link = url("");  
         if ($this->type == 1) {
             $car = Category::find($this->category_id);
             if ($car != null) {
@@ -29,9 +30,8 @@ class Banner extends Model
                 $link = url($car->slug);
             }
         } else if ($this->type == 3) {
-            $car =  $this->position;
+            $link =  $this->position;
         }
-
         return $link;
     }
 }
