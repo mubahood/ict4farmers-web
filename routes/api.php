@@ -23,7 +23,9 @@ Route::post('workers', [ApiProductsController::class, 'workers_create']);
 Route::post('financial-records', [ApiProductsController::class, 'financial_records_create']);
 Route::get('workers', [ApiProductsController::class, 'workers']);
 Route::get('wizard-items', [ApiProductsController::class, 'wizard_items']);
-Route::get('app-version', [2]);
+Route::get('app-version', function () {
+    return [2];
+});
 
 Route::get('farms', [ApiProductsController::class, 'farms']);
 Route::get('gardens', [ApiProductsController::class, 'gardens']);
