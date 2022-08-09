@@ -24,7 +24,10 @@ Route::post('financial-records', [ApiProductsController::class, 'financial_recor
 Route::get('workers', [ApiProductsController::class, 'workers']);
 Route::get('wizard-items', [ApiProductsController::class, 'wizard_items']);
 Route::get('app-version', function () {
-    return [2];
+    return [[
+        'id' => 1,
+        'version' => 1,
+    ]];
 });
 
 Route::get('farms', [ApiProductsController::class, 'farms']);
