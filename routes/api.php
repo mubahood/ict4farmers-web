@@ -23,6 +23,7 @@ Route::post('workers', [ApiProductsController::class, 'workers_create']);
 Route::post('financial-records', [ApiProductsController::class, 'financial_records_create']);
 Route::get('workers', [ApiProductsController::class, 'workers']);
 Route::get('wizard-items', [ApiProductsController::class, 'wizard_items']);
+Route::get('app-version', [2]);
 
 Route::get('farms', [ApiProductsController::class, 'farms']);
 Route::get('gardens', [ApiProductsController::class, 'gardens']);
@@ -52,7 +53,7 @@ Route::get('farmers-goups', [ApiUsersController::class, 'farmers_goups']);
 Route::post('upload-temp-file', [ApiProductsController::class, 'upload_temp_file']);
 Route::post('products', [ApiProductsController::class, 'create']);
 Route::get('upload', [ApiProductsController::class, 'upload']);
-Route::get('products', [ApiProductsController::class, 'index']); 
+Route::get('products', [ApiProductsController::class, 'index']);
 Route::post('delete-product', [ApiProductsController::class, 'delete']);
 Route::get('banners', [ApiProductsController::class, 'banners']);
 Route::get('categories', [ApiProductsController::class, 'categories']);

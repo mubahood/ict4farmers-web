@@ -7,17 +7,11 @@ $steps = Utils::get_wizard_actions(Admin::user()->id);
 
 
 <div class="row ">
-
     <div class="col-md-8">
-
         <div class="row">
-
             <div class="col-md-8">
                 <div class="box box-success">
                     <h2 class="h4 text-bold m-0 border-bottom p-2 border-primary">Production</h2>
-
-
-
                     <div class="box-body" style="display: block;">
                         <div class="row">
                             <div class="col-4 col-md-4 my-admin-item">
