@@ -33,8 +33,48 @@ class MainController extends Controller
 {
     public function index()
     {
+       /*  set_time_limit(-1);
+        $x = 0;
+        $users = User::where([])->orderBy('id', 'Desc')->limit(100)->get();
+        foreach ($users as $u) {
+            if ($u->opening_hours == "1") {
+                continue;
+            }
+            $phone_number = "";
+            if (Utils::phone_number_is_valid($u->phone_number)) {
+                $phone_number = $u->phone_number;
+            } else if (Utils::phone_number_is_valid($u->username)) {
+                $phone_number = $u->username;
+            }
 
- 
+            if (!Utils::phone_number_is_valid($phone_number)) {
+                continue;
+            }
+
+            $link = 'https://t.ly/h7bbt';
+            //$link = 'https://bit.ly/3vPXB0L';
+            if (strlen($u->name) > 2) {
+                $name = substr($u->name, 0, 20);
+            }
+
+            $msg = "Hello $name, a new update for your ICT4Farmers App is available. Please use this link to update $link";
+
+            $res = Utils::send_sms([
+                'to' => $phone_number,
+                'message' => $msg,
+            ]);
+
+            if ($res) {
+                $x++;
+                echo "$x. SENT TO $name. => $phone_number .<hr>";
+                $u->opening_hours = "1";
+                $u->save();
+            } else {
+                echo "FAILED TO SEND  TO $name. => $phone_number .<hr>";
+            }
+        }
+        die("done"); */
+
         /*  $time_start = microtime(true); 
 
         $x = 0;

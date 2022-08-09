@@ -193,7 +193,7 @@ class Utils
         ])->get();
 
         $item  = new WizardItem();
-        if (count($users) < 1) { 
+        if (count($users) < 1) {
             $item->is_done = 0;
             $item->sub_title = "You have no added any worker.";
         } else {
