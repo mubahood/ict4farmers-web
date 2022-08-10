@@ -209,7 +209,7 @@ class AuthController extends Controller
             $form->text('first_name')->rules('required');
             $form->text('last_name')->rules('required');
             $form->radio('gender', 'Sex')->options(['Male' => 'Male', 'Female' => 'Female'])->rules('required');
-            $form->text('date_of_birth', 'Age')->rules('required');
+            $form->date('date_of_birth', 'Date of birth')->rules('required');
             $form->text('phone_number_2', 'Phone number 2');
             $form->text('email', 'Email address');
             $form->text('address', 'Premises address');
