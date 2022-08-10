@@ -61,7 +61,7 @@ class ProductsCategoryController extends AdminController
         }
 
         $form->select('parent', __('Parent category'))
-            ->options($parents)->required();
+            ->options($parents);
 
         $form->text('name', __('Name'))->required();
 
