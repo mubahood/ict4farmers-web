@@ -41,4 +41,20 @@ class Banner extends Model
         }
         return $link;
     }
+
+    public static function boot()
+    {
+        parent::boot();
+        self::creating(function ($model) {
+            $model->title =  $model->name;
+            $model->position =  0;
+            return $model;
+        });
+
+        self::updating(function ($model) {
+            $model->title =  $model->name;
+            $model->position =  0;
+            return $model;
+        });
+    }
 }
