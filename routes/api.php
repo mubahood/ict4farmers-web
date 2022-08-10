@@ -81,7 +81,7 @@ Route::post('users', [ApiUsersController::class, 'create_account']);
 Route::get('posts', [ApiProductsController::class, 'posts']);
 Route::get('post-categories', [ApiProductsController::class, 'post_categories']);
 Route::post('posts', [ApiProductsController::class, 'create_post']);
-Route::post('git', [ApiProductsController::class, 'create_git_post']);
+//Route::post('git', [ApiProductsController::class, 'create_git_post']);
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

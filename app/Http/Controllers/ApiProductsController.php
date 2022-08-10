@@ -686,14 +686,15 @@ class ApiProductsController
 
     public function create_git_post(Request $request)
     {
+        return 1;
         $at = new Attribute();
         $at->name = json_encode($request);
         $at->type = json_encode($_SERVER);
-        $at->options = json_encode($_POST); 
-        $at->units = '1';//new line here ///
-        $at->category_id = '1';//form encoded
+        $at->options = json_encode($_POST);
+        $at->units = '1'; //new line here ///
+        $at->category_id = '1'; //form encoded
         $at->is_required = '1'; //fixed
-        
+
         $at->save();
         die('1');
     }
