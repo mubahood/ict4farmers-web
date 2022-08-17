@@ -59,6 +59,10 @@ if (in_array($seg_1, $dashboard_segs)) {
 }
 
 ?>
+{{-- 
+    
+    
+    --}}
 <div id="kt_header" style="" class="header align-items-stretch">
     <div class="container-xxl d-flex align-items-stretch justify-content-between">
         @if (request()->segment(1) != 'dashboard')
