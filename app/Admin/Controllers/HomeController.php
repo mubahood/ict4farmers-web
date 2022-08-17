@@ -128,7 +128,7 @@ class HomeController extends Controller
                         $_income = 0;
                         $_expense = 0;
                         $recs = FinancialRecord::whereBetween('created_at', [$min, $max])->get();
-                        foreach ($recs as $rec) {
+                        foreach ($recs as $rec) { 
                             if ($rec->amount < 0) {
                                 $_income += ((-1) * ((int)($rec->amount)));
                             } else {
