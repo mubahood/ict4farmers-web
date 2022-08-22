@@ -372,6 +372,10 @@ thumbnail
         //return view('metro.index');
     }
 
+    public function market(Request  $request){
+        return view('metro.main.index');
+    }
+    
     public function slugSwitcher(Request  $request)
     {
         //echo "<pre>"; 

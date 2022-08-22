@@ -3,12 +3,43 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Silicon | Mobile App Showcase Landing v.1</title>
+    <title>ICT4Farmers | Manage all your farm activities in one place.</title>
+
+    <script>
+        $(function() {
+            $('.lazy').Lazy({
+                // your configuration goes here
+                scrollDirection: 'vertical',
+                placeholder: '{{ url('no_image.jpg') }}',
+                effect: 'fadeIn',
+                visibleOnly: true,
+                onError: function(element) {
+                    console.log('error loading ' + element.data('src'));
+                }
+            });
+        });
+    </script>
+    
+    <!--Start of Tawk.to Script-->
+    <script type="text/javascript">
+        var Tawk_API = Tawk_API || {},
+            Tawk_LoadStart = new Date();
+        (function() {
+            var s1 = document.createElement("script"),
+                s0 = document.getElementsByTagName("script")[0];
+            s1.async = true;
+            s1.src = 'https://embed.tawk.to/62ee7a3437898912e961972f/1g9poqoh3';
+            s1.charset = 'UTF-8';
+            s1.setAttribute('crossorigin', '*');
+            s0.parentNode.insertBefore(s1, s0);
+        })();
+    </script>
+    <!--End of Tawk.to Script-->
 
     <!-- SEO Meta Tags -->
-    <meta name="description" content="Silicon - Multipurpose Technology Bootstrap Template">
+    <meta name="description" content="ICT4Farmers | Manage all your farm activities in one place.">
     <meta name="keywords"
-        content="bootstrap, business, creative agency, mobile app showcase, saas, fintech, finance, online courses, software, medical, conference landing, services, e-commerce, shopping cart, multipurpose, shop, ui kit, marketing, seo, landing, blog, portfolio, html5, css3, javascript, gallery, slider, touch, creative">
+        content="ict4farmers,buy and sell farm products in uganda">
     <meta name="author" content="Createx Studio">
 
     <!-- Viewport -->
@@ -144,24 +175,7 @@
             };
         })();
     </script>
-
-    <!-- Google Tag Manager -->
-    <script>
-        (function(w, d, s, l, i) {
-            w[l] = w[l] || [];
-            w[l].push({
-                'gtm.start': new Date().getTime(),
-                event: 'gtm.js'
-            });
-            var f = d.getElementsByTagName(s)[0],
-                j = d.createElement(s),
-                dl = l != 'dataLayer' ? '&l=' + l : '';
-            j.async = true;
-            j.src =
-                '../www.googletagmanager.com/gtm5445.html' + i + dl;
-            f.parentNode.insertBefore(j, f);
-        })(window, document, 'script', 'dataLayer', 'GTM-WKV3GT5');
-    </script>
+ 
 </head>
 
 
@@ -169,12 +183,7 @@
 
 <body>
 
-    <!-- Google Tag Manager (noscript)-->
-    <noscript>
-        <iframe src="../external.html?link=http://www.googletagmanager.com/ns.html?id=GTM-WKV3GT5" height="0"
-            width="0" style="display: none; visibility: hidden;"></iframe>
-    </noscript>
-
+ 
     <!-- Page loading spinner -->
     <div class="page-loading active">
         <div class="page-loading-inner">
@@ -192,8 +201,8 @@
         <!-- Remove "navbar-sticky" class to make navigation bar scrollable with the page -->
         <header class="header navbar navbar-expand-lg position-absolute navbar-sticky">
             <div class="container px-3">
-                <a href="index-2.html" class="navbar-brand pe-3">
-                    <img src="assets/images/logo-2.png" width="47" alt="Silicon">
+                <a href="/" class="navbar-brand pe-3">
+                    <img src="assets/images/logo-2.png" width="47" >
                     ICT4Farmer
                 </a>
                 <div id="navbarNav" class="offcanvas offcanvas-end">
@@ -239,7 +248,7 @@
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <a href="../external.html?link=https://themes.getbootstrap.com/product/silicon-business-technology-template-ui-kit/"
+                <a href="https://play.google.com/store/apps/details?id=net.eighttechnologes.ict4farmers&hl=en&gl=US"
                     class="btn btn-primary btn-sm fs-sm rounded d-none d-lg-inline-flex" target="_blank"
                     rel="noopener">
                     <i class="bx bx-download fs-5 lh-1 me-1"></i>
@@ -1070,7 +1079,7 @@
     <footer class="footer pt-5 pb-4 pb-lg-5">
         <div class="container text-center pt-lg-3">
             <div class="navbar-brand justify-content-center text-dark mb-2 mb-lg-4">
-                <img src="assets/images/logo-2.png" class="me-2" width="60" alt="Silicon">
+                <img src="assets/images/logo-2.png" class="me-2" width="60" >
                 <span class="fs-4">ICT4Farmers</span>
             </div>
             <ul class="nav justify-content-center pt-3 pb-4 pb-lg-5">

@@ -104,7 +104,7 @@ class InstallCommand extends Command
         $dockerCompose = str_replace('{{services}}', $stubs, $dockerCompose);
         $dockerCompose = str_replace('{{volumes}}', $volumes, $dockerCompose);
 
-        // Replace Selenium with ARM base container on Apple Silicon...
+        // Replace Selenium with ARM base container on Apple Slicon...
         if (in_array('selenium', $services) && php_uname('m') === 'arm64') {
             $dockerCompose = str_replace('selenium/standalone-chrome', 'seleniarm/standalone-chromium', $dockerCompose);
         }
