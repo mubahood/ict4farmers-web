@@ -347,7 +347,7 @@
                     <!-- Item -->
                     <div class="swiper-slide py-3">
                         <a href="javascript:;" class="card card-body card-hover px-2 mx-2">
-                            <img src="muhindo/img/brands/ucc.png" class="d-block mx-auto my-2" width="154"
+                            <img src="muhindo/img/brands/UCC.png" class="d-block mx-auto my-2" width="154"
                                 alt="Brand">
                         </a>
                     </div>
@@ -363,7 +363,7 @@
                     <!-- Item -->
                     <div class="swiper-slide py-3">
                         <a href="javascript:;" class="card card-body card-hover px-2 mx-2">
-                            <img src="muhindo/img/brands/unffe.png" class="d-block mx-auto my-2" width="154"
+                            <img src="muhindo/img/brands/UNFFE.png" class="d-block mx-auto my-2" width="154"
                                 alt="Brand">
                         </a>
                     </div>
