@@ -41,6 +41,7 @@ class CallCenterController extends Controller
         if ($dtmfDigits == NULL)
             $response = '<?xml version="1.0" encoding="UTF-8"?>';
             $response .= '<Response>';
+            // $response .= '<Play url="'. $_ENV['APP_URL'] .'/ict4farmers-web/public/assets/audio/pwds/call_center/intro_01.mp3'.'">';   // thank you for calling  the farmers help center, please wait as we redirect you
             $response .= '<Play url="'.$config->introduction.'">';   // thank you for calling  the farmers help center, please wait as we redirect you
             $response .= '</Play>';
             $response .= '<GetDigits timeout="30" numDigits="1">';
@@ -81,7 +82,7 @@ class CallCenterController extends Controller
         if (($dtmfDigits == 1) && ($current_call->first()->call_menu_selected == 1)) {
             $response = '<?xml version="1.0" encoding="UTF-8"?>';
             $response .= '<Response>';
-            $response .= '<GetDigits timeout="30" numDigits="2">';
+            $response .= '<GetDigits timeout="30" numDigits="1">';
             $response .= '<Play url="'.$config->help_in_english.'">';   // (isaac) for help in coffee farming, press 1, ...
             $response .= '</Play>';
             $response .= '</GetDigits>';
@@ -93,7 +94,7 @@ class CallCenterController extends Controller
         } // End English menu 1 ---------------------------------------------------------------------------
 
         // Start English sub menu
-        elseif (($current_call->first()->call_menu_selected == 2) && ($current_call->first()->language == "English")){
+        elseif ($dtmfDigits == 1 && ($current_call->first()->call_menu_selected == 2) && ($current_call->first()->language == "English")){
             $response .= '<Response>';
             $response .= '<Dial record="true" sequential="true" phoneNumbers="+2516706638494,+2516706638494"/>';
             $response .= '</Response>';
@@ -180,8 +181,7 @@ Events: N/A
 Callback: https://app.unffeict4farmers.org/callcenter/voice/
 Events: N/A
 
-https://8fdd-41-75-189-57.eu.ngrok.io/api/call_center_voice
-
+https://bcac-41-75-186-219.eu.ngrok.io/api/call_center_voice
 "recordingUrl": "http://41.210.130.212:8080/e62bc0ae2203608af64424cdb390518d.mp3",
 
 
