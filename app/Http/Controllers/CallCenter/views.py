@@ -42,16 +42,13 @@ def voice(request):
         
         #response = '<?xml version="1.0" encoding="UTF-8"?>'
         response = '<Response>'
-        response += '<Play url="' + \
-            request.build_absolute_uri(config.introduction.url)+'"/>'
+        response += '<Play url="' + request.build_absolute_uri(config.introduction.url)+'"/>'
         response += '<GetDigits timeout="30" numDigits="1">'
-        response += '<Play url="' + \
-            request.build_absolute_uri(config.call_back_voice.url)+'"/>'
+        response += '<Play url="' + request.build_absolute_uri(config.call_back_voice.url)+'"/>'
         response += '</GetDigits>'
         response += '</Response>'
 
-    #
-        #getting the current call
+    # getting the current call
     current_call=None
     try:
         current_call = Call.objects.get(session_id=session_id)
