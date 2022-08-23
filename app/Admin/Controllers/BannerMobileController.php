@@ -35,7 +35,7 @@ class BannerMobileController extends AdminController
         ]);
 
         $grid->column('id', __('Id'))->sortable();
-        $grid->column('image', __('Image'))->image(url(""), 100, 100);
+        $grid->column('image', __('Image'))->image(url("market"), 100, 100);
         $grid->column('name', __('Title'));
         $grid->column('sub_title', __('Sub-Title'));
         $grid->column('category_id', __('Category'));
@@ -89,7 +89,6 @@ class BannerMobileController extends AdminController
             ->options([
                 1 => 'Category',
                 2 => 'Product',
-                3 => 'Link',
             ])->when(1, function (Form $form) {
                 $form->select('category_id', 'Select Category')->options(
                     Category::get_subcategories()
@@ -99,10 +98,7 @@ class BannerMobileController extends AdminController
                 $form->select('product_id', 'Select Product')->options(
                     Product::all()->pluck('name', 'id')
                 )->rules('required');
-            })
-            ->when(3, function (Form $form) {
-                $form->url('position', __('Enter Link'))->rules('required');
-            })->rules('required');
+            });
 
 
 
@@ -110,10 +106,11 @@ class BannerMobileController extends AdminController
         $form->text('name', __('Title'));
         $form->text('sub_title', __('Sub title'));
         $form->image('image', __('Image'));
+        $form->hidden('position', __(0));
         $form->hidden('clicks', __('Clicks'))->default(0);
         $form->hidden('parent_id', __('Clicks'))->default(0);
         $form->hidden('order', __('Clicks'))->default(0);
-        $form->hidden('title', __('Clicks'))->default(0);
+        $form->hidden('title', __('Clicks'))->default("")->value("");
 
 
         return $form;

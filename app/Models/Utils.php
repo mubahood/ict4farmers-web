@@ -159,6 +159,7 @@ class Utils
         you need to have add your farms first. Farm that you add into the system farm will give you access to enterprises. 
         A farm will have many enterprises or call them projects for example your farm can have poultry, fishing and cattle raring.
         <br><br>When registering your farm its highly recommend to do so on ground in order for the application to pick your graphical location, this will help the application taller services that are near you for convince. ';
+        $item->is_done = 1;
         $items[] = $item;
         ################################################
 
@@ -184,6 +185,7 @@ class Utils
         For example, your poultry project, your garden, your cattle herd, among others. 
         <br><br>Press the <b>CREATE ENTERPRISE BUTTON</b>.
         To go ahead and add your first enterprise!';
+        $item->is_done = 1;
         $items[] = $item;
         ################################################
 
@@ -193,7 +195,7 @@ class Utils
         ])->get();
 
         $item  = new WizardItem();
-        if (count($users) < 1) { 
+        if (count($users) < 1) {
             $item->is_done = 0;
             $item->sub_title = "You have no added any worker.";
         } else {

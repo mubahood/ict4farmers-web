@@ -24,7 +24,7 @@
                         <div class="row">
                             <div class="col-12">
                                 <center>
-                                    <a href="{{ url("") }}" class="py-9 mb-5">
+                                    <a href="{{ url("market") }}" class="py-9 mb-5">
                                         <img alt="Logo" src="assets/images/logo.png" class="h-90px" />
                                     </a>
                                 </center>

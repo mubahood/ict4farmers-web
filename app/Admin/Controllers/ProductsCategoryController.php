@@ -2,11 +2,11 @@
 
 namespace App\Admin\Controllers;
 
-use App\Models\Banner; 
+use App\Models\Category;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
+use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
-use Encore\Admin\Tree;
 
 class ProductsCategoryController extends AdminController
 {
@@ -17,26 +17,30 @@ class ProductsCategoryController extends AdminController
      *
      * @return Content
      */
-    public function index(Content $content)
-    {
-        return $content
-            ->title($this->title)
-            ->body($this->tree());
-    }
 
-    /**
-     * Make a grid builder.
-     *
-     * @return Tree
-     */
-    protected function tree()
+    protected function grid()
     {
-        return Banner::tree(function (Tree $tree) {
+        $grid = new Grid(new Category());
 
-            $tree->branch(function ($branch) {
-                return $branch['name'];
-            });
-        });
+        $grid->column('id', __('Id'))->sortable();
+        $grid->column('image', __('thumnail'))
+            ->display(function () {
+
+                return '<img width="100" src="' . url('storage/' . $this->image) . '" >';
+            })
+            ->sortable();
+        $grid->column('name', __('Title'))->sortable();
+        $grid->column('parent', __('parent'))
+            ->display(function () {
+                $cat = Category::find($this->parent);
+                if ($cat == null) {
+                    return "-";
+                }
+                return $cat->name;
+            })
+            ->sortable();
+
+        return $grid;
     }
 
     /**
@@ -46,18 +50,26 @@ class ProductsCategoryController extends AdminController
      */
     protected function form()
     {
-        $form = new Form(new Banner());
+        $form = new Form(new Category());
 
-        $form->display('id', 'ID');
+        $parents = [];
+        foreach (Category::all() as $key => $v) {
+            $id = (int)($v->parent);
+            if ($v->parent < 1) {
+                $parents[$v->id] = $v->name;
+            }
+        }
 
-        $form->select('parent_id')->options(Banner::selectOptions());
+        $form->select('parent', __('Parent category'))
+            ->options($parents);
 
-        $form->text('title')->rules('required');
-        $form->textarea('desc')->rules('required');
-        $form->image('logo');
+        $form->text('name', __('Name'))->required();
 
-        $form->display('created_at', 'Created At');
-        $form->display('updated_at', 'Updated At');
+        $form->image('image', __('Image'));
+        $form->textarea('description', __('Details'));
+
+
+
 
         return $form;
     }

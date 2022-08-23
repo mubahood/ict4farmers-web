@@ -37,7 +37,7 @@ class AgentUsersController extends AdminController
             if ($g->administrator_id == $u->id) {
                 $group_id = $g->farmers_group_id;
             }
-        }
+        } 
 
         $grid->model()->where('group_id', $group_id);
 

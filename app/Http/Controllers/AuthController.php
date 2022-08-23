@@ -119,7 +119,7 @@ class AuthController extends Controller
             ]);
         }
 
-        $u = Administrator::where([
+        $u = Administrator::where([ 
             'username' => $phone_number
         ])->orWhere([
             'email' => $phone_number
