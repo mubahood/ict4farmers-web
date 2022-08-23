@@ -15,8 +15,8 @@ class CreateCallsTable extends Migration
     public function up()
     {
         Schema::create('calls', function (Blueprint $table) {
-            $table->id();
-            $table->string('session_id', 200);
+            // $table->id();
+            $table->string('session_id', 200)->primary();
             $table->string('phone')->nullable();
             $table->dateTime('call_date')->nullable();
             $table->string('call_type')->nullable();
