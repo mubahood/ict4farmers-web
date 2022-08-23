@@ -7,17 +7,15 @@ use AfricasTalking\SDK\AfricasTalking;
 use App\Models\Call;
 use App\Models\Configuration;
 use Illuminate\Http\Request;
-use Mockery\Generator\StringManipulation\Pass\Pass;
 
 $username = 'musa@8technologies.net';  // use 'sandbox' for development in the test environment
 $apiKey = $_ENV['AT_API_KEY']; // use your sandbox app API key for development in the test environment
-// $apiKey = "27709b682804f7f4d3b0bd3b69f76de8ed6da2ea0e7dc12f2995e53e30ae2f5f"; 
-// print_r($apiKey);
 
 $AT = new AfricasTalking($username, $apiKey);
 
 // Get the voice service
 $voiceinstance = $AT->voice();
+
 
 class CallCenterController extends Controller
 {
@@ -60,8 +58,6 @@ class CallCenterController extends Controller
             $current_call = NULL;
         }
 
-        // print($current_call);
-
         # check if call is already saved and skip saving it again
         try {
             if (!isset($current_call)){
@@ -78,46 +74,38 @@ class CallCenterController extends Controller
             //throw $th;
         }
 
-    
         // Start English menu 1 ---------------------------------------------------------------------------
-        switch([$dtmfDigits, $current_call->first()->call_menu_selected]){
-            case [$dtmfDigits == 1, $current_call->first()->call_menu_selected == 1]:
-                $response = '<?xml version="1.0" encoding="UTF-8"?>';
-                $response .= '<Response>';
-                $response .= '<GetDigits timeout="30" numDigits="1">';
-                $response .= '<Play url="'.$config->help_in_english.'">';   // (isaac) for help in coffee farming, press 1, ...
-                $response .= '</Play>';
-                $response .= '</GetDigits>';
-                $response .= '</Response>';
-                $menu = 2;
-                $language = "English";
-
-            switch ([$dtmfDigits, $current_call->first()->call_menu_selected, $current_call->first()->language]) {
-                case [$dtmfDigits == 1, $current_call->first()->call_menu_selected == 2, $current_call->first()->language == "English"]:
-                    $response .= '<Response>';
-                    $response .= '<Dial record="true" sequential="true" phoneNumbers="+2516706638494,+256706638494"/>';
-                    $response .= '</Dial>';
-                    $response .= '</Response>';
-                    break;
-
-                case [$dtmfDigits == 2, $current_call->first()->call_menu_selected == 2, $current_call->first()->language == "English"]:
-                    $response .= '<Response>';
-                    $response .= '<Dial record="true" sequential="true" phoneNumbers="+2516706638494,+256706638494"/>';
-                    $response .= '</Dial>';
-                    $response .= '</Response>';
-
-                // default:
-                //     // fake code
-                //     break;
-            }
+        if (($dtmfDigits == 1) && ($current_call->first()->call_menu_selected == 1)) {
+            $response = '<?xml version="1.0" encoding="UTF-8"?>';
+            $response .= '<Response>';
+            $response .= '<GetDigits timeout="30" numDigits="1">';
+            $response .= '<Play url="'.$config->help_in_english.'">';   // (isaac) for help in coffee farming, press 1, ...
+            $response .= '</Play>';
+            $response .= '</GetDigits>';
+            $response .= '</Response>';
+            $menu = 2;
+            $language = "English";
+            // $current_call->first()->language = $language;
+            // $current_call->save();    // update the language to the db on this one
         } // End English menu 1 ---------------------------------------------------------------------------
 
+        // Start English sub menu
+        elseif ($dtmfDigits == 1 && ($current_call->first()->call_menu_selected == 2) && ($current_call->first()->language == "English")){
+            $response .= '<Response>';
+            $response .= '<Dial record="true" sequential="true" phoneNumbers="+2516706638494,+2516706638494"/>';
+            $response .= '</Dial>';
+            $response .= '</Response>';
+        }
+
+        elseif (($dtmfDigits == 2) && ($current_call->first()->call_menu_selected == 2) && ($current_call->first()->language == "English")){
+            $response .= '<Response>';
+            $response .= '<Dial record="true" sequential="true" phoneNumbers="+256706638494,+256706638494"/>';
+            $response .= '</Dial>';
+            $response .= '</Response>';
+        } // End English sub menu
 
         // Start Luganda menu 1
-        switch([$dtmfDigits, $current_call->first()->call_menu_selected]){
-            case [$dtmfDigits == 2, $current_call->first()->call_menu_selected == 1]:
-
-        // if (($dtmfDigits == '2') && ($current_call->first()->call_menu_selected == 1)) {
+        if (($dtmfDigits == '2') && ($current_call->first()->call_menu_selected == 1)) {
             $response = '<?xml version="1.0" encoding="UTF-8"?>';
             $response .= '<Response>';
             $response .= '<GetDigits timeout="30" numDigits="1">';
@@ -133,28 +121,28 @@ class CallCenterController extends Controller
                 $response .= '<Dial record="true" sequential="true" phoneNumbers="+256706638494,agent1.farmercallcenter@ug.sip2.africastalking.com"/>';
                 $response .= '</Dial>';
             }
+
             elseif ($dtmfDigits == '2' &&  $current_call->first()->call_menu_selected == 2 && $current_call->first()->language == "Luganda"){
                 $response .= '<Response>';
                 $response .= '<Dial record="true" sequential="true" phoneNumbers="+256706638494,agent1.farmercallcenter@ug.sip2.africastalking.com"/>';
-                $response .= '</Dial>';
+            $response .= '</Dial>';
                 $response .= '</Response>';
             } 
             elseif ($dtmfDigits == '3' &&  $current_call->first()->call_menu_selected == 1){
                 $response .= '<Response>';
                 $response .= '<Dial record="true" sequential="true" phoneNumbers="+256706638494,agent2.farmercallcenter@ug.sip2.africastalking.com"/>';
-                $response .= '</Dial>';
                 $response .= '</Response>';
             } 
+
             elseif ($dtmfDigits == '4' &&  $current_call->first()->call_menu_selected == 1){
                 $response .= '<Response>';
                 $response .= '<Dial record="true" sequential="true" phoneNumbers="+256706638494,agent3.farmercallcenter@ug.sip2.africastalking.com"/>';
-                $response .= '</Dial>';
                 $response .= '</Response>';
-            } 
+            }
+
             elseif ($dtmfDigits == '5' &&  $current_call->first()->call_menu_selected == 1){
                 $response .= '<Response>';
                 $response .= '<Dial record="true" sequential="true" phoneNumbers="+256706638494,agent3.farmercallcenter@ug.sip.africastalking.com"/>';
-                $response .= '</Dial>';
                 $response .= '</Response>';
             } // End Luganda sub menu
         } // End Luganda menu 1 ---------------------------------------------------------------------------
@@ -181,8 +169,10 @@ class CallCenterController extends Controller
                 // throw $th->getMessage();
             }
         }
+
         return $response;
     }
+
 }
 
 
@@ -195,14 +185,14 @@ Events: N/A
 Callback: https://app.unffeict4farmers.org/callcenter/voice/
 Events: N/A
 
-https://bcac-41-75-186-219.eu.ngrok.io/api/call_center_voice
+
+https://5176-41-75-186-219.eu.ngrok.io/api/call_center_voice
+
+
+
+
 "recordingUrl": "http://41.210.130.212:8080/e62bc0ae2203608af64424cdb390518d.mp3",
 
 
-*/
-
-
+*/     
         
-        
-
-
