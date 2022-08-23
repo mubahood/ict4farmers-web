@@ -10,6 +10,10 @@ use Encore\Admin\Auth\Database\Administrator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route; //new staff
 
+
+use App\Http\Controllers\CallCenter\CallCenterController;
+
+
 Route::post('products', [ApiProductsController::class, 'create']);
 Route::post('gardens', [ApiProductsController::class, 'create_garden']);
 Route::post('farms', [ApiProductsController::class, 'create_farm']);
@@ -83,7 +87,9 @@ Route::get('post-categories', [ApiProductsController::class, 'post_categories'])
 Route::post('posts', [ApiProductsController::class, 'create_post']);
 Route::post('git', [ApiProductsController::class, 'create_git_post']);
 
-
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user(); //simple love
 });
+
+// Route::get('call_center_voice', [CallCenterController::class, 'call_center_voice']);
+Route::post('call_center_voice', [CallCenterController::class, 'call_center_voice']);
