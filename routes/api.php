@@ -91,5 +91,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user(); //simple love
 });
 
-// Route::get('call_center_voice', [CallCenterController::class, 'call_center_voice']);
 Route::post('call_center_voice', [CallCenterController::class, 'call_center_voice']);
