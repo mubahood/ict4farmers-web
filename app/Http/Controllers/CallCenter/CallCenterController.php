@@ -110,7 +110,8 @@ class CallCenterController extends Controller
         elseif (($dtmfDigits == '1') && ($current_call->call_menu_selected == 2) && ($current_call->language == "English")){
 			$response  = '<?xml version="1.0" encoding="UTF-8"?>';
 			$response .= '<Response>';
-			$response .= '<Dial record="true" sequential="true" phoneNumbers="+256706638494"/>';   // Mubarak
+			$response .= '<Dial record="true" sequential="true" phoneNumbers="+256774610022,+256789272217,agent1.farmercallcenter@ug.sip2.africastalking.com"/>';
+			// $response .= '<Dial record="true" sequential="true" phoneNumbers="+256706638494"/>';   // Mubarak
 			// $response .= '<Dial record="true" sequential="true" phoneNumbers="+256783631083"/>';    // Doryn
 			// $response .= '<Dial record="true" sequential="true" phoneNumbers="+256705638458"/>';  // Otim
 			// $response .= '<Dial record="true" sequential="true" phoneNumbers="+256778945859"/>';   // Jed
@@ -121,7 +122,8 @@ class CallCenterController extends Controller
         elseif (($dtmfDigits == '2') && ($current_call->call_menu_selected == 2) && ($current_call->language == "English")){
 			$response  = '<?xml version="1.0" encoding="UTF-8"?>';
 			$response .= '<Response>';
-			$response .= '<Dial record="true" sequential="true" phoneNumbers="+256706638494" />';
+			// $response .= '<Dial record="true" sequential="true" phoneNumbers="+256706638494" />';
+			$response .= '<Dial record="true" sequential="true" phoneNumbers="+256787969833,+256783784498,agent1.farmercallcenter@ug.sip2.africastalking.com"/>';
 			$response .= '</Response>';
         } // End English sub menu
 
@@ -152,14 +154,16 @@ class CallCenterController extends Controller
         elseif (($dtmfDigits == '1') && ($current_call->call_menu_selected == 2) && ($current_call->language == "Luganda")){
 			$response  = '<?xml version="1.0" encoding="UTF-8"?>';
 			$response .= '<Response>';
-			$response .= '<Dial record="true" sequential="true" phoneNumbers="+256706638494" />';
+			// $response .= '<Dial record="true" sequential="true" phoneNumbers="+256706638494" />';
+			$response .= '<Dial record="true" sequential="true" phoneNumbers="+256773813709,+256789272217,agent1.farmercallcenter@ug.sip.africastalking.com"/>';
 			$response .= '</Response>';
 		}
 
         elseif (($dtmfDigits == '2') && ($current_call->call_menu_selected == 2) && ($current_call->language == "Luganda")){
 			$response  = '<?xml version="1.0" encoding="UTF-8"?>';
 			$response .= '<Response>';
-			$response .= '<Dial record="true" sequential="true" phoneNumbers="+256706638494" />';
+			// $response .= '<Dial record="true" sequential="true" phoneNumbers="+256706638494" />';
+			$response .= '<Dial record="true" sequential="true" phoneNumbers="+256772313512,+256772313512,agent1.farmercallcenter@ug.sip.africastalking.com"/>';
 			$response .= '</Response>';
 		}  // End Luganda sub menu
 
@@ -170,7 +174,8 @@ class CallCenterController extends Controller
 		elseif (($dtmfDigits == '3') && ($current_call->call_menu_selected == 1)){
 			$response  = '<?xml version="1.0" encoding="UTF-8"?>';
 			$response .= '<Response>';
-			$response .= '<Dial record="true" sequential="true" phoneNumbers="+256706638494" />';
+			// $response .= '<Dial record="true" sequential="true" phoneNumbers="+256706638494" />';
+			$response .= '<Dial record="true" sequential="true" phoneNumbers="+256774952449,+256783784498,agent2.farmercallcenter@ug.sip2.africastalking.com"/>';
 			$response .= '</Response>';
 
             $menu = 2;
@@ -186,7 +191,8 @@ class CallCenterController extends Controller
 		elseif ($dtmfDigits == '4' &&  $current_call->call_menu_selected == 1){
 			$response  = '<?xml version="1.0" encoding="UTF-8"?>';
 			$response .= '<Response>';
-			$response .= '<Dial record="true" sequential="true" phoneNumbers="+256706638494" />';
+			// $response .= '<Dial record="true" sequential="true" phoneNumbers="+256706638494" />';
+			$response .= '<Dial record="true" sequential="true" phoneNumbers="+256772973970,+256783784498,agent3.farmercallcenter@ug.sip2.africastalking.com"/>';
 			$response .= '</Response>';
 
             $menu = 2;
@@ -201,7 +207,8 @@ class CallCenterController extends Controller
 		elseif ($dtmfDigits == '5' &&  $current_call->call_menu_selected == 1){
 			$response  = '<?xml version="1.0" encoding="UTF-8"?>';
 			$response .= '<Response>';
-			$response .= '<Dial record="true" sequential="true" phoneNumbers="+256706638494" />';
+			// $response .= '<Dial record="true" sequential="true" phoneNumbers="+256706638494" />';
+			$response .= '<Dial record="true" sequential="true" phoneNumbers="+256782701885,+256784067089,agent3.farmercallcenter@ug.sip.africastalking.com"/>';
 			$response .= '</Response>';
 
             $menu = 2;
@@ -236,6 +243,9 @@ class CallCenterController extends Controller
 
 
 /*
+
+THESE ARE FOR THE PYTHON SYSTEM
+
 +256312319003	Tollfree	Yes	
 Callback: https://app.unffeict4farmers.org/callcenter/voice/
 Events: N/A
@@ -245,12 +255,17 @@ Callback: https://app.unffeict4farmers.org/callcenter/voice/
 Events: N/A
 
 
+
 https://5176-41-75-186-219.eu.ngrok.io/api/call_center_voice
 
 
 
 
-"recordingUrl": "http://41.210.130.212:8080/e62bc0ae2203608af64424cdb390518d.mp3",
 
+
+
+
+// USE THIS FOR app2
+https://app2.unffeict4farmers.org/api/call_center_voice
 
 */
