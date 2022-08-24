@@ -17,12 +17,12 @@ class CreateAgentProfilesTable extends Migration
 
         Schema::create('agent_profiles', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id');
+            $table->string('name');
             // $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->smallInteger('contact');
-            $table->integer('region_id');
+            $table->string('phone_number');
+            $table->string('region');
             // $table->foreign('region_id')->references('id')->on('regions')->onDelete('cascade');
-            $table->integer('district_id');
+            $table->string('district');
             // $table->foreign('district_id')->references('id')->on('districts')->onDelete('cascade');
             $table->string('specific_role');
             $table->timestamps();
