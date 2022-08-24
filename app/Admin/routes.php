@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Routing\Router;
+use App\Http\Controllers\CallCenter\CallCenterController;
+
 
 Admin::routes();
 
@@ -42,4 +44,10 @@ Route::group([
     $router->resource('web-app', BannerWebController::class);
     $router->resource('pricings', PricingController::class);
     $router->resource('markets', MarketController::class);
+
+
+    // $router->get('/call_center_voice', [CallCenterController::class, 'call_center_voice']);
+    $router->resource('call_center_voice', CallCenterAdminController::class);
+    $router->resource('call_center_agents', CallCenterAgentsController::class);
+
 });

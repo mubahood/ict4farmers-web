@@ -8,14 +8,13 @@ use App\Models\Call;
 use App\Models\Configuration;
 use Illuminate\Http\Request;
 
-$username = 'musa@8technologies.net';  // use 'sandbox' for development in the test environment
-$apiKey = $_ENV['AT_API_KEY']; // use your sandbox app API key for development in the test environment
+// $username = $_ENV['AT_API_USERNAME'];  // use 'sandbox' for development in the test environment
+// $apiKey = $_ENV['AT_API_KEY']; // use your sandbox app API key for development in the test environment
 
-$AT = new AfricasTalking($username, $apiKey);
+// $AT = new AfricasTalking($username, $apiKey);
 
-// Get the voice service
-$voiceinstance = $AT->voice();
-$details = [];
+// // Get the voice service
+// $voiceinstance = $AT->voice();
 
 
 class CallCenterController extends Controller
@@ -34,16 +33,40 @@ class CallCenterController extends Controller
         $amount = $request->amount;
         $dtmfDigits = $request->dtmfDigits;
         $config = Configuration::get()->first();
+
         $response = NULL;
         $menu = NULL;
         $language = NULL;
 
+		
+        if ($dtmfDigits == NULL){
+            $response = '<?xml version="1.0" encoding="UTF-8"?>';
+            $response .= '<Response>';
+            // $response .= '<Play url="'. $_ENV['APP_URL'] .'/ict4farmers-web/public/assets/audio/pwds/call_center/intro_01.mp3'.'">';   // thank you for calling  the farmers help center, please wait as we redirect you
+            // $response .= '<Play url="'.$config->introduction.'">';   // thank you for calling  the farmers help center, please wait as we redirect you
+            $response .= '<Play url="'.asset('assets/audio/pwds/call_center/intro_01.mp3').'">';   // thank you for calling  the farmers help center, please wait as we redirect you
+            $response .= '</Play>';
+			// dd(asset('assets/audio/pwds/call_center/intro_01.mp3'));
+            $response .= '<GetDigits timeout="30" numDigits="1">';
+            // $response .= '<Play url="'.$config->call_back_voice.'">';   // for help in english, press 1,.......
+            $response .= '<Play url="'.asset('assets/audio/pwds/call_center/menu_selection_audio.mp3').'">';   // for help in english, press 1,.......
+            $response .= '</Play>';
+            $response .= '</GetDigits>';
+            $response .= '</Response>';
+		}
+        $current_call = NULL;
 
         // getting the current call
-        try {            
-            $details = Call::where('session_id', $session_id)->first();;
+        try { 
+			$current_call = Call::where('session_id', $session_id)->first();
+
+			// // Print the current_call onto the page so that the AT gateway can read it
+			// header('Content-type: text/plain');
+			// echo ">>>>>>>>>>>>> ".$current_call." >>>>>>>>>>>>>";
+
         } catch (\Throwable $th) {
-            $details = NULL;
+            // $current_call = NULL;
+			return;
         }
 
         # check if call is already saved and skip saving it again
@@ -62,193 +85,154 @@ class CallCenterController extends Controller
             //throw $th;
         }
 
-		// if ($request->is_active == "0") {
-		// 	return callEnded();
-		// }
+        // Start English menu 1 ---------------------------------------------------------------------------
+        if ($dtmfDigits == '1' && $current_call->call_menu_selected == 1) {
+			$response  = '<?xml version="1.0" encoding="UTF-8"?>';
+			$response .= '<Response>';
+            $response .= '<GetDigits timeout="30" numDigits="1">';
+			// $response .= '<Play url="'.$config->help_in_english.'">'; // (isaac) for help in coffee farming, press 1, ...
+			$response .= '<Play url="'.asset('assets/audio/pwds/call_center/for_help_01.mp3').'">'; // (isaac) for help in coffee farming, press 1, ...
+			$response .= '</Play>';
+			$response .= '</GetDigits>';
+			$response .= '</Response>';
 
-		$digits = $request->dtmfDigits;
+            $menu = 2;
+            $language= "English";
 
-		if ($details["language_selected"] == false) {
+			$current_call->call_menu_selected = 2;
+			$current_call->language = "English";
 
-			if ($digits == NULL)
-				$response = '<?xml version="1.0" encoding="UTF-8"?>';
-				$response .= '<Response>';
-				// $response .= '<Play url="'. $_ENV['APP_URL'] .'/ict4farmers-web/public/assets/audio/pwds/call_center/intro_01.mp3'.'">';   // thank you for calling  the farmers help center, please wait as we redirect you
-				$response .= '<Play url="'.$config->introduction.'">';   // thank you for calling  the farmers help center, please wait as we redirect you
-				$response .= '</Play>';
-				$response .= '<GetDigits timeout="30" numDigits="1">';
-				$response .= '<Play url="'.$config->call_back_voice.'">';   // for help in english, press 1,.......
-				$response .= '</Play>';
-				$response .= '</GetDigits>';
-				$response .= '</Response>';
-
-			switch ($digits) {
-				case '1':
-					return $this->support_in_english();
-					break;
-				
-				case '2':
-					return $this->support_in_luganda();
-					break;
-				
-				default:
-					return $this->base();
-					break;
-
-			}  // end switch
-		}        
-
-        return $response;
-	}
+        }  // End English menu 1 ---------------------------------------------------------------------------
 
 
-	public function support_in_english()
-	{
-		global $details;
-		global $response;
-		global $digits;
-		global $current_call;
-
-		$details['language_selected'] = true;
-		$details['language'] = "English";
-
-		$this->update_details($details);
-
+		// OPTION 1
         // Start English sub menu
-        if ($digits == 1 && ($current_call->first()->call_menu_selected == 2) && ($current_call->first()->language == "English")){
-            $response .= '<Response>';
-            $response .= '<Dial record="true" sequential="true" phoneNumbers="+2516706638494,+2516706638494"/>';
-            $response .= '</Dial>';
-            $response .= '</Response>';
+        elseif (($dtmfDigits == '1') && ($current_call->call_menu_selected == 2) && ($current_call->language == "English")){
+			$response  = '<?xml version="1.0" encoding="UTF-8"?>';
+			$response .= '<Response>';
+			$response .= '<Dial record="true" sequential="true" phoneNumbers="+256706638494"/>';   // Mubarak
+			// $response .= '<Dial record="true" sequential="true" phoneNumbers="+256783631083"/>';    // Doryn
+			// $response .= '<Dial record="true" sequential="true" phoneNumbers="+256705638458"/>';  // Otim
+			// $response .= '<Dial record="true" sequential="true" phoneNumbers="+256778945859"/>';   // Jed
+			$response .= '</Response>';
         }
-		elseif (($digits == 2) && ($current_call->first()->call_menu_selected == 2) && ($current_call->first()->language == "English")){
-            $response .= '<Response>';
-            $response .= '<Dial record="true" sequential="true" phoneNumbers="+256706638494,+256706638494"/>';
-            $response .= '</Dial>';
-            $response .= '</Response>';
+
+		
+        elseif (($dtmfDigits == '2') && ($current_call->call_menu_selected == 2) && ($current_call->language == "English")){
+			$response  = '<?xml version="1.0" encoding="UTF-8"?>';
+			$response .= '<Response>';
+			$response .= '<Dial record="true" sequential="true" phoneNumbers="+256706638494" />';
+			$response .= '</Response>';
         } // End English sub menu
 
-		return $response;
-	}
 
 
-	public function support_in_luganda(Request $request)
-	{
-		global $details;
-		global $digits;
-		global $current_call;
-		global $response;
+		// OPTION 2
+        // Start Luganda menu 1
+        elseif (($dtmfDigits == '2') && ($current_call->call_menu_selected == 1)) {
+			$response  = '<?xml version="1.0" encoding="UTF-8"?>';
+			$response .= '<Response>';
+            $response .= '<GetDigits timeout="30" numDigits="1">';
+			// $response .= '<Play url="'.$config->help_in_luganda.'">';
+			$response .= '<Play url="'.asset('assets/audio/pwds/call_center/okwebuza_01.mp3').'">';
+			$response .= '</Play>';
+			$response .= '</GetDigits>';
+			$response .= '</Response>';
 
-		$details['language_selected'] = true;
-		$details['language'] = "Luganda";
+            $menu = 2;
+            $language= "Luganda";
 
-		$this->update_details($this->call_center_voice($request)->$details);
-		
+			$current_call->call_menu_selected = 2;
+			$current_call->language = "Luganda";
+
+        } // End Luganda menu 1 ---------------------------------------------------------------------------
+
+
 		// Start Luganda sub menu
-		if ($digits == '2' &&  $current_call->first()->call_menu_selected == 2 && $current_call->first()->language == "Luganda"){
+        elseif (($dtmfDigits == '1') && ($current_call->call_menu_selected == 2) && ($current_call->language == "Luganda")){
+			$response  = '<?xml version="1.0" encoding="UTF-8"?>';
 			$response .= '<Response>';
-			$response .= '<Dial record="true" sequential="true" phoneNumbers="+256706638494,agent1.farmercallcenter@ug.sip2.africastalking.com"/>';
-			$response .= '</Dial>';
-		}
-
-		elseif ($digits == '2' &&  $current_call->first()->call_menu_selected == 2 && $current_call->first()->language == "Luganda"){
-			$response .= '<Response>';
-			$response .= '<Dial record="true" sequential="true" phoneNumbers="+256706638494,agent1.farmercallcenter@ug.sip2.africastalking.com"/>';
-		$response .= '</Dial>';
-			$response .= '</Response>';
-		} 
-		elseif ($digits == '3' &&  $current_call->first()->call_menu_selected == 1){
-			$response .= '<Response>';
-			$response .= '<Dial record="true" sequential="true" phoneNumbers="+256706638494,agent2.farmercallcenter@ug.sip2.africastalking.com"/>';
-			$response .= '</Response>';
-		} 
-
-		elseif ($digits == '4' &&  $current_call->first()->call_menu_selected == 1){
-			$response .= '<Response>';
-			$response .= '<Dial record="true" sequential="true" phoneNumbers="+256706638494,agent3.farmercallcenter@ug.sip2.africastalking.com"/>';
+			$response .= '<Dial record="true" sequential="true" phoneNumbers="+256706638494" />';
 			$response .= '</Response>';
 		}
 
-		elseif ($digits == '5' &&  $current_call->first()->call_menu_selected == 1){
+        elseif (($dtmfDigits == '2') && ($current_call->call_menu_selected == 2) && ($current_call->language == "Luganda")){
+			$response  = '<?xml version="1.0" encoding="UTF-8"?>';
 			$response .= '<Response>';
-			$response .= '<Dial record="true" sequential="true" phoneNumbers="+256706638494,agent3.farmercallcenter@ug.sip.africastalking.com"/>';
+			$response .= '<Dial record="true" sequential="true" phoneNumbers="+256706638494" />';
 			$response .= '</Response>';
-		} // End Luganda sub menu
-
-		return $response;
-	}
-	
-
-	public function base()
-	{
-        global $config;
-
-		$response = '<?xml version="1.0" encoding="UTF-8"?>';
-		$response .= '<Response>';
-		// $response .= '<Play url="'. $_ENV['APP_URL'] .'/ict4farmers-web/public/assets/audio/pwds/call_center/intro_01.mp3'.'">';   // thank you for calling  the farmers help center, please wait as we redirect you
-		$response .= '<Play url="'.$config->introduction.'">';   // thank you for calling  the farmers help center, please wait as we redirect you
-		$response .= '</Play>';
-		$response .= '<GetDigits timeout="30" numDigits="1">';
-		$response .= '<Play url="'.$config->call_back_voice.'">';   // for help in english, press 1,.......
-		$response .= '</Play>';
-		$response .= '</GetDigits>';
-		$response .= '</Response>';
-
-		return $response;
-	}
+		}  // End Luganda sub menu
 
 
-	public function unknownOption()
-	{
-		global $config;
 
-		$response = '<?xml version="1.0" encoding="UTF-8"?>';
-		$response .= '<Response>';
-		// $response .= '<Play url="'. $_ENV['APP_URL'] .'/ict4farmers-web/public/assets/audio/pwds/call_center/intro_01.mp3'.'">';   // thank you for calling  the farmers help center, please wait as we redirect you
-		$response .= '<Play url="'.$config->introduction.'">';   // thank you for calling  the farmers help center, please wait as we redirect you
-		$response .= '</Play>';
-		$response .= '<GetDigits timeout="30" numDigits="1">';
-		$response .= '<Play url="'.$config->call_back_voice.'">';   // for help in english, press 1,.......
-		$response .= '</Play>';
-		$response .= '</GetDigits>';
-		$response .= '</Response>';
-	}
 
-    
-	public function update_details($details)
-	{
-        global $menu;
-        global $current_call;
-        global $language;
-        global $call_state;
-        global $recording_url;
-        global $duration_in_seconds;
-        global $agent_called;
+		// OPTION 3
+		elseif (($dtmfDigits == '3') && ($current_call->call_menu_selected == 1)){
+			$response  = '<?xml version="1.0" encoding="UTF-8"?>';
+			$response .= '<Response>';
+			$response .= '<Dial record="true" sequential="true" phoneNumbers="+256706638494" />';
+			$response .= '</Response>';
 
-         // updating the selected menu option of the current call
-         if ($menu == 2){
-            $current_call->first()->call_menu_selected = 2;
-            $current_call->first()->language = $language;
+            $menu = 2;
+            $language= "Runyakitara";
+
+			$current_call->call_menu_selected = 1;
+			$current_call->language = "Runyakitara";
+		} 
+
+
+
+		// OPTION 4
+		elseif ($dtmfDigits == '4' &&  $current_call->call_menu_selected == 1){
+			$response  = '<?xml version="1.0" encoding="UTF-8"?>';
+			$response .= '<Response>';
+			$response .= '<Dial record="true" sequential="true" phoneNumbers="+256706638494" />';
+			$response .= '</Response>';
+
+            $menu = 2;
+            $language= "Swahili";
+
+			$current_call->call_menu_selected = 1;
+			$current_call->language = "Swahili";
+		}
+
+
+		// OPTION 5
+		elseif ($dtmfDigits == '5' &&  $current_call->call_menu_selected == 1){
+			$response  = '<?xml version="1.0" encoding="UTF-8"?>';
+			$response .= '<Response>';
+			$response .= '<Dial record="true" sequential="true" phoneNumbers="+256706638494" />';
+			$response .= '</Response>';
+
+            $menu = 2;
+            $language= "Luo";
+			
+			// $current_call->call_menu_selected = 1;
+			// $current_call->language = "Luo";
+		}
+
+
+        // updating the selected menu option of the current call
+        if ($menu == 2){
+            $current_call->call_menu_selected = 2;
+            $current_call->language = $language;
             $current_call->save();
         }
 
+
         // update call when its done
         if ($call_state == 'Completed') {
-            # update the call to record the voice
-            # getting the current call
-            
-            try {
-                $current_call->first()->recording_url = $recording_url;
-                $current_call->first()->call_duration = $duration_in_seconds;
-                $current_call->first()->agent_phone = $agent_called;
-                $current_call->save();
-            } catch (\Throwable $th) {
-                // throw $th->getMessage();
-            }
+            // update the call to record the voice -------   getting the current call
+			
+			$current_call->recording_url = $recording_url;
+			$current_call->call_duration = $duration_in_seconds;
+			$current_call->agent_phone = $agent_called;
+			$current_call->save();
         }
-	}
-}
 
+        return $response;
+    }
+}
 
 
 /*
@@ -270,4 +254,3 @@ https://5176-41-75-186-219.eu.ngrok.io/api/call_center_voice
 
 
 */
-
