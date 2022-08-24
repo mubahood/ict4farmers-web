@@ -15,6 +15,8 @@ use App\Http\Controllers\BannersController;
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\RedirectIfAuthenticated;
 
+
+
 Route::resource('dashboard/users', UsersController::class)->middleware(Authenticate::class);
 Route::resource('dashboard/banners', BannersController::class)->middleware(Authenticate::class);
 
@@ -79,3 +81,4 @@ Route::match(['get', 'post'], '/{id}', [MainController::class, 'slugSwitcher']);
     /*Route::get('/', function () {
     return view('welcome');
 });*/
+
