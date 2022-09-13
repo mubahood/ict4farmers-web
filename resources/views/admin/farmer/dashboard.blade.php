@@ -104,7 +104,7 @@ $steps = Utils::get_wizard_actions(Admin::user()->id);
             </div>
         </div>
 
-        <div class="row ">
+    {{--     <div class="row ">
             <div class="col-md-12">
                 <div class="row">
                     <div class="col-sm-6 col-md-4">
@@ -137,7 +137,7 @@ $steps = Utils::get_wizard_actions(Admin::user()->id);
                 </div>
             </div>
 
-        </div>
+        </div> --}}
 
 
     </div>
