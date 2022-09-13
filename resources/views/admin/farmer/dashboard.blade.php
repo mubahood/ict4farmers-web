@@ -145,7 +145,7 @@ $steps = Utils::get_wizard_actions(Admin::user()->id);
 
     <div class="col-md-4">
 
-       {{--  <div class="card mb-4">
+       {{--  <div class="card mb-4" >
             <div class="card-body">
                 <h2 class=" text-primary text-bold m-0 py-2 mb-2">Getting Started Checklist</h2>
                 @foreach ($steps as $s)
