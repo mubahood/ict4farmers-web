@@ -2,6 +2,7 @@
 
 namespace Encore\Admin\Controllers;
 
+use App\Models\FarmersGroup;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
@@ -14,7 +15,7 @@ class UserController extends AdminController
      */
     protected function title()
     {
-        return trans('admin.administrator');
+        return 'User accounts';
     }
 
     /**
@@ -86,40 +87,54 @@ class UserController extends AdminController
     public function form()
     {
         $userModel = config('admin.database.users_model');
-        $permissionModel = config('admin.database.permissions_model');
         $roleModel = config('admin.database.roles_model');
 
         $form = new Form(new $userModel());
 
-        $userTable = config('admin.database.users_table');
-        $connection = config('admin.database.connection');
+        $form->tab('Basic information', function ($form) {
 
-        $form->display('id', 'ID');
-        $form->text('username', trans('admin.username'))
-            ->creationRules(['required', "unique:{$connection}.{$userTable}"])
-            ->updateRules(['required', "unique:{$connection}.{$userTable},username,{{id}}"]);
+            $userModel = config('admin.database.users_model');
+            $roleModel = config('admin.database.roles_model');
 
-        $form->text('name', trans('admin.name'))->rules('required');
-        $form->image('avatar', trans('admin.avatar'));
-        $form->password('password', trans('admin.password'))->rules('required|confirmed');
-        $form->password('password_confirmation', trans('admin.password_confirmation'))->rules('required')
-            ->default(function ($form) {
-                return $form->model()->password;
-            });
+            $userTable = config('admin.database.users_table');
+            $connection = config('admin.database.connection');
 
-        $form->ignore(['password_confirmation']);
+            $form->display('id', 'ID');
+            $form->text('username', trans('admin.username'))
+                ->creationRules(['required', "unique:{$connection}.{$userTable}"])
+                ->updateRules(['required', "unique:{$connection}.{$userTable},username,{{id}}"]);
 
-        $form->multipleSelect('roles', trans('admin.roles'))->options($roleModel::all()->pluck('name', 'id'));
-        $form->multipleSelect('permissions', trans('admin.permissions'))->options($permissionModel::all()->pluck('name', 'id'));
+            $form->text('phone_number', 'Phone number')->rules('required');
 
-        $form->display('created_at', trans('admin.created_at'));
-        $form->display('updated_at', trans('admin.updated_at'));
+            $form->text('name', trans('admin.name'))->rules('required');
 
-        $form->saving(function (Form $form) {
-            if ($form->password && $form->model()->password != $form->password) {
-                $form->password = Hash::make($form->password);
-            }
+            $form->select('group_id', __('Farmer\'s association'))
+                ->options(FarmersGroup::all()->pluck('name', 'id'));
+            $form->multipleSelect('roles', trans('admin.roles'))->options($roleModel::all()->pluck('name', 'id'));
         });
+
+        $form->tab('Account information', function ($form) {
+
+            $userModel = config('admin.database.users_model');
+            $roleModel = config('admin.database.roles_model');
+
+            $form->image('avatar', trans('admin.avatar'));
+            $form->password('password', trans('admin.password'))->rules('required|confirmed');
+            $form->password('password_confirmation', trans('admin.password_confirmation'))->rules('required')
+                ->default(function ($form) {
+                    return $form->model()->password;
+                });
+            $form->ignore(['password_confirmation']);
+
+            $form->saving(function (Form $form) {
+                if ($form->password && $form->model()->password != $form->password) {
+                    $form->password = Hash::make($form->password);
+                }
+            });
+        });
+
+
+
 
         return $form;
     }
