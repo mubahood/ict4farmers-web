@@ -277,7 +277,6 @@ class ApiUsersController
         $u->sector = (string) ($request->sector ? $request->sector : "");
         $u->profile_is_complete = true;
 
-
         unset($u->password);
         unset($u->status_comment);
         unset($u->opening_hours);

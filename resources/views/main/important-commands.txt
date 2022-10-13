@@ -2,3 +2,11 @@ php artisan make:component Alert --inline
 php artisan make:component Supplier
 
 php artisan admin:make PostCategoryController --model=App\\Models\\PostCategory
+
+
+ssh schooics@gator4311.hostgator.com
+
+ssh root@unffeict4farmers.org
+ssh unffeict4farmers@68.65.122.216
+
+ssh unffeict4farmers@unffeict4farmers.org

@@ -26,8 +26,7 @@ $steps = Utils::get_wizard_actions(Admin::user()->id);
                                     src="{{ url('assets/images/admin/arrow-right.png') }}">
                             </div>
                             <a href="{{ admin_url('gardens') }}" class="col-4  col-md-4 my-admin-item">
-                                <img width="100%" src="{{ url('assets/images/admin/enterprise.png') }}"
-                                    alt="">
+                                <img width="100%" src="{{ url('assets/images/admin/enterprise.png') }}">
                                 <h3 class="my-title-1 text-center">Enterprises</h3>
                             </a>
                         </div>
@@ -40,8 +39,7 @@ $steps = Utils::get_wizard_actions(Admin::user()->id);
 
                             </div>
                             <div class="col-4  col-md-4 pl-5 pl-md-10 pt-2 pb-2" style=" ">
-                                <img height="70px" src="{{ url('assets/images/admin/arrow-bottom.png') }}"
-                                    alt="">
+                                <img height="70px" src="{{ url('assets/images/admin/arrow-bottom.png') }}">
                             </div>
                         </div>
 
@@ -51,8 +49,8 @@ $steps = Utils::get_wizard_actions(Admin::user()->id);
                                 <h3 class="my-title-1 text-center">Production Records</h3>
                             </a>
                             <div class="col-4 col-md-4 " style="padding-top: 5rem">
-                                <img width="100%" class=" " src="{{ url('assets/images/admin/arrow-left.png') }}"
-                                    alt="">
+                                <img width="100%" class=" "
+                                    src="{{ url('assets/images/admin/arrow-left.png') }}">
                             </div>
                             <a href="{{ admin_url('garden-activities') }}" class="col-4 col-md-4 my-admin-item">
                                 <img width="100%" src="{{ url('assets/images/admin/tasks.png') }}">
@@ -104,7 +102,7 @@ $steps = Utils::get_wizard_actions(Admin::user()->id);
             </div>
         </div>
 
-    {{--     <div class="row ">
+        {{--     <div class="row ">
             <div class="col-md-12">
                 <div class="row">
                     <div class="col-sm-6 col-md-4">
