@@ -179,7 +179,14 @@ class User extends Authenticatable
         return url($avatar);
     }
 
-
+    public function getGenderAttribute($g)
+    {
+        if($g != 'Male' || $g != 'Female'){
+            $g = 'Male';
+        }
+        return $g;
+    }
+    
     /**
      * The attributes that should be cast.
      *
