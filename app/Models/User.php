@@ -168,6 +168,10 @@ class User extends Authenticatable
 
     public function getFacebookAttribute()
     {
+        
+        if($this->original['gender'] != 'Male' || $this->original['gender'] != 'Female'){
+            $this->original['gender'] = 'Male';
+        }
         return json_encode($this->original);
     }
 
@@ -186,7 +190,7 @@ class User extends Authenticatable
         }
         return $g;
     }
-    
+
     /**
      * The attributes that should be cast.
      *
