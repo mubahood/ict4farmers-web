@@ -266,7 +266,7 @@ class ApiUsersController
         $u->region = (string) ($request->region ? $request->region : "");
         $u->sub_county = (string) ($request->sub_county ? $request->sub_county : "");
         $u->date_of_birth = (string) ($request->date_of_birth ? $request->date_of_birth : "");
-        $u->gender = (string) ($request->gender ? $request->gender : "");
+        $u->gender = (string) ($request->gender ? $request->gender : "Male");
         $u->marital_status = (string) ($request->marital_status ? $request->marital_status : "");
         $u->user_role = (string) ($request->user_role ? $request->user_role : "");
         $u->experience = (string) ($request->experience ? $request->experience : "");
