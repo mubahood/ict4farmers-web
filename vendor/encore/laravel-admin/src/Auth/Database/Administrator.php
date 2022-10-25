@@ -65,6 +65,14 @@ class Administrator extends Model implements AuthenticatableContract
         return admin_asset($default);
     }
 
+    public function getAvatarGender($g)
+    {
+        if($g != 'Male' || $g != 'Female'){
+            $g = 'Male';
+        }
+        return $g;
+    }
+
     /**
      * A user has and belongs to many roles.
      *
