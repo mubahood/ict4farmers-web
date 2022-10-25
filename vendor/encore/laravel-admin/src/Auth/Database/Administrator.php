@@ -65,7 +65,7 @@ class Administrator extends Model implements AuthenticatableContract
         return admin_asset($default);
     }
 
-    public function getAvatarGender($g)
+    public function getGenderAttribute($g)
     {
         if($g != 'Male' || $g != 'Female'){
             $g = 'Male';
