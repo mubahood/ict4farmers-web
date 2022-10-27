@@ -163,7 +163,8 @@ class CallCenterController extends Controller
 			$response  = '<?xml version="1.0" encoding="UTF-8"?>';
 			$response .= '<Response>';
 			// $response .= '<Dial record="true" sequential="true" phoneNumbers="+256706638494" />';
-			$response .= '<Dial record="true" sequential="true" phoneNumbers="+256772313512,+256772313512,agent1.farmercallcenter@ug.sip.africastalking.com"/>';
+			// $response .= '<Dial record="true" sequential="true" phoneNumbers="+256772313512,+256772313512,agent1.farmercallcenter@ug.sip.africastalking.com"/>';
+			$response .= '<Dial record="true" sequential="true" phoneNumbers="+256784802723,agent1.farmercallcenter@ug.sip.africastalking.com"/>';
 			$response .= '</Response>';
 		}  // End Luganda sub menu
 
