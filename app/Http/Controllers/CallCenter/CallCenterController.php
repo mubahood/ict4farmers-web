@@ -176,7 +176,7 @@ class CallCenterController extends Controller
 			$response .= '<Response>';
 			// $response .= '<Dial record="true" sequential="true" phoneNumbers="+256706638494" />';
 			// $response .= '<Dial record="true" sequential="true" phoneNumbers="+256774952449,+256783784498,agent2.farmercallcenter@ug.sip2.africastalking.com"/>';
-            //nelson1, dorcus1, nelson2, dorcus2.... 
+            // Phone numbers below are in the format:                           nelson1,        nelson2,    dorcus1,       dorcus2.... 
 			$response .= '<Dial record="true" sequential="true" phoneNumbers="+256700213998,+256783784498,+256705022766, +256774952449,agent2.farmercallcenter@ug.sip2.africastalking.com"/>';
 			$response .= '</Response>';
 
@@ -210,7 +210,9 @@ class CallCenterController extends Controller
 			$response  = '<?xml version="1.0" encoding="UTF-8"?>';
 			$response .= '<Response>';
 			// $response .= '<Dial record="true" sequential="true" phoneNumbers="+256706638494" />';
-			$response .= '<Dial record="true" sequential="true" phoneNumbers="+256782701885,+256784067089,agent3.farmercallcenter@ug.sip.africastalking.com"/>';
+			// $response .= '<Dial record="true" sequential="true" phoneNumbers="+256782701885,+256784067089,agent3.farmercallcenter@ug.sip.africastalking.com"/>';
+            // Phone numbers below are in the format:                           Noki Charles Alebtong 
+			$response .= '<Dial record="true" sequential="true" phoneNumbers="+256772673509,agent3.farmercallcenter@ug.sip.africastalking.com"/>';
 			$response .= '</Response>';
 
             $menu = 2;
