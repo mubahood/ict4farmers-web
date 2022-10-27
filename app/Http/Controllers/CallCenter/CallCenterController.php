@@ -170,12 +170,14 @@ class CallCenterController extends Controller
 
 
 
-		// OPTION 3
+		// OPTION 3    // Runyakitara
 		elseif (($dtmfDigits == '3') && ($current_call->call_menu_selected == 1)){
 			$response  = '<?xml version="1.0" encoding="UTF-8"?>';
 			$response .= '<Response>';
 			// $response .= '<Dial record="true" sequential="true" phoneNumbers="+256706638494" />';
-			$response .= '<Dial record="true" sequential="true" phoneNumbers="+256774952449,+256783784498,agent2.farmercallcenter@ug.sip2.africastalking.com"/>';
+			// $response .= '<Dial record="true" sequential="true" phoneNumbers="+256774952449,+256783784498,agent2.farmercallcenter@ug.sip2.africastalking.com"/>';
+            //nelson1, dorcus1, nelson2, dorcus2.... 
+			$response .= '<Dial record="true" sequential="true" phoneNumbers="+256700213998,+256783784498,+256705022766, +256774952449,agent2.farmercallcenter@ug.sip2.africastalking.com"/>';
 			$response .= '</Response>';
 
             $menu = 2;
