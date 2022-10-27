@@ -187,7 +187,7 @@ class CallCenterController extends Controller
 
 
 
-		// OPTION 4
+		// OPTION 4    // swahili
 		elseif ($dtmfDigits == '4' &&  $current_call->call_menu_selected == 1){
 			$response  = '<?xml version="1.0" encoding="UTF-8"?>';
 			$response .= '<Response>';
@@ -203,7 +203,7 @@ class CallCenterController extends Controller
 		}
 
 
-		// OPTION 5
+		// OPTION 5  // 
 		elseif ($dtmfDigits == '5' &&  $current_call->call_menu_selected == 1){
 			$response  = '<?xml version="1.0" encoding="UTF-8"?>';
 			$response .= '<Response>';
