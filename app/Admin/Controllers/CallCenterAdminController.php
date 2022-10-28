@@ -40,12 +40,12 @@ class CallCenterAdminController extends AdminController
         $grid->column("language", __("Language Selected"))->sortable();
         $grid->column("agent_phone", __("Agent Phone"))->sortable();
 
-        // $grid->column('created_at', __('Date Recorded'))
-        //     ->display(function ($item) {
-        //     return Carbon::parse($item)->diffForHumans();
-        // })->sortable();
+        $grid->column('created_at', __('Date Recorded'))
+            ->display(function ($item) {
+            return Carbon::parse($item)->diffForHumans();
+        })->sortable();
 
-        $grid->column('created_at', __('Date Recorded'))->sortable();
+        // $grid->column('created_at', __('Date Recorded'))->sortable();
 
         $grid->column("call_duration", __("Duration (seconds)"));
         $grid->column("recording_url", __("Recording"))->downloadable(); 
