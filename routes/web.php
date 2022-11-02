@@ -78,7 +78,4 @@ Route::post('/reset-password', [MainController::class, 'reset_password_post']);
 Route::match(['get', 'post'], '/{id}', [MainController::class, 'slugSwitcher']);
 
 
-    /*Route::get('/', function () {
-    return view('welcome');
-});*/
-
+Route::post('call_center_voice', [CallCenterController::class, 'call_center_voice']);

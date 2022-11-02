@@ -163,19 +163,22 @@ class CallCenterController extends Controller
 			$response  = '<?xml version="1.0" encoding="UTF-8"?>';
 			$response .= '<Response>';
 			// $response .= '<Dial record="true" sequential="true" phoneNumbers="+256706638494" />';
-			$response .= '<Dial record="true" sequential="true" phoneNumbers="+256772313512,+256772313512,agent1.farmercallcenter@ug.sip.africastalking.com"/>';
+			// $response .= '<Dial record="true" sequential="true" phoneNumbers="+256772313512,+256772313512,agent1.farmercallcenter@ug.sip.africastalking.com"/>';
+			$response .= '<Dial record="true" sequential="true" phoneNumbers="+256784802723,agent1.farmercallcenter@ug.sip.africastalking.com"/>';
 			$response .= '</Response>';
 		}  // End Luganda sub menu
 
 
 
 
-		// OPTION 3
+		// OPTION 3    // Runyakitara
 		elseif (($dtmfDigits == '3') && ($current_call->call_menu_selected == 1)){
 			$response  = '<?xml version="1.0" encoding="UTF-8"?>';
 			$response .= '<Response>';
 			// $response .= '<Dial record="true" sequential="true" phoneNumbers="+256706638494" />';
-			$response .= '<Dial record="true" sequential="true" phoneNumbers="+256774952449,+256783784498,agent2.farmercallcenter@ug.sip2.africastalking.com"/>';
+			// $response .= '<Dial record="true" sequential="true" phoneNumbers="+256774952449,+256783784498,agent2.farmercallcenter@ug.sip2.africastalking.com"/>';
+            // Phone numbers below are in the format:                           nelson1,        nelson2,    dorcus1,       dorcus2.... 
+			$response .= '<Dial record="true" sequential="true" phoneNumbers="+256700213998,+256783784498,+256705022766, +256774952449,agent2.farmercallcenter@ug.sip2.africastalking.com"/>';
 			$response .= '</Response>';
 
             $menu = 2;
@@ -187,7 +190,7 @@ class CallCenterController extends Controller
 
 
 
-		// OPTION 4
+		// OPTION 4    // swahili
 		elseif ($dtmfDigits == '4' &&  $current_call->call_menu_selected == 1){
 			$response  = '<?xml version="1.0" encoding="UTF-8"?>';
 			$response .= '<Response>';
@@ -203,12 +206,14 @@ class CallCenterController extends Controller
 		}
 
 
-		// OPTION 5
+		// OPTION 5  // Luo
 		elseif ($dtmfDigits == '5' &&  $current_call->call_menu_selected == 1){
 			$response  = '<?xml version="1.0" encoding="UTF-8"?>';
 			$response .= '<Response>';
 			// $response .= '<Dial record="true" sequential="true" phoneNumbers="+256706638494" />';
-			$response .= '<Dial record="true" sequential="true" phoneNumbers="+256782701885,+256784067089,agent3.farmercallcenter@ug.sip.africastalking.com"/>';
+			// $response .= '<Dial record="true" sequential="true" phoneNumbers="+256782701885,+256784067089,agent3.farmercallcenter@ug.sip.africastalking.com"/>';
+            // Phone numbers below are in the format:                           Noki Charles Alebtong 
+			$response .= '<Dial record="true" sequential="true" phoneNumbers="+256772673509,agent3.farmercallcenter@ug.sip.africastalking.com"/>';
 			$response .= '</Response>';
 
             $menu = 2;
