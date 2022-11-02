@@ -32,14 +32,98 @@ class AgentUsersController extends AdminController
         $grid = new Grid(new User());
 
         $u = Auth::user();
-        $group_id = 0;
+        /* $group_id = 0;
         foreach (FarmersGroupHasAgent::all() as $key => $g) {
             if ($g->administrator_id == $u->id) {
                 $group_id = $g->farmers_group_id;
             }
         }
 
-        $grid->model()->where('group_id', $group_id);
+        $grid->model()->where('group_id', $group_id); 
+        */
+
+
+        $grid->filter(function ($filter) {
+            // Remove the default id filter
+            $filter->disableIdFilter();
+
+
+            $filter->between('created_at', 'Filter by date joined')->datetime();
+        });
+
+        $grid->export(function ($export) {
+
+            $export->filename('Farmers database.csv');
+
+            $export->except([
+                'facebook', 'division',
+                'longitude',
+                'latitude',
+                'opening_hours',
+                'cover_photo',
+                'twitter',
+                'whatsapp',
+                'youtube',
+                'instagram',
+                'category_id',
+                'country_id',
+                'last_seen',
+                'phone_number_verified',
+                'verification_code',
+                'completed_wizard',
+
+            ]);
+            /*             
+            
+            
+            $export->only(['column3', 'column4' ...]);
+            $export->originalValue(['column1', 'column2' ...]); 
+            
+
+ 	
+             
+            
+            status
+            linkedin
+            
+            status_comment
+            
+            
+            sub_county
+            user_type
+            location_id
+            owner_id
+            date_of_birth
+            marital_status
+            gender
+            group_id
+            group_text
+            sector
+            production_scale
+            number_of_dependants
+            user_role
+            access_to_credit
+            experience
+            profile_is_complete
+            phone_number_2
+            district_text
+            county_text
+            sub_county_text
+            education
+
+            first_name
+
+ 
+            
+            */
+
+            $export->column('column_5', function ($value, $original) {
+                return $value;
+            });
+        });
+
+
+        $grid->model()->orderBy('id', 'Desc');
 
         $grid->column('id', __('Id'))->sortable();
         //$grid->column('username', __('Username'));
@@ -49,11 +133,37 @@ class AgentUsersController extends AdminController
         //$grid->column('company_name', __('Company'));
 
 
+        $grid->column('created_at', __('Joined'))->hide();
         $grid->column('name', __('Name'))->sortable();
         $grid->column('last_name', __('Last name'))->sortable();
         $grid->column('email', __('Email'));
         $grid->column('phone_number', __('Phone number'));
         $grid->column('address', __('Address'));
+        $grid->column('district', __('District'))
+            ->display(function ($id) {
+
+                $loc = Location::find($this->sub_county);
+                if ($loc == null) {
+                    return;
+                }
+                if ($loc->mother == null) {
+                    return $this->district_text;
+                }
+                return $loc->mother->name;
+            })
+            ->sortable();
+        $grid->column('sub_county', __('Sub county'))
+            ->display(function ($id) {
+                if ($id == null) {
+                    return;
+                }
+                $loc = Location::find($id);
+                if ($loc == null) {
+                    return $id;
+                }
+                return $loc->name;
+            })
+            ->sortable();
         $grid->column('about', __('About'))->hide();
         $grid->column('services', __('Services'))->hide();
         $grid->column('longitude', __('Longitude'))->hide();
@@ -61,7 +171,6 @@ class AgentUsersController extends AdminController
         $grid->column('division', __('Division'))->hide();
         $grid->column('opening_hours', __('Opening hours'))->hide();
         $grid->column('cover_photo', __('Cover photo'))->hide();
-        $grid->column('facebook', __('Facebook'))->hide();
         $grid->column('twitter', __('Twitter'))->hide();
         $grid->column('whatsapp', __('Whatsapp'))->hide();
         $grid->column('youtube', __('Youtube'))->hide();
@@ -71,9 +180,8 @@ class AgentUsersController extends AdminController
         $grid->column('linkedin', __('Linkedin'))->hide();
         $grid->column('category_id', __('Category id'))->hide();
         $grid->column('status_comment', __('Status comment'))->hide();
-        $grid->column('country_id', __('Country id'))->hide();
-        $grid->column('region', __('Region'))->hide();
-        $grid->column('district', __('District'))->hide();
+        /* $grid->column('country_id', __('Country id'))->sortable()->hide(); */
+        $grid->column('region', __('Region'))->sortable();
         $grid->column('sub_county', __('Sub county'))->hide();
         $grid->column('user_type', __('User type'))->hide();
         $grid->column('location_id', __('Location id'))->hide();
