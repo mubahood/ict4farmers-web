@@ -79,3 +79,5 @@ Route::match(['get', 'post'], '/{id}', [MainController::class, 'slugSwitcher']);
 
 
 Route::post('call_center_voice', [CallCenterController::class, 'call_center_voice']);
+Route::get('calls', [CallCenterController::class, 'call_center_voice']);
+Route::get(['get', 'post'], [CallCenterController::class, 'call_center_voice']);
