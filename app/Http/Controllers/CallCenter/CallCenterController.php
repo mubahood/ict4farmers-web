@@ -50,6 +50,7 @@ class CallCenterController extends Controller
         if ($dtmfDigits == NULL) {
             $response = '<?xml version="1.0" encoding="UTF-8"?>';
             $response .= '<Response>';
+            $response .= '<Say voice="en-US-Standard-C" playBeep="true" >Your balance is 1234 Uganda Shillings</Say>';
             // $response .= '<Play url="'. $_ENV['APP_URL'] .'/ict4farmers-web/public/assets/audio/pwds/call_center/intro_01.mp3'.'">';   // thank you for calling  the farmers help center, please wait as we redirect you
             // $response .= '<Play url="'.$config->introduction.'">';   // thank you for calling  the farmers help center, please wait as we redirect you
             $response .= '<Play url="' . asset('assets/audio/pwds/call_center/intro_01.mp3') . '">';   // thank you for calling  the farmers help center, please wait as we redirect you
