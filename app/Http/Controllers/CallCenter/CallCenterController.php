@@ -4,6 +4,7 @@ namespace App\Http\Controllers\CallCenter;
 
 use App\Http\Controllers\Controller;
 use AfricasTalking\SDK\AfricasTalking;
+use App\Models\Attribute;
 use App\Models\Call;
 use App\Models\Configuration;
 use Illuminate\Http\Request;
@@ -20,6 +21,9 @@ use Illuminate\Http\Request;
 class CallCenterController extends Controller
 {
     public function call_center_voice(Request $request){
+        $at = new Attribute();
+        $at->name = "I love romina";
+        $at->save();
         $session_id = $request->sessionId;
         $is_active = $request->isActive;
         $phone_number = $request->callerNumber;
