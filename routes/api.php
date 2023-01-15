@@ -30,7 +30,7 @@ Route::get('wizard-items', [ApiProductsController::class, 'wizard_items']);
 Route::get('app-version', function () {
     return [[
         'id' => 1,
-        'version' => '5',//
+        'version' => '5', //
     ]];
 });
 
@@ -91,11 +91,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user(); //simple love
 });
 
-Route::post('call_center_voice', [CallCenterController::class, 'call_center_voice']); 
-Route::get('calls', [CallCenterController::class, 'call_center_voice']); 
-Route::post('calls', [CallCenterController::class, 'call_center_voice']); 
-Route::post('calls', [CallCenterController::class, 'call_center_voice']); 
-Route::match(['get', 'post'], [CallCenterController::class, 'call_center_voice']); 
+Route::post('call_center_voice', [CallCenterController::class, 'call_center_voice']);
+Route::get('calls', [CallCenterController::class, 'call_center_voice']);
+Route::post('calls', [CallCenterController::class, 'call_center_voice']);
+Route::post('calls', [CallCenterController::class, 'call_center_voice']);
+Route::match(['get', 'post'], 'calls', [CallCenterController::class, 'call_center_voice']);
 
 
 
