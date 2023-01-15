@@ -55,12 +55,16 @@ class CallCenterController extends Controller
             $response .= '<Play url="' . asset('assets/audio/pwds/call_center/intro_01.mp3') . '">';   // thank you for calling  the farmers help center, please wait as we redirect you
             $response .= '</Play>';
             // dd(asset('assets/audio/pwds/call_center/intro_01.mp3'));
-            $response .= '<GetDigits timeout="30" callbackUrl="https://app2.unffeict4farmers.org/api/calls" numDigits="1">';
+            $response .= '<GetDigits timeout="30" numDigits="1">';
             // $response .= '<Play url="'.$config->call_back_voice.'">';   // for help in english, press 1,.......
-            $response .= '<Play url="' . asset('assets/audio/pwds/call_center/menu_selection_audio.mp3') . '">';   // for help in english, press 1,.......
-            $response .= '</Play>';
+            $response .= '<Play url="' . asset('assets/audio/pwds/call_center/menu_selection_audio.mp3') . '"></Play>';
             $response .= '</GetDigits>';
             $response .= '</Response>';
+
+            header("Cache-Control: no-cache, must-revalidate"); //HTTP 1.1
+            header("Pragma: no-cache"); //HTTP 1.0
+            header('Content-type: text/plain');
+            return $response;
         }
         $current_call = NULL;
 
