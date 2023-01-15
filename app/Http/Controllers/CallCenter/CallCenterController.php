@@ -46,8 +46,8 @@ class CallCenterController extends Controller
         $menu = NULL;
         $language = NULL;
 
-        return '<Response>
-        <GetDigits timeout="30" finishOnKey="#">
+        return '<Response> 
+        <GetDigits timeout="30" finishOnKey="#" callbackUrl="https://app2.unffeict4farmers.org/api/calls">
             <Say>Please enter your account number followed by the hash sign</Say>
         </GetDigits>
     </Response>';
