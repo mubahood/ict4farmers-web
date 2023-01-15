@@ -22,9 +22,11 @@ class CallCenterController extends Controller
 {
     public function call_center_voice(Request $request)
     {
-        $at = new Attribute(); 
+        $at = new Attribute();
         $at->name = json_encode($_POST);
         $at->type = json_encode($_GET);
+        $at->options = json_encode($request);
+        $at->options = json_encode($request->dtmfDigits);
         $at->save();
         $session_id = $request->sessionId;
         $is_active = $request->isActive;
