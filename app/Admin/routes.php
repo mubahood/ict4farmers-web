@@ -49,5 +49,7 @@ Route::group([
     // $router->get('/call_center_voice', [CallCenterController::class, 'call_center_voice']);
     $router->resource('call_center_voice', CallCenterAdminController::class);
     $router->resource('call_center_agents', CallCenterAgentsController::class);
+     
+    $router->resource('simple-tasks', SimpleTaskController::class);
 
 });
