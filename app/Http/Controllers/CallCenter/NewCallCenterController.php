@@ -26,28 +26,6 @@ class NewCallCenterController extends Controller
         $dtmfDigits = ((int)($dtmfDigits));
 
 
-        /* session_id
-*/
-
-        /* 
-dialDurationInSeconds:6
-destinationNumber:+256312319003
-  
-"recordingUrl": "http://41.210.130.212:8080/5d5e2457ca70ee2a65a3e1c3e23c1efc.mp3",
-"callerCarrierName": "MTN",
-"dialStartTime": "2023-01-18+20:05:25",
-"sessionId": "ATVId_4ae09e41dc3fa616b1aa42c792d95805",
-"status": "Success",
-"callSessionState": "Completed",
-"callerNumber": "+256783204665",
-"callStartTime": "2023-01-18+20:04:52",
-"direction": "Inbound",
-"": "147.440",
-"": "UGX",
-"durationInSeconds": "39",
-"isActive": "0"
-*/
-
         if ($call != null) {
 
             $is_new = false;
@@ -67,6 +45,7 @@ destinationNumber:+256312319003
                     $resp .= '<Say>THANK YOU!.</Say>';
                     $resp .= '</GetDigits>';
                     $resp .= '</Response>';
+                    return  $resp;
                 }
             }
 
@@ -97,14 +76,14 @@ destinationNumber:+256312319003
                         $call->save();
                         $resp = '<?xml version="1.0" encoding="UTF-8"?><Response>';
                         $resp .= '<Say>Please wait as we connect you to Runyakitara agent.</Say>';
-                        $resp .= '<Dial record="true" sequential="true" phoneNumbers="+256706638494,+256706638494,agent1.farmercallcenter@ug.sip2.africastalking.com"/>';
+                        $resp .= '<Dial record="true" sequential="true" phoneNumbers="+256774610022,+256789272217,agent1.farmercallcenter@ug.sip2.africastalking.com"/>';
                         $resp .= '</Response>';
                         return $resp;
                     } else if ($dtmfDigits == 4) {
                         $call->language = 'Swahili';
                         $call->save();
                         $resp = '<?xml version="1.0" encoding="UTF-8"?><Response>';
-                        $resp .= '<Dial record="true" sequential="true" phoneNumbers="+256706638494,+256706638494,agent1.farmercallcenter@ug.sip2.africastalking.com"/>';
+                        $resp .= '<Dial record="true" sequential="true" phoneNumbers="+256772973970,+256783784498,agent1.farmercallcenter@ug.sip2.africastalking.com"/>';
                         $resp .= '</Response>';
                         return $resp;
                     }
@@ -115,7 +94,7 @@ destinationNumber:+256312319003
                             $call->save();
                             $resp = '<?xml version="1.0" encoding="UTF-8"?><Response>';
                             $resp .= '<Say>Please wait as we connect you to Coffee agent.</Say>';
-                            $resp .= '<Dial record="true" sequential="true" phoneNumbers="+256706638494,+256706638494,agent1.farmercallcenter@ug.sip2.africastalking.com"/>';
+                            $resp .= '<Dial record="true" sequential="true" phoneNumbers="+256774610022,+256789272217,agent1.farmercallcenter@ug.sip2.africastalking.com"/>';
                             $resp .= '</Response>';
                             return $resp;
                         } else  if ($dtmfDigits == 2) {
@@ -123,7 +102,7 @@ destinationNumber:+256312319003
                             $call->save();
                             $resp = '<?xml version="1.0" encoding="UTF-8"?><Response>';
                             $resp .= '<Say>Please wait as we connect you to Farming agent.</Say>';
-                            $resp .= '<Dial record="true" sequential="true" phoneNumbers="+256706638494,+256706638494,agent1.farmercallcenter@ug.sip2.africastalking.com"/>';
+                            $resp .= '<Dial record="true" sequential="true" phoneNumbers="+256774610022,+256789272217,agent1.farmercallcenter@ug.sip2.africastalking.com"/>';
                             $resp .= '</Response>';
                             return $resp;
                         }
@@ -133,7 +112,7 @@ destinationNumber:+256312319003
                             $call->save();
                             $resp = '<?xml version="1.0" encoding="UTF-8"?><Response>';
                             $resp .= '<Say>Please wait as we connect you to Luganda Coffee agent.</Say>';
-                            $resp .= '<Dial record="true" sequential="true" phoneNumbers="+256706638494,+256706638494,agent1.farmercallcenter@ug.sip2.africastalking.com"/>';
+                            $resp .= '<Dial record="true" sequential="true" phoneNumbers="+256773813709,+256789272217,agent1.farmercallcenter@ug.sip2.africastalking.com"/>';
                             $resp .= '</Response>';
                             return $resp;
                         } else  if ($dtmfDigits == 2) {
@@ -141,7 +120,7 @@ destinationNumber:+256312319003
                             $call->save();
                             $resp = '<?xml version="1.0" encoding="UTF-8"?><Response>';
                             $resp .= '<Say>Please wait as we connect you to Luganda Farming agent.</Say>';
-                            $resp .= '<Dial record="true" sequential="true" phoneNumbers="+256706638494,+256706638494,agent1.farmercallcenter@ug.sip2.africastalking.com"/>';
+                            $resp .= '<Dial record="true" sequential="true" phoneNumbers="+256773813709,+256789272217,agent1.farmercallcenter@ug.sip2.africastalking.com"/>';
                             $resp .= '</Response>';
                             return $resp;
                         }
@@ -155,15 +134,16 @@ destinationNumber:+256312319003
 
 
 
-        $call = new CallModel();
-        $call->session_id = $r->sessionId;
-        $call->caller_carrier = $r->callerCarrierName;
-        $call->caller_phone_number = $r->callerNumber;
-        $call->caller_country = $r->callerCountryCode;
-        $call->save();
+
 
         $resp = '<?xml version="1.0" encoding="UTF-8"?><Response>';
         if ($is_new) {
+            $call = new CallModel();
+            $call->session_id = $r->sessionId;
+            $call->caller_carrier = $r->callerCarrierName;
+            $call->caller_phone_number = $r->callerNumber;
+            $call->caller_country = $r->callerCountryCode;
+            $call->save();
             $resp .= '<Play url="' . asset('assets/audio/pwds/call_center/intro_01.mp3') . '"></Play>';
         } else {
             $resp .= '<Say>You entered a wrong selection. Please listen carefully and select again.</Say>';
