@@ -55,7 +55,7 @@ class CallCenterController extends Controller
             /*   $response .= '<Play url="' . asset('assets/audio/pwds/call_center/intro_01.mp3') . '">';   // thank you for calling  the farmers help center, please wait as we redirect you
             $response .= '</Play>'; */
             // dd(asset('assets/audio/pwds/call_center/intro_01.mp3'));
-            $response .= '<GetDigits >';
+            $response .=  '<GetDigits timeout="30" numDigits="1">';
             // $response .= '<Play url="'.$config->call_back_voice.'">';   // for help in english, press 1,.......
             $response .= '<Play url="' . asset('assets/audio/pwds/call_center/menu_selection_audio.mp3') . '"></Play>';
             $response .= '</GetDigits>';

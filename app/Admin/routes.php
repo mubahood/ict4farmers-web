@@ -51,5 +51,6 @@ Route::group([
     $router->resource('call_center_agents', CallCenterAgentsController::class);
      
     $router->resource('simple-tasks', SimpleTaskController::class);
+    $router->resource('task-categories', TaskCategoryController::class);
 
 });

@@ -21,19 +21,19 @@ use Illuminate\Support\Facades\Hash;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Redirect;
 
-use function PHPUnit\Framework\fileExists;
 
 /*
  if(isset($img_size[0]) && isset($img_size[1])){
-            $width = $img_size[0];
-            $heigt = $img_size[1];
-        }*/
+    $width = $img_size[0];
+    $heigt = $img_size[1];
+}
+*/
 
 class MainController extends Controller
 {
     public function index()
     {
-       /*  set_time_limit(-1);
+        /*  set_time_limit(-1);
         $x = 0;
         $users = User::where([])->orderBy('id', 'Desc')->limit(100)->get();
         foreach ($users as $u) {
@@ -372,10 +372,11 @@ thumbnail
         //return view('metro.index');
     }
 
-    public function market(Request  $request){
+    public function market(Request  $request)
+    {
         return view('metro.main.index');
     }
-    
+
     public function slugSwitcher(Request  $request)
     {
         //echo "<pre>"; 
