@@ -92,7 +92,7 @@ caller_carrier */
         $call->save();
 
         $resp = '<?xml version="1.0" encoding="UTF-8"?><Response>';
-        if (!$is_new) {
+        if ($is_new) {
             $resp .= '<Play url="' . asset('assets/audio/pwds/call_center/intro_01.mp3') . '"></Play>';
         } else {
             $resp .= '<Say>You entered a wrong selection. Please listen carefully and select again.</Say>';
