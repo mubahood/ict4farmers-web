@@ -21,12 +21,57 @@ class NewCallCenterController extends Controller
         $config = Configuration::get()->first();
         $is_new = true;
         $dtmfDigits = $r->dtmfDigits;
+        $recordingUrl = $r->recordingUrl;
+        $dialDurationInSeconds = $r->dialDurationInSeconds;
         $dtmfDigits = ((int)($dtmfDigits));
 
 
+        /* session_id
+*/
+
+        /* 
+dialDurationInSeconds:6
+destinationNumber:+256312319003
+  
+"recordingUrl": "http://41.210.130.212:8080/5d5e2457ca70ee2a65a3e1c3e23c1efc.mp3",
+"callerCarrierName": "MTN",
+"dialStartTime": "2023-01-18+20:05:25",
+"sessionId": "ATVId_4ae09e41dc3fa616b1aa42c792d95805",
+"status": "Success",
+"callSessionState": "Completed",
+"callerNumber": "+256783204665",
+"callStartTime": "2023-01-18+20:04:52",
+"direction": "Inbound",
+"": "147.440",
+"": "UGX",
+"durationInSeconds": "39",
+"isActive": "0"
+*/
 
         if ($call != null) {
+
             $is_new = false;
+
+
+            if ($dialDurationInSeconds != null && $recordingUrl != null && $r->dialDestinationNumber != null) {
+                if (strlen($recordingUrl) > 3) {
+                    $call->caller_country  = $r->callerCountryCode;
+                    $call->agent_phone_number  = $r->dialDestinationNumber;
+                    $call->recording_url  = $r->recordingUrl;
+                    $call->call_duration  = $r->dialDurationInSeconds;
+                    $call->amount  = $r->amount;
+                    $call->currency  = $r->currencyCode;
+                    $call->save();
+                    $resp = '<?xml version="1.0" encoding="UTF-8"?><Response>';
+                    $resp .= '<GetDigits timeout="30" numDigits="1">';
+                    $resp .= '<Say>THANK YOU!.</Say>';
+                    $resp .= '</GetDigits>';
+                    $resp .= '</Response>';
+                }
+            }
+
+
+
             if ($dtmfDigits != null) {
                 if ($call->language == null) {
                     if ($dtmfDigits == 1) {
@@ -107,25 +152,7 @@ class NewCallCenterController extends Controller
         }
 
 
-        /* session_id
-caller_phone_number
 
-Full texts
-id
-created_at
-updated_at
-session_id
-caller_phone_number
-caller_country
-caller_caller
-
-caller_country
-caller_caller
-inquiry_category
-agent_phone_number
-recording_url
-call_duration
-caller_carrier */
 
 
         $call = new CallModel();
