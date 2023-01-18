@@ -92,14 +92,14 @@ caller_carrier */
         $call->save();
 
         $resp = '<?xml version="1.0" encoding="UTF-8"?><Response>';
-        if ($is_new) {
-            $resp .= '<Play url="' . $config->introduction . '"></Play>';
+        if (!$is_new) {
+            $resp .= '<Play url="' . asset('assets/audio/pwds/call_center/intro_01.mp3') . '"></Play>';
         } else {
             $resp .= '<Say>You entered a wrong selection. Please listen carefully and select again.</Say>';
         }
 
         $resp .= '<GetDigits timeout="30" numDigits="1">';
-        $resp .= '<Play url="' . $config->call_back_voice . '"></Play>';
+        $resp .= '<Play url="' . asset('assets/audio/pwds/call_center/menu_selection_audio.mp3') . '"></Play>';
         $resp .= '</GetDigits>';
         $resp .= '</Response>';
 
