@@ -21,6 +21,7 @@ class NewCallCenterController extends Controller
         $config = Configuration::get()->first();
         $is_new = true;
         $dtmfDigits = $r->dtmfDigits;
+        $dtmfDigits = ((int)($dtmfDigits));
 
 
 
@@ -61,6 +62,44 @@ class NewCallCenterController extends Controller
                         $resp .= '<Dial record="true" sequential="true" phoneNumbers="+256706638494,+256706638494,agent1.farmercallcenter@ug.sip2.africastalking.com"/>';
                         $resp .= '</Response>';
                         return $resp;
+                    }
+                } else if ($dtmfDigits != null) {
+                    if ($call->language == 'English') {
+                        if ($dtmfDigits == 1) {
+                            $call->inquiry_category = 'Coffee';
+                            $call->save();
+                            $resp = '<?xml version="1.0" encoding="UTF-8"?><Response>';
+                            $resp .= '<Say>Please wait as we connect you to Coffee agent.</Say>';
+                            $resp .= '<Dial record="true" sequential="true" phoneNumbers="+256706638494,+256706638494,agent1.farmercallcenter@ug.sip2.africastalking.com"/>';
+                            $resp .= '</Response>';
+                            return $resp;
+                        } else  if ($dtmfDigits == 2) {
+                            $call->inquiry_category = 'Farming';
+                            $call->save();
+                            $resp = '<?xml version="1.0" encoding="UTF-8"?><Response>';
+                            $resp .= '<Say>Please wait as we connect you to Farming agent.</Say>';
+                            $resp .= '<Dial record="true" sequential="true" phoneNumbers="+256706638494,+256706638494,agent1.farmercallcenter@ug.sip2.africastalking.com"/>';
+                            $resp .= '</Response>';
+                            return $resp;
+                        }
+                    } else if ($call->language == 'Luganda') {
+                        if ($dtmfDigits == 1) {
+                            $call->inquiry_category = 'Coffee';
+                            $call->save();
+                            $resp = '<?xml version="1.0" encoding="UTF-8"?><Response>';
+                            $resp .= '<Say>Please wait as we connect you to Luganda Coffee agent.</Say>';
+                            $resp .= '<Dial record="true" sequential="true" phoneNumbers="+256706638494,+256706638494,agent1.farmercallcenter@ug.sip2.africastalking.com"/>';
+                            $resp .= '</Response>';
+                            return $resp;
+                        } else  if ($dtmfDigits == 2) {
+                            $call->inquiry_category = 'Farming';
+                            $call->save();
+                            $resp = '<?xml version="1.0" encoding="UTF-8"?><Response>';
+                            $resp .= '<Say>Please wait as we connect you to Luganda Farming agent.</Say>';
+                            $resp .= '<Dial record="true" sequential="true" phoneNumbers="+256706638494,+256706638494,agent1.farmercallcenter@ug.sip2.africastalking.com"/>';
+                            $resp .= '</Response>';
+                            return $resp;
+                        }
                     }
                 }
             }
