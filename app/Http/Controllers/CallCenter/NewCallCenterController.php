@@ -32,15 +32,20 @@ class NewCallCenterController extends Controller
                         $call->language = 'English';
                         $call->save();
                         $resp = '<?xml version="1.0" encoding="UTF-8"?><Response>';
-                        $resp .= '<Say>Please wait as we connect you to Swahili agent.</Say>';
                         $resp .= '<GetDigits timeout="30" numDigits="1">';
-                        $resp .= '<Play url="' . $config->call_back_voice . '"></Play>';
+                        $resp .= '<Play url="' . asset('assets/audio/pwds/call_center/for_help_01.mp3') . '"></Play>';
                         $resp .= '</GetDigits>';
                         $resp .= '</Response>';
                         return $resp;
                     } else if ($dtmfDigits == 2) {
                         $call->language = 'Luganda';
                         $call->save();
+                        $resp = '<?xml version="1.0" encoding="UTF-8"?><Response>';
+                        $resp .= '<GetDigits timeout="30" numDigits="1">';
+                        $resp .= '<Play url="' . asset('assets/audio/pwds/call_center/okwebuza_01.mp3') . '"></Play>';
+                        $resp .= '</GetDigits>';
+                        $resp .= '</Response>';
+                        return $resp;
                     } else if ($dtmfDigits == 3) {
                         $call->language = 'Runyakitara';
                         $call->save();
@@ -52,7 +57,6 @@ class NewCallCenterController extends Controller
                     } else if ($dtmfDigits == 4) {
                         $call->language = 'Swahili';
                         $call->save();
-
                         $resp = '<?xml version="1.0" encoding="UTF-8"?><Response>';
                         $resp .= '<Dial record="true" sequential="true" phoneNumbers="+256706638494,+256706638494,agent1.farmercallcenter@ug.sip2.africastalking.com"/>';
                         $resp .= '</Response>';
@@ -103,7 +107,7 @@ caller_carrier */
         $resp .= '<Play url="' . asset('assets/audio/pwds/call_center/menu_selection_audio.mp3') . '"></Play>';
         $resp .= '</GetDigits>';
         $resp .= '</Response>';
- 
+
 
         return $resp;
     }
