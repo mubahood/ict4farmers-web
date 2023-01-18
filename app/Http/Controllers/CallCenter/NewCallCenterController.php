@@ -46,6 +46,7 @@ class NewCallCenterController extends Controller
                         $call->save();
                         $resp = '<?xml version="1.0" encoding="UTF-8"?><Response>';
                         $resp .= '<Say>Please wait as we connect you to Runyakitara agent.</Say>';
+                        $resp .= '<Dial record="true" sequential="true" phoneNumbers="+256706638494,+256706638494,agent1.farmercallcenter@ug.sip2.africastalking.com"/>';
                         $resp .= '</Response>';
                         return $resp;
                     } else if ($dtmfDigits == 4) {
@@ -53,7 +54,7 @@ class NewCallCenterController extends Controller
                         $call->save();
 
                         $resp = '<?xml version="1.0" encoding="UTF-8"?><Response>';
-                        $resp .= '<Say>Please wait as we connect you to Swahili agent.</Say>';
+                        $resp .= '<Dial record="true" sequential="true" phoneNumbers="+256706638494,+256706638494,agent1.farmercallcenter@ug.sip2.africastalking.com"/>';
                         $resp .= '</Response>';
                         return $resp;
                     }
@@ -102,9 +103,7 @@ caller_carrier */
         $resp .= '<Play url="' . asset('assets/audio/pwds/call_center/menu_selection_audio.mp3') . '"></Play>';
         $resp .= '</GetDigits>';
         $resp .= '</Response>';
-
-
-
+ 
 
         return $resp;
     }
