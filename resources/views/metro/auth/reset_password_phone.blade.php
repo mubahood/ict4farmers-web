@@ -4,15 +4,14 @@
     <form class="form w-100" autocomplete="off" action="{{ url('reset-password-phone') }}" method="POST">
         @csrf
         <div class="mb-10 text-center">
-            <h1 class="fw-100  fs-1">Passowrd reset.</h1>
+            <h1 class="fw-100  fs-1">Password reset.</h1>
         </div>
 
         <div class="fv-row mb-7">
             @include('metro.components.input-text', [
-                'label' => 'Phone Number',
+                'label' => 'Phone Number / Email',
                 'attributes' => [
-                    'name' => 'phone_number',
-                    'type' => 'number',
+                    'name' => 'email',
                     'autocomplete' => 'off',
                 ],
             ])

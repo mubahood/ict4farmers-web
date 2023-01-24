@@ -14,6 +14,7 @@ use App\Http\Controllers\UsersController;
 use App\Http\Controllers\BannersController;
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\RedirectIfAuthenticated;
+use App\Http\Controllers\Auth\ResetPasswordController;
 
 
 
@@ -61,7 +62,7 @@ Route::match(['get', 'post'], '/profile-edit/{id}', [Dashboard::class, 'profileE
 Route::get('/profile', [Dashboard::class, 'profile'])->middleware(Authenticate::class);
 Route::get('/logout', [Dashboard::class, 'logout'])->middleware(Authenticate::class);
 Route::match(['get', 'post'], '/messages/', [Dashboard::class, 'messages'])->name("messages")->middleware(Authenticate::class);
-Route::match(['get', 'post'], '/messages/{thread}', [Dashboard::class, 'messages'])->name("messages")->middleware(Authenticate::class);
+Route::match(['get', 'post'], '/messages/{thread}', [Dashboard::class, 'messages'])->name("messages-thread")->middleware(Authenticate::class);
 Route::match(['get', 'post'], 'test/{id}', [MainController::class, 'test']);
 Route::match(['get', 'post'], 'test', ['before' => 'csrf', MainController::class, 'test']);
 Route::get('/sell-fast', [MainController::class, 'sell_fast']);
@@ -72,10 +73,24 @@ Route::get('/reset-password-phone', [MainController::class, 'reset_password_phon
 Route::post('/reset-password-phone', [MainController::class, 'reset_password_phone_post']);
 Route::get('/reset-password-code', [MainController::class, 'reset_password_code']);
 Route::post('/reset-password-code', [MainController::class, 'reset_password_code_post']);
-Route::get('/reset-password', [MainController::class, 'reset_password']);
+Route::get('/password/reset', [MainController::class, 'reset_password']);
 Route::post('/reset-password', [MainController::class, 'reset_password_post']);
 
 Route::match(['get', 'post'], '/{id}', [MainController::class, 'slugSwitcher']);
 
 
-Route::post('call_center_voice', [CallCenterController::class, 'call_center_voice']);
+// Route::post('call_center_voice', [CallCenterController::class, 'call_center_voice']);
+
+// Password Reset Routes...
+// Route::get('password/reset', 'ForgotPasswordController@showLinkRequestForm');
+// Route::post('password/email', 'ForgotPasswordController@sendResetLinkEmail');
+// Route::get('password/reset/{token}', 'ResetPasswordController@showResetForm');
+Route::get('password/reset/{token}', function($token) {
+    return view('metro.auth.reset_password',['token' => $token]);
+})->name('password.reset');
+Route::post('password/reset','App\Http\Controllers\Auth\ResetPasswordController@reset');
+// Auth::routes([
+//     'login' => false,
+//     'register' => false,
+//     'reset' => false,
+// ]);

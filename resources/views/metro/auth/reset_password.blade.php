@@ -1,18 +1,36 @@
 @extends('metro.layout.layout-auth')
 
 @section('content')
-    <form class="form w-100" autocomplete="off" action="{{ url('reset-password') }}" method="POST">
+    <form class="form w-100" autocomplete="off" action="{{ url('password/reset') }}" method="POST">
         @csrf
+
+        @include('metro.components.input-text', [
+                'attributes' => [
+                    'name' => 'token',
+                    'type' => 'hidden',
+                    'value' => $token,
+                    ],
+            ])
+
         <div class="mb-10 text-center">
             <h1 class="fw-100  fs-1">Passowrd reset.</h1>
         </div>
-
+        <div class="fv-row mb-7">
+            @include('metro.components.input-text', [
+                'label' => 'Email',
+                'attributes' => [
+                    'name' => 'email',
+                    'type' => 'text',
+                    'value' => request()->email,
+                ],
+            ])
+        </div>
         <div class="fv-row mb-7">
             @include('metro.components.input-text', [
                 'label' => 'Enter enter new password',
                 'attributes' => [
-                    'name' => 'password_1',
-                    'type' => 'text',
+                    'name' => 'password',
+                    'type' => 'password',
                     'autocomplete' => 'off',
                 ],
             ])
@@ -22,8 +40,8 @@
             @include('metro.components.input-text', [
                 'label' => 'Re-Enter enter same password',
                 'attributes' => [
-                    'name' => 'password_2',
-                    'type' => 'text',
+                    'name' => 'password_confirmation',
+                    'type' => 'password',
                     'autocomplete' => 'off',
                 ],
             ])

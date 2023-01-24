@@ -20,6 +20,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
+
 
 
 /*
@@ -31,6 +33,8 @@ use Illuminate\Support\Facades\Redirect;
 
 class MainController extends Controller
 {
+    use SendsPasswordResetEmails;
+
     public function index()
     {
         /*  set_time_limit(-1);
@@ -687,52 +691,70 @@ thumbnail
 
     public function reset_password_phone_post(Request $r)
     {
+        $phone_or_email = $r->email;
+        //check if phone_or_email is an email
+        $is_email = filter_var($phone_or_email, FILTER_VALIDATE_EMAIL);
+        if($is_email) {
 
-        $phone_number = Utils::prepare_phone_number($r->phone_number);
-        $phone_number_is_valid = Utils::phone_number_is_valid($phone_number);
-        if (!$phone_number_is_valid) {
-            $errors['phone_number'] = "Please enter a valid phone number.";
-            return Redirect::back()
+            //send password reset link
+            $u = User::where('email', $phone_or_email)->first();
+            if ($u == null) {
+                $errors['phone_number'] = "Account with that email was not found on our database.";
+                return Redirect::back()
+                    ->withErrors($errors)
+                    ->withInput();
+            }
+            $this->sendResetLinkEmail($r);
+            session()->flash('success_message',"We have just sent to you an email with a password reset link.");
+            return Redirect::back();
+
+        }else{
+            $phone_number = Utils::prepare_phone_number($r->email);
+            $phone_number_is_valid = Utils::phone_number_is_valid($phone_number);
+            if (!$phone_number_is_valid) {
+                $errors['phone_number'] = "Please enter a valid phone number.";
+                return Redirect::back()
+                    ->withErrors($errors)
+                    ->withInput();
+            }
+            $u =
+                User::where('phone_number',  $phone_number)
+                ->orWhere('username',  $phone_number)
+                ->orWhere('username',  $phone_number)
+                ->first();
+            if ($u == null) {
+                $errors['phone_number'] = "Account with that phone number was not found on our database.";
+                return Redirect::back()
+                    ->withErrors($errors)
+                    ->withInput();
+            }
+    
+    
+            Utils::session_start();
+            $_SESSION['user_id'] = $u->id;
+    
+            $u->verification_code = rand(1000, 9999) . "";
+            $resp = Utils::send_sms([
+                'to' => $phone_number,
+                'message' => 'Your ICT4Farmers password reset code is ' . $u->verification_code
+            ]);
+    
+            if (!$resp) {
+                $errors['phone_number'] = "We have failed to send a verification code to your number. 
+                Please contact us on +256 780 602550 and we help reset your password.";
+                return Redirect::back()
+                    ->withErrors($errors)
+                    ->withInput();
+            }
+    
+            $u->save();
+            $errors['success'] = "We have just sent to you an SMS with a password reset code on your number {$phone_number}.";
+            return redirect(url('reset-password-code'))
                 ->withErrors($errors)
                 ->withInput();
-        }
-        $u =
-            User::where('phone_number',  $phone_number)
-            ->orWhere('username',  $phone_number)
-            ->orWhere('username',  $phone_number)
-            ->first();
-        if ($u == null) {
-            $errors['phone_number'] = "Account with that phone number was not found on our database.";
-            return Redirect::back()
-                ->withErrors($errors)
-                ->withInput();
+    
         }
 
-
-        Utils::session_start();
-        $_SESSION['user_id'] = $u->id;
-
-        $u->verification_code = rand(1000, 9999) . "";
-        $resp = Utils::send_sms([
-            'to' => $phone_number,
-            'message' => 'Your ICT4Farmers password reset code is ' . $u->verification_code
-        ]);
-
-        if (!$resp) {
-            $errors['phone_number'] = "We have failed to send a verification code to your number. 
-            Please contact us on +256 780 602550 and we help reset your password.";
-            return Redirect::back()
-                ->withErrors($errors)
-                ->withInput();
-        }
-
-        $u->save();
-        $errors['success'] = "We have just sent to you an SMS with a password reset code on your number {$phone_number}.";
-        return redirect(url('reset-password-code'))
-            ->withErrors($errors)
-            ->withInput();
-
-        die("done");
     }
 
     public function reset_password_code_post(Request $r)
