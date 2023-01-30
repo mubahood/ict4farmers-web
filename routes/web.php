@@ -71,26 +71,16 @@ Route::get('/contact', [MainController::class, 'contact']);
 //Reset passwords
 Route::get('/reset-password-phone', [MainController::class, 'reset_password_phone']);
 Route::post('/reset-password-phone', [MainController::class, 'reset_password_phone_post']);
-Route::get('/reset-password-code', [MainController::class, 'reset_password_code']);
-Route::post('/reset-password-code', [MainController::class, 'reset_password_code_post']);
-Route::get('/password/reset', [MainController::class, 'reset_password']);
-Route::post('/reset-password', [MainController::class, 'reset_password_post']);
+// Route::get('/reset-password-code', [MainController::class, 'reset_password_code']);
+// Route::post('/reset-password-code', [MainController::class, 'reset_password_code_post']);
+
 
 Route::match(['get', 'post'], '/{id}', [MainController::class, 'slugSwitcher']);
 
 
 // Route::post('call_center_voice', [CallCenterController::class, 'call_center_voice']);
 
-// Password Reset Routes...
-// Route::get('password/reset', 'ForgotPasswordController@showLinkRequestForm');
-// Route::post('password/email', 'ForgotPasswordController@sendResetLinkEmail');
-// Route::get('password/reset/{token}', 'ResetPasswordController@showResetForm');
 Route::get('password/reset/{token}', function($token) {
     return view('metro.auth.reset_password',['token' => $token]);
 })->name('password.reset');
 Route::post('password/reset','App\Http\Controllers\Auth\ResetPasswordController@reset');
-// Auth::routes([
-//     'login' => false,
-//     'register' => false,
-//     'reset' => false,
-// ]);

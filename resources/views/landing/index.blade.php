@@ -218,16 +218,22 @@
                                     target="_blank" class="nav-link">Mobile App</a>
                             </li>
                             <li class="nav-item">
-                                <a href="https://app2.unffeict4farmers.org/market" target="_blank"
+                                <a href="https://app2.unffeict4farmers.org/market"
                                     class="nav-link">Marketplace</a>
                             </li>
                             <li class="nav-item">
-                                <a href="https://app2.unffeict4farmers.org/admin" target="_blank"
+                                <a href="https://app2.unffeict4farmers.org/admin"
                                     class="nav-link">Dashboard</a>
                             </li>
                             <li class="nav-item">
                                 <a href="https://academy.unffeict4farmers.org" target="_blank"
                                     class="nav-link">E-Academy</a>
+                            </li>
+                            <li>
+                                <a href="tel:0800209003" style="text-decoration:none">
+                                    <i class="bx bxs-phone-call d-block fs-2 text-primary mb-2 py-1"></i>
+                                </a>
+      
                             </li>
                         </ul>
                     </div>
