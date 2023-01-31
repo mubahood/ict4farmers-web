@@ -7,6 +7,7 @@ use App\Models\FarmersGroupHasAgent;
 use App\Models\Location;
 use App\Models\User;
 use Encore\Admin\Controllers\AdminController;
+use Encore\Admin\Facades\Admin;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
@@ -289,6 +290,7 @@ class AgentUsersController extends AdminController
     protected function form()
     {
         $u = Auth::user();
+
         $group_id = 0;
         foreach (FarmersGroupHasAgent::all() as $key => $g) {
             if ($g->administrator_id == $u->id) {
@@ -296,7 +298,7 @@ class AgentUsersController extends AdminController
             }
         }
 
-        if ($group_id < 1) {
+        if (Admin::user()->isRole('agent') && $group_id < 1) {
             return "Your agent's account have not been assigned to any farmer's association yet. 
             Please contact system administrators to do so.";
         }
@@ -377,8 +379,8 @@ class AgentUsersController extends AdminController
         $form->text('name', __('Full Name'))
             ->required();
 
-        $form->text('date_of_birth', __('Age'))
-            ->attribute('type', 'number')
+        $form->date('date_of_birth', __('Date of birth'))
+            ->rules('before:-13 years')
             ->required();
 
 
@@ -406,7 +408,6 @@ class AgentUsersController extends AdminController
             ->required();
 
         $form->text('address', __('Address'));
-
 
         $form->select('group_id', __('Farmer\'s association'))
             ->options(FarmersGroup::all()->pluck('name', 'id'))
