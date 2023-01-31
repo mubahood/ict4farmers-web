@@ -123,7 +123,11 @@ class AgentUsersController extends AdminController
         });
 
 
-        $grid->model()->orderBy('id', 'Desc');
+        if($u->can('view-other-groups')){
+            $grid->model()->orderBy('id', 'Desc');
+        }else{
+            $grid->model()->where('group_id', $u->group_id)->orderBy('id', 'Desc');
+        }
 
         $grid->column('id', __('Id'))->sortable();
         //$grid->column('username', __('Username'));
@@ -189,8 +193,20 @@ class AgentUsersController extends AdminController
         $grid->column('date_of_birth', __('Date of birth'));
         $grid->column('marital_status', __('Marital status'));
         $grid->column('gender', __('Gender'));
-        $grid->column('group_id', __('Group id'))->hide();
-        $grid->column('group_text', __('Group'));
+        // $grid->column('group_id', __('Group id'))->hide();
+        if($u->can('view-other-groups')) {
+            $grid->column('group_id', __('Group'))
+            ->display(function ($id) {
+                if ($id == null) {
+                    return;
+                }
+                $loc = Group::find($id);
+                if ($loc == null) {
+                    return $id;
+                }
+                return $loc->name;
+            });
+        }
         $grid->column('sector', __('Sector'));
         $grid->column('production_scale', __('Production scale'));
         $grid->column('number_of_dependants', __('Number of dependants'));
