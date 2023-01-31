@@ -291,12 +291,7 @@ class AgentUsersController extends AdminController
     {
         $u = Auth::user();
 
-        $group_id = 0;
-        foreach (FarmersGroupHasAgent::all() as $key => $g) {
-            if ($g->administrator_id == $u->id) {
-                $group_id = $g->farmers_group_id;
-            }
-        }
+        $group_id = $u->group_id;
 
         if (Admin::user()->isRole('agent') && $group_id < 1) {
             return "Your agent's account have not been assigned to any farmer's association yet. 
@@ -337,7 +332,6 @@ class AgentUsersController extends AdminController
                 return redirect(url('admin/agent-users'));
             } else {
 
-                die($f->id);
                 die("is editng...");
             }
         });
@@ -380,7 +374,7 @@ class AgentUsersController extends AdminController
             ->required();
 
         $form->date('date_of_birth', __('Date of birth'))
-            ->rules('before:-13 years')
+            ->rules('before:-10 years')
             ->required();
 
 
@@ -400,7 +394,7 @@ class AgentUsersController extends AdminController
             ->required();
 
 
-        $form->text('email', __('Email'));
+        $form->email('email', __('Email'));
 
 
         $form->select('location_id', __('Sub-county'))
@@ -425,6 +419,7 @@ class AgentUsersController extends AdminController
             ->required();
 
         $form->text('experience', __('Experience (in years)'))->attribute('type', 'number')
+            ->rules('min:0|max: 200')
             ->required();
 
         $form->select('production_scale', __('Production scale'))

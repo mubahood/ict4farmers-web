@@ -46,6 +46,7 @@ class FarmController extends AdminController
         })->sortable();
         $grid->column('location_id', __('Subcounty'))->display(function () {
             return $this->location->get_name();
+            
         })->sortable();
         $grid->column('latitude', __('GPS'))->display(function () {
             return $this->latitude . ", " . $this->longitude;
