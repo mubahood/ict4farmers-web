@@ -214,20 +214,20 @@
                     <div class="offcanvas-body">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item">
-                                <a href="https://play.google.com/store/apps/details?id=net.eighttechnologes.ict4farmers&hl=en&gl=US"
-                                    target="_blank" class="nav-link">Mobile App</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="https://app2.unffeict4farmers.org/market"
+                                <a href="{{ url('/market') }}"
                                     class="nav-link">Marketplace</a>
                             </li>
                             <li class="nav-item">
-                                <a href="https://app2.unffeict4farmers.org/admin"
+                                <a href="{{ url('/admin') }}"
                                     class="nav-link">Dashboard</a>
                             </li>
                             <li class="nav-item">
                                 <a href="https://academy.unffeict4farmers.org" target="_blank"
                                     class="nav-link">E-Academy</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#"
+                                 class="nav-link">Our Policies</a>
                             </li>
                             <li>
                                 <a href="tel:0800209003" style="text-decoration:none">
@@ -241,7 +241,7 @@
                         <a href="https://play.google.com/store/apps/details?id=net.eighttechnologes.ict4farmers&hl=en&gl=US"
                             class="btn btn-primary w-100" target="_blank" rel="noopener">
                             <i class="bx bx-cart fs-4 lh-1 me-1"></i>
-                            &nbsp;Download App
+                            &nbsp;Mobile App
                         </a>
                     </div>
                 </div>
@@ -371,6 +371,14 @@
                         <a href="javascript:;" class="card card-body card-hover px-2 mx-2">
                             <img src="muhindo/img/brands/UNFFE.png" class="d-block mx-auto my-2" width="154"
                                 alt="Brand">
+                        </a>
+                    </div>
+
+                    <!-- Item -->
+                    <div class="swiper-slide py-3">
+                        <a href="javascript:;" class="card card-body card-hover px-2 mx-2">
+                            <img src="muhindo/img/brands/UNYFA.png" class="d-block mx-auto my-2" width="154"
+                            alt="Brand">
                         </a>
                     </div>
 
@@ -673,7 +681,7 @@
                             Remotely manage your farms
                         </li>
                     </ul>
-                    <a href="https://app2.unffeict4farmers.org/admin" target="_blank" class="btn btn-primary">
+                    <a href="/admin" class="btn btn-primary">
                         Login to Dashboard
                         <i class="bx bx-right-arrow-alt fs-xl ms-2 me-n1"></i>
                     </a>
@@ -712,7 +720,7 @@
                                 visualization on your <b>Web Dashboard</b>.</p>
                         </div>
                     </div>
-                    <a href="https://app2.unffeict4farmers.org/admin" class="btn btn-primary">
+                    <a href="/admin" class="btn btn-primary">
                         Login to Dashboard
                         <i class="bx bx-right-arrow-alt fs-xl ms-2 me-n1"></i>
                     </a>
