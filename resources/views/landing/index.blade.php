@@ -225,10 +225,22 @@
                                 <a href="https://academy.unffeict4farmers.org" target="_blank"
                                     class="nav-link">E-Academy</a>
                             </li>
-                            <li class="nav-item">
-                                <a href="#"
-                                 class="nav-link">Our Policies</a>
+                            <!-- dropdown ul -->
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    Policies
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    @foreach ($policies as $policy)
+                                        <li><a class="dropdown-item" href="{{ asset('uploads/'.$policy->path) }}" target="_blank">{{ $policy->name }}</a></li>
+                                    @endforeach
+                                </ul>
                             </li>
+                            <!-- <li class="nav-item">
+                                <a href="#"
+                                 class="nav-link">Policies</a>
+                            </li> -->
                             <li>
                                 <a href="tel:0800209003" style="text-decoration:none">
                                     <i class="bx bxs-phone-call d-block fs-2 text-primary mb-2 py-1"></i>

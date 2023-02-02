@@ -37,7 +37,9 @@ class MainController extends Controller
 
     public function index()
     {
-        return view('landing.index');
+        // get policy names and path
+        $policies = \App\Models\Policy::all();
+        return view('landing.index',compact('policies'));
     }
 
     public function market(Request  $request)
