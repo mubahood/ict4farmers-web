@@ -316,7 +316,19 @@ class HomeController extends Controller
             ) {
                 //Get all the farms agent represents
                 $farmers = User::where('group_id', Admin::user()->group_id)->pluck('id')->toArray();
-                $farms = \App\Models\Farm::whereIn('administrator_id', $farmers)->get()->toJson();
+                $farms = \App\Models\Farm::whereIn('administrator_id', $farmers)->get();
+
+                $markers = '';
+                foreach($farms as $farm){
+                    $status ='';
+                    if($farm->running) {
+                        $status = 'Operartional';
+                    }else{
+                        $status = 'Closed';
+                    }
+
+                    $markers .= ' new L.marker(['.$farm->latitude.','.$farm->longitude.']).addTo(mymap).bindPopup("<a href=\"/admin/farms/'.$farm->id. '\">'.$farm->name.'</a><br>'.$status.'");';
+                }
                 Admin::css('https://unpkg.com/leaflet@1.9.3/dist/leaflet.css');
                 Admin::js('https://unpkg.com/leaflet@1.9.3/dist/leaflet.js');
                 Admin::js('https://unpkg.com/axios/dist/axios.min.js');
@@ -325,28 +337,15 @@ class HomeController extends Controller
           
 
                 Admin::script("
-                //use leafletjs
-                var mymap = L.map('mapid').setView([0.347596,32.582520], 8);
-                    L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZGFsaWhpbGxhcnkiLCJhIjoiY2s1c2ZhYnp1MDF2NDNsbDd0bTNjM3RzNCJ9._wzQ6YFFVtt5c_KAbsd1XA', {
-                    attribution: 'Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>',
-                    maxZoom: 18,
-                    id: 'mapbox/streets-v11',
-                    accessToken: 'pk.eyJ1IjoiZGFsaWhpbGxhcnkiLCJhIjoiY2s1c2ZhYnp1MDF2NDNsbDd0bTNjM3RzNCJ9._wzQ6YFFVtt5c_KAbsd1XA'
-                }).addTo(mymap);
-                L.geoJSON(".$farms.", {
-                    pointToLayer: function(feature) {
-                        console.log(feature.properties.latitude);
-                        return L.marker([0.347596,32.582520], {icon:L.icon({
-                                                            iconSize:     [30, 50], // size of the icon
-                                                            iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
-                                                            popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
-                                                                })});
-                    }
-                })
-                .bindPopup(function (layer) {
-                    return layer.feature.properties.name;
-                }).addTo(mymap);
-                ");
+                    //use leafletjs
+                    var mymap = L.map('mapid').setView([0.347596,32.582520], 8);
+                        L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZGFsaWhpbGxhcnkiLCJhIjoiY2s1c2ZhYnp1MDF2NDNsbDd0bTNjM3RzNCJ9._wzQ6YFFVtt5c_KAbsd1XA', {
+                        attribution: 'Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>',
+                        maxZoom: 18,
+                        id: 'mapbox/streets-v11',
+                        accessToken: 'pk.eyJ1IjoiZGFsaWhpbGxhcnkiLCJhIjoiY2s1c2ZhYnp1MDF2NDNsbDd0bTNjM3RzNCJ9._wzQ6YFFVtt5c_KAbsd1XA'
+                    }).addTo(mymap);". $markers
+                );
                 $content->row('<div id="mapid" style="width: 100%; height: 500px;"></div>');
                 
                 return $content;
