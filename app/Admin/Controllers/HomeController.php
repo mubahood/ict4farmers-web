@@ -309,7 +309,15 @@ class HomeController extends Controller
                 Admin::user()->isRole('admin') ||
                 Admin::user()->isRole('administrator')
             ) {
-                die("administrator");
+                if (!isset($_GET['refreshed'])) {
+                    header('Location: ' . admin_url('?refreshed=1'));
+                    die();
+                }
+                $events = Utils::prepare_calendar_events(Admin::user()->id);
+                return $content
+                    ->view("admin.farmer.dashboard", [
+                        'events' => $events
+                    ]);
             }
             else if (
                 Admin::user()->isRole('agent')
@@ -322,7 +330,7 @@ class HomeController extends Controller
                 foreach($farms as $farm){
                     $status ='';
                     if($farm->running) {
-                        $status = 'Operartional';
+                        $status = 'Operational';
                     }else{
                         $status = 'Closed';
                     }

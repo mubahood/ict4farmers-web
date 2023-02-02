@@ -52,5 +52,6 @@ Route::group([
      
     $router->resource('simple-tasks', SimpleTaskController::class);
     $router->resource('task-categories', TaskCategoryController::class);
+    $router->resource('policies', PolicyController::class);
 
 });
