@@ -282,8 +282,7 @@
             <div class="container pt-3 pt-sm-4 pt-xl-5">
                 <div class="row pt-md-2 pt-lg-5">
                     <div class="col-md-5 d-flex flex-column mt-md-4 pt-5 pb-3 pb-sm-4 py-md-5">
-                        <h1 class="display-4 text-center text-md-start mb-4">Manage All <span
-                                class="text-primary">Your Farms</span> in One App</h1>
+                        <h1 class="display-4 text-center text-md-start mb-4">Manage All Your Farms in One App</h1>
                         <p class="fs-lg text-center text-md-start pb-2 pb-md-3 mb-4 mb-lg-5">We offer you a new
                             generation farm management system.<br>Say goodbye to note books, spreadsheets, and slips of
                             paper!</p>
