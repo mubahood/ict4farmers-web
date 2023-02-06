@@ -29,8 +29,12 @@ class FarmersGroupController extends AdminController
     {
         $grid = new Grid(new FarmersGroup());
 
-        $grid->column('id', __('Id'))->sortable();
+        $grid->column('id', __('Id'))->sortable('desc');
         $grid->column('name', __('Name'));
+        $grid->column('organisation_id', __('Organisation'))->display(function ($org) {
+            $org = \App\Models\Organisation::find($org);
+            return $org->name;
+        });
         $grid->column('details', __('Details'));
 
         return $grid;
@@ -49,6 +53,9 @@ class FarmersGroupController extends AdminController
         $show->field('id', __('Id'));
         $show->field('created_at', __('Created at'));
         $show->field('name', __('Name'));
+        $show->organisation('Organisation', function ($org) {
+            $org->name();
+        });
         $show->field('details', __('Details'));
 
         return $show;
@@ -65,6 +72,9 @@ class FarmersGroupController extends AdminController
 
         $form->text('name', __('Group Name'))->required();
         $form->textarea('details', __('Details'));
+        $form->select('organisation_id', __('Organisation'))->options(
+            \App\Models\Organisation::all()->pluck('name', 'id')
+        )->required();
 
         $form->hasMany('agents', function (NestedForm $f) {
 
