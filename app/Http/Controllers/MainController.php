@@ -106,8 +106,8 @@ class MainController extends Controller
         if ($cat) {
             return view('metro.main.product-listing');
         }
-
-        return view('metro.main.index');
+        
+        return abort('404');
     }
 
     public function password_reset(Request  $request)

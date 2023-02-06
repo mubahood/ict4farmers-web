@@ -7,6 +7,7 @@ use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
+use Encore\Admin\Form\Field;
 
 class OrganisationController extends AdminController
 {
@@ -71,6 +72,7 @@ class OrganisationController extends AdminController
      */
     protected function form()
     {
+        $radio = '';
         $form = new Form(new Organisation());
         // $form->hasMany('organizations', function (Form\NestedForm $form) {
             $form->text('name', __('Name'))->required();
@@ -81,28 +83,6 @@ class OrganisationController extends AdminController
             $form->email('email', __('Email'))->required();
             $form->text('website', __('Website'));
             $form->textarea('details', __('Details'));
-    
-            // $form->radio('haveAddress','Do you have Address')
-            // ->options([
-            //     1 =>'No',
-            //     2 =>'Yes',
-            // ]);
-        
-            // $form->text('address','Address')->showOnRadio('haveAddress', [2]);
-        
-         
-            // $form->radio('haveEmail','Do you have an Email')
-            // ->options([
-            //     1 =>'No',
-            //     2 =>'Yes',
-            // ]);
-            // // ->when(2, function (Form $form) {
-        
-            // $form->email('email', __('Email'))->showOnRadio('haveAddress', [2]);
-        
-            // // });
-        // });
-
 
 
         return $form;
