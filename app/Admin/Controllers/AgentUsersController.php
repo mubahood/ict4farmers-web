@@ -7,6 +7,7 @@ use App\Models\FarmersGroupHasAgent;
 use App\Models\Location;
 use App\Models\User;
 use Encore\Admin\Controllers\AdminController;
+use Encore\Admin\Facades\Admin;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
@@ -123,7 +124,11 @@ class AgentUsersController extends AdminController
         });
 
 
-        $grid->model()->orderBy('id', 'Desc');
+        if($u->can('view-other-groups')){
+            $grid->model()->orderBy('id', 'Desc');
+        }else{
+            $grid->model()->where('group_id', $u->group_id)->orderBy('id', 'Desc');
+        }
 
         $grid->column('id', __('Id'))->sortable();
         //$grid->column('username', __('Username'));
@@ -189,8 +194,20 @@ class AgentUsersController extends AdminController
         $grid->column('date_of_birth', __('Date of birth'));
         $grid->column('marital_status', __('Marital status'));
         $grid->column('gender', __('Gender'));
-        $grid->column('group_id', __('Group id'))->hide();
-        $grid->column('group_text', __('Group'));
+        // $grid->column('group_id', __('Group id'))->hide();
+        if($u->can('view-other-groups')) {
+            $grid->column('group_id', __('Group'))
+            ->display(function ($id) {
+                if ($id == null) {
+                    return;
+                }
+                $loc = Group::find($id);
+                if ($loc == null) {
+                    return $id;
+                }
+                return $loc->name;
+            });
+        }
         $grid->column('sector', __('Sector'));
         $grid->column('production_scale', __('Production scale'));
         $grid->column('number_of_dependants', __('Number of dependants'));
@@ -273,14 +290,10 @@ class AgentUsersController extends AdminController
     protected function form()
     {
         $u = Auth::user();
-        $group_id = 0;
-        foreach (FarmersGroupHasAgent::all() as $key => $g) {
-            if ($g->administrator_id == $u->id) {
-                $group_id = $g->farmers_group_id;
-            }
-        }
 
-        if ($group_id < 1) {
+        $group_id = $u->group_id;
+
+        if (Admin::user()->isRole('agent') && $group_id < 1) {
             return "Your agent's account have not been assigned to any farmer's association yet. 
             Please contact system administrators to do so.";
         }
@@ -319,7 +332,6 @@ class AgentUsersController extends AdminController
                 return redirect(url('admin/agent-users'));
             } else {
 
-                die($f->id);
                 die("is editng...");
             }
         });
@@ -361,8 +373,8 @@ class AgentUsersController extends AdminController
         $form->text('name', __('Full Name'))
             ->required();
 
-        $form->text('date_of_birth', __('Age'))
-            ->attribute('type', 'number')
+        $form->date('date_of_birth', __('Date of birth'))
+            ->rules('before:-10 years')
             ->required();
 
 
@@ -382,7 +394,7 @@ class AgentUsersController extends AdminController
             ->required();
 
 
-        $form->text('email', __('Email'));
+        $form->email('email', __('Email'));
 
 
         $form->select('location_id', __('Sub-county'))
@@ -390,7 +402,6 @@ class AgentUsersController extends AdminController
             ->required();
 
         $form->text('address', __('Address'));
-
 
         $form->select('group_id', __('Farmer\'s association'))
             ->options(FarmersGroup::all()->pluck('name', 'id'))
@@ -408,6 +419,7 @@ class AgentUsersController extends AdminController
             ->required();
 
         $form->text('experience', __('Experience (in years)'))->attribute('type', 'number')
+            ->rules('min:0|max: 200')
             ->required();
 
         $form->select('production_scale', __('Production scale'))

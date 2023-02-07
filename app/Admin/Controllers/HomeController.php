@@ -9,6 +9,7 @@ use App\Models\GardenActivity;
 use App\Models\GardenProductionRecord;
 use App\Models\Location;
 use App\Models\Product;
+use App\Models\User;
 use App\Models\Utils;
 use Carbon\Carbon;
 use Encore\Admin\Auth\Database\Administrator;
@@ -305,6 +306,59 @@ class HomeController extends Controller
 
         if ($u->completed_wizard == 1) {
             if (
+                Admin::user()->isRole('admin') ||
+                Admin::user()->isRole('administrator')
+            ) {
+                if (!isset($_GET['refreshed'])) {
+                    header('Location: ' . admin_url('?refreshed=1'));
+                    die();
+                }
+                $events = Utils::prepare_calendar_events(Admin::user()->id);
+                return $content
+                    ->view("admin.farmer.dashboard", [
+                        'events' => $events
+                    ]);
+            }
+            else if (
+                Admin::user()->isRole('agent')
+            ) {
+                //Get all the farms agent represents
+                $farmers = User::where('group_id', Admin::user()->group_id)->pluck('id')->toArray();
+                $farms = \App\Models\Farm::whereIn('administrator_id', $farmers)->get();
+
+                $markers = '';
+                foreach($farms as $farm){
+                    $status ='';
+                    if($farm->running) {
+                        $status = 'Operational';
+                    }else{
+                        $status = 'Closed';
+                    }
+
+                    $markers .= ' new L.marker(['.$farm->latitude.','.$farm->longitude.']).addTo(mymap).bindPopup("<a href=\"/admin/farms/'.$farm->id. '\">'.$farm->name.'</a><br>'.$status.'");';
+                }
+                Admin::css('https://unpkg.com/leaflet@1.9.3/dist/leaflet.css');
+                Admin::js('https://unpkg.com/leaflet@1.9.3/dist/leaflet.js');
+                Admin::js('https://unpkg.com/axios/dist/axios.min.js');
+                
+
+          
+
+                Admin::script("
+                    //use leafletjs
+                    var mymap = L.map('mapid').setView([0.347596,32.582520], 8);
+                        L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZGFsaWhpbGxhcnkiLCJhIjoiY2s1c2ZhYnp1MDF2NDNsbDd0bTNjM3RzNCJ9._wzQ6YFFVtt5c_KAbsd1XA', {
+                        attribution: 'Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>',
+                        maxZoom: 18,
+                        id: 'mapbox/streets-v11',
+                        accessToken: 'pk.eyJ1IjoiZGFsaWhpbGxhcnkiLCJhIjoiY2s1c2ZhYnp1MDF2NDNsbDd0bTNjM3RzNCJ9._wzQ6YFFVtt5c_KAbsd1XA'
+                    }).addTo(mymap);". $markers
+                );
+                $content->row('<div id="mapid" style="width: 100%; height: 500px;"></div>');
+                
+                return $content;
+            } 
+            else if (
                 Admin::user()->isRole('farmer') ||
                 Admin::user()->isRole('basic-user')
             ) {
@@ -317,16 +371,7 @@ class HomeController extends Controller
                     ->view("admin.farmer.dashboard", [
                         'events' => $events
                     ]);
-            } else if (
-                Admin::user()->isRole('agent')
-            ) {
-                die("agent");
-            } else if (
-                Admin::user()->isRole('admin') ||
-                Admin::user()->isRole('administrator')
-            ) {
-                die("administrator");
-            }
+            } 
         } else {
             return $content
                 ->view("admin.wizard.main");

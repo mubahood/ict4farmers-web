@@ -20,6 +20,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
+
 
 
 /*
@@ -31,345 +33,13 @@ use Illuminate\Support\Facades\Redirect;
 
 class MainController extends Controller
 {
+    use SendsPasswordResetEmails;
+
     public function index()
     {
-        /*  set_time_limit(-1);
-        $x = 0;
-        $users = User::where([])->orderBy('id', 'Desc')->limit(100)->get();
-        foreach ($users as $u) {
-            if ($u->opening_hours == "1") {
-                continue;
-            }
-            $phone_number = "";
-            if (Utils::phone_number_is_valid($u->phone_number)) {
-                $phone_number = $u->phone_number;
-            } else if (Utils::phone_number_is_valid($u->username)) {
-                $phone_number = $u->username;
-            }
-
-            if (!Utils::phone_number_is_valid($phone_number)) {
-                continue;
-            }
-
-            $link = 'https://t.ly/h7bbt';
-            //$link = 'https://bit.ly/3vPXB0L';
-            if (strlen($u->name) > 2) {
-                $name = substr($u->name, 0, 20);
-            }
-
-            $msg = "Hello $name, a new update for your ICT4Farmers App is available. Please use this link to update $link";
-
-            $res = Utils::send_sms([
-                'to' => $phone_number,
-                'message' => $msg,
-            ]);
-
-            if ($res) {
-                $x++;
-                echo "$x. SENT TO $name. => $phone_number .<hr>";
-                $u->opening_hours = "1";
-                $u->save();
-            } else {
-                echo "FAILED TO SEND  TO $name. => $phone_number .<hr>";
-            }
-        }
-        die("done"); */
-
-        /*  $time_start = microtime(true); 
-
-        $x = 0;
-        ini_set ( 'max_execution_time', -1); //unlimit
-        foreach (User::all() as $key => $u) {
-            $time_end = microtime(true);
-            $execution_time = ($time_end - $time_start);
-            echo '<b>Total Execution Time:</b> '.($execution_time/60).'Mins & '.($execution_time).'Seconds <br><br>';
-
-
-            $x++;
-            echo "$x. BEFORE  |||=>  {$u->phone_number} <== ||| ";
-            $u->country_id = rand(1000, 100000);
-            $u->save(); 
-            echo "AFTER  |||=>  {$u->phone_number} <== ||| <hr>";
-        }
-        die("done"); */
-
-        /* 
-        \OneSignal::sendNotificationToExternalUser(
-            "Some Message",
-            '15360',
-            $url = null,
-            $data = null,
-            $buttons = null,
-            $schedule = null
-        );
-        die("romina");
-
-
-        
-        
-        $u = Administrator::find(1);
-        $u->phone_number = "+256788329636";
-        $u->phone_number = "+256705133284";
-        $u->phone_number = "+256758589326";
-        $u->verification_code = rand(1000, 9999) . "";
-        $resp = Utils::send_sms([
-            'to' => $u->phone_number,
-            'from' => 'ICT4farmers',
-            'message' => 'Your ICT4Farmers verification code is ' . $u->verification_code
-        ]);
-        if ($resp) {
-            echo "Goood with {$u->phone_number}";
-        } else {
-            echo "Baaad with {$u->phone_number}";
-        }
-        die("");
-
-
-
-        
-
-
-
-        echo "<pre>";
-        print_r($responseBody);
-        die("Romina k1");
-
-
-        \OneSignal::sendNotificationToAll(
-            "Some Message ahgsva", 
-            $url = null, 
-            $data = null, 
-            $buttons = null, 
-            $schedule = null
-        );
-        die("Romia"); */
-
-        /*
-        foreach (Product::all() as $key => $p) {
-
-            $f = \Faker\Factory::create();
-            $p->name = $f->sentence;
-            echo $p->name."<hr>";
-            $p->save();
-            continue;
-            $imgs = json_decode($p->images);
-
-            $_imgs = [];
-            echo "<pre>";
-            foreach ($imgs as $im) {
-                $im->thumbnail = rand(1, 10) . "_thumb.jpg";
-                $_imgs[] = $im;
-                # code...
-            }
-            $p->images = json_encode($_imgs);
-            $p->save();
-            continue;
-            dd($p->images);
-            print_r($_imgs);
-            die();
-            $imgs = [];
-            for ($i = 1; $i < 8; $i++) {
-                $num = rand(1, 50);
-                $im['src'] = $num . '.jpg';
-                $im['thumbnail'] = $num . '_thumb.jpg';
-                $p->thumbnail = json_encode($im);
-                $p->save();
-            }
-
-            $p->images =   json_encode($imgs);
-            //$p->save();
-        }
-        die("Done");     */
-
-        // $p['source'] = 'public/test/1.jpeg';
-        // $p['target'] = 'public/test/anjane.jpeg';
-        // Utils::create_thumbail($p);
-
-
-
-
-
-        // dd("time to fight");
-
-        /*
-        $m = new Pest();
-        $m->name = 'Slaters';
-        $m->description = 'Slaters or woodlice are small crustaceans that hide in damp situations in the garden. Slaters feed on organic matter, but at high densities they can damage new seedlings and ripe fruit such as melons, strawberries and the roots of pot plants.
-
-        Slaters on a piece of timber.
-        Slaters on a piece of timber.';
-
-        $m->cause = $m->description;
-        $m->cure = $m->description;
-        $m->image = 'no_image.jpg';
-        $m->video = 'https://www.youtube.com/watch?v=g9uPh00uhoE';
-
-        $m->save();
-
-        dd("pests");*/
-
-
-
-        // $string = file_get_contents("./public/products.json");
-        // $json_a = json_decode($string,true);
-        /* 					
-
-
-  $pros = Category::all();
-        $i = 0;
-        foreach ($pros as $key => $p) {
-            $i++;
-            $p->image = "banner_".(($i%16)+1).".png";
-            $p->save();
-        }
-
-        dd("food");
-        
-        $i = 0;
-        $cats = [1,2,3,5];
-        $imgs = [];
-
-        for ($i=2; $i < 100; $i++) { 
-            $img['src'] = $i.'.jpg';
-            $img['thumbnail'] = $i.'.jpg';
-            $img['user_id'] = 1;
-            $imgs[] = $img;
-        }
- 
-        $pros = Product::all();
-
-        $gallery = [];
-        for ($i=2; $i < 18; $i++) { 
-            $img['src'] = $i.'.jpeg';
-            $img['thumbnail'] = $i.'.jpeg';
-            $img['user_id'] = 1;
-            $gallery[] = $img;
-        }
-
-        $i = 0;
-        foreach ($pros as $key => $p) {
-            $i++;
-            $x = $i%98;
-            $_img = $imgs[$x];
-            $__img = json_encode($_img);
-            shuffle($gallery);
-            $gal = json_encode($gallery);
-
-            $p->thumbnail = $__img;
-            $p->images = $gal;
-            
-            $p->save();
-            print("<hr> {$p->images}");
-            # code...
-        }
-        dd(count($pros));
-                
-        $i = 0;
-        foreach ($json_a as $key => $value){
-            $i++;
-            //copy($value['image_url'], 'public/temp/thumb/'.$i.'.jpg');
-            shuffle($cats);
-            shuffle($imgs);
-        
-            $pro = new Product();
-            $pro->name = $value['products_name'];
-            $pro->price = $value['products_price'];
-            $pro->description = "Details of ".$value['products_name'];
-            $pro->category_id = $cats[2];
-            $pro->sub_category_id = $cats[2];
-            shuffle($cats);
-            $pro->user_id = $cats[2];
-            $pro->quantity = $cats[2];
-            $pro->country_id = 1;
-            $pro->city_id = 1;
-            $pro->status = 1;
-            $pro->attributes = '[]';
-            $pro->images = json_encode($imgs);
-
-            $img['src'] = $i.'.jpeg';
-            $img['thumbnail'] = $i.'.jpeg';
-            $img['user_id'] = 1;
-            $img['fixed_price'] = 'Fixed price';
-            $img['nature_of_offer'] = 'For sale';
-            $pro->thumbnail = json_encode($img);
-            $pro->save();
-        }
- 
-        
-    
-   
-[{"src":"1650824556-image-1.","thumbnail":"thumb_1650824556-image-1.","user_id":1}]
-{"src":"1650823807-ebe983c1c4182de27cf35f0a5db91123jpeg.jpeg","thumbnail":".\/public\/storage\/thumb_1650823807-ebe983c1c4182de27cf35f0a5db91123jpeg.jpeg","user_id":1}
-thumbnail
-
-
-
-
-
-
-
-
-              "products_id": 1936572,
-                "products_model": "SKUJ08155",
-                "": "Japanese Style Cat Print T-Shirts",
-                "image_url": "https://imgaz1.chiccdn.com/thumb/wap/oaupload/newchic/images/A7/A7/5abe58be-ef1e-4f9a-b42c-5bb97840811a.jpg?s=240x320",
-                "url": "https://www.newchic.com/charmkpr-t-shirts-12208/p-1936572.html",
-                "": 14.99,
-                "final_price": 14.99,
-                "list_type": 1,
-                "products_sale_price": 14.99,
-                "format_products_price": "",
-                "actListType": 0,
-                "format_final_price": "US$14.99",
-                "discount": 0,
-                "cat_id": 12208,
-                "categories_name": null,
-                "brand_info": {
-                    "products_id": "1936572",
-                    "brand_id": "39",
-                    "brand_name": "ChArmkpR",
-                    "is_product_detail": "1"
-                },
-                "isCod": null,
-                "codCountry": "AE,ID,MY,PH,SA,SG,TH,VN",
-                "sizeType": 1,
-                "isNewarrival": false,
-                "isRecommendActivity": 0,
-                "brand_name": "ChArmkpR",
-                "brand_url": "https://www.newchic.com/charmkpr-brand-39.html",
-                "showColor": 1
-
-
-
-*/
-
-
-        // $size = filesize('public/test/1.jpeg');
-        // $size = ($size/1000000)." MB";
-        // echo '<h5>'.$size.'</h5>';
-
-        // $thumbnail = Utils::create_thumbail(
-        //     array(
-        //         "source" => 'public/test/1.jpeg',
-        //         "target" => 'public/test/'.rand(1000,100000).'2.jpg',
-        //     )
-        // );
-
-
-
-        // $size = filesize($thumbnail);
-        // $size = ($size/1000000)." MB";
-        // echo '<h5>'.$size.'</h5>';
-
-        // echo('<img width="400" src="public/test/1.jpeg"/> <br> <br>');
-        // echo('<img width="400" src="'.$thumbnail.'" />');
-
-        // die("");
-        //return view('metro.main.product-listing');
-        //return view('metro.main.product-listing');
-        return view('landing.index');
-        //return view('metro.main.index');
-        //return view('metro.index');
+        // get policy names and path
+        $policies = \App\Models\Policy::all();
+        return view('landing.index',compact('policies'));
     }
 
     public function market(Request  $request)
@@ -436,8 +106,8 @@ thumbnail
         if ($cat) {
             return view('metro.main.product-listing');
         }
-
-        return view('metro.main.index');
+        
+        return abort('404');
     }
 
     public function password_reset(Request  $request)
@@ -687,81 +357,99 @@ thumbnail
 
     public function reset_password_phone_post(Request $r)
     {
+        $phone_or_email = $r->email;
+        //check if phone_or_email is an email
+        $is_email = filter_var($phone_or_email, FILTER_VALIDATE_EMAIL);
+        if($is_email) {
 
-        $phone_number = Utils::prepare_phone_number($r->phone_number);
-        $phone_number_is_valid = Utils::phone_number_is_valid($phone_number);
-        if (!$phone_number_is_valid) {
-            $errors['phone_number'] = "Please enter a valid phone number.";
-            return Redirect::back()
+            //send password reset link
+            $u = User::where('email', $phone_or_email)->first();
+            if ($u == null) {
+                $errors['phone_number'] = "Account with that email was not found on our database.";
+                return Redirect::back()
+                    ->withErrors($errors)
+                    ->withInput();
+            }
+            $this->sendResetLinkEmail($r);
+            session()->flash('success_message',"We have just sent to you an email with a password reset link.");
+            return Redirect::back();
+
+        }else{
+            $phone_number = Utils::prepare_phone_number($r->email);
+            $phone_number_is_valid = Utils::phone_number_is_valid($phone_number);
+            if (!$phone_number_is_valid) {
+                $errors['phone_number'] = "Please enter a valid phone number.";
+                return Redirect::back()
+                    ->withErrors($errors)
+                    ->withInput();
+            }
+            $u =
+                User::where('phone_number',  $phone_number)
+                ->orWhere('username',  $phone_number)
+                ->orWhere('username',  $phone_number)
+                ->first();
+            if ($u == null) {
+                $errors['phone_number'] = "Account with that phone number was not found on our database.";
+                return Redirect::back()
+                    ->withErrors($errors)
+                    ->withInput();
+            }
+    
+    
+            Utils::session_start();
+            $_SESSION['user_id'] = $u->id;
+    
+            $u->verification_code = rand(1000, 9999) . "";
+            $resp = Utils::send_sms([
+                'to' => $phone_number,
+                'message' => 'Your ICT4Farmers password reset code is ' . $u->verification_code
+            ]);
+    
+            if (!$resp) {
+                $errors['phone_number'] = "We have failed to send a verification code to your number. 
+                Please contact us on +256 780 602550 and we help reset your password.";
+                return Redirect::back()
+                    ->withErrors($errors)
+                    ->withInput();
+            }
+    
+            $u->save();
+            $errors['success'] = "We have just sent to you an SMS with a password reset code on your number {$phone_number}.";
+            return redirect(url('reset-password-code'))
                 ->withErrors($errors)
                 ->withInput();
-        }
-        $u =
-            User::where('phone_number',  $phone_number)
-            ->orWhere('username',  $phone_number)
-            ->orWhere('username',  $phone_number)
-            ->first();
-        if ($u == null) {
-            $errors['phone_number'] = "Account with that phone number was not found on our database.";
-            return Redirect::back()
-                ->withErrors($errors)
-                ->withInput();
+    
         }
 
-
-        Utils::session_start();
-        $_SESSION['user_id'] = $u->id;
-
-        $u->verification_code = rand(1000, 9999) . "";
-        $resp = Utils::send_sms([
-            'to' => $phone_number,
-            'message' => 'Your ICT4Farmers password reset code is ' . $u->verification_code
-        ]);
-
-        if (!$resp) {
-            $errors['phone_number'] = "We have failed to send a verification code to your number. 
-            Please contact us on +256 780 602550 and we help reset your password.";
-            return Redirect::back()
-                ->withErrors($errors)
-                ->withInput();
-        }
-
-        $u->save();
-        $errors['success'] = "We have just sent to you an SMS with a password reset code on your number {$phone_number}.";
-        return redirect(url('reset-password-code'))
-            ->withErrors($errors)
-            ->withInput();
-
-        die("done");
     }
 
-    public function reset_password_code_post(Request $r)
-    {
+    // public function reset_password_code_post(Request $r)
+    // {
 
-        Utils::session_start();
-        $user_id = 0;
-        if (isset($_SESSION['user_id'])) {
-            $user_id = ((int)($_SESSION['user_id']));
-        }
-        $u = Administrator::find($user_id);
-        if ($u == null) {
-            die("Session not found.");
-        }
+    //     Utils::session_start();
+    //     $user_id = 0;
+    //     if (isset($_SESSION['user_id'])) {
+    //         $user_id = ((int)($_SESSION['user_id']));
+    //     }
+    //     $u = Administrator::find($user_id);
+    //     if ($u == null) {
+    //         die("Session not found.");
+    //     }
 
 
 
-        $code = (trim($r->code));
+    //     $code = (trim($r->code));
 
-        if ($r->code != $u->verification_code) {
-            $errors['code'] = "Verirification code you provided did not math with the one we have sent to you.";
-            return Redirect::back()
-                ->withErrors($errors)
-                ->withInput();
-        }
-        $_SESSION['can_set_password'] = "yes";
+    //     if ($r->code != $u->verification_code) {
+    //         $errors['code'] = "Verirification code you provided did not math with the one we have sent to you.";
+    //         return Redirect::back()
+    //             ->withErrors($errors)
+    //             ->withInput();
+    //     }
+    //     $_SESSION['can_set_password'] = "yes";
 
-        return redirect(url('reset-password'));
-    }
+    //     return redirect(url('reset-password'));
+    // }
 
     public function reset_password_post(Request $r)
     {

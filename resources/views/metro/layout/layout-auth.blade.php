@@ -43,10 +43,8 @@
                                 <div class="separator my-10 separator-dashed border-1 border-primary  "></div>
 
 
-                                @if (isset($_SESSION['success_message']))
-                                    <p class="alert alert-success">{{ $_SESSION['success_message'] }}</p>
-
-                                    <?php unset($_SESSION['success_message']) ?>
+                                @if (session('success_message'))
+                                    <div class="alert alert-success">{{ session('success_message')}}</div>
                                 @endif
 
                             </div>

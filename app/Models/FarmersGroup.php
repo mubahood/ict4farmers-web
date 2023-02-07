@@ -12,4 +12,10 @@ class FarmersGroup extends Model
     {
         return $this->hasMany(FarmersGroupHasAgent::class);
     }
+
+    //belongs to an organisation
+    public function organisation()
+    {
+        return $this->belongsTo(Organisation::class);
+    }
 }

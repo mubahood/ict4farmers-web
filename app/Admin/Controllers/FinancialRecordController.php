@@ -64,6 +64,7 @@ class FinancialRecordController extends AdminController
         }
 
         $grid->column('id', __('#Id'))->sortable();
+        $grid->column('type', __('Type'));
         $grid->column('created_at', __('Created'))->sortable();
         $grid->column('garden_id', __('Enterprise'))->display(function () {
             return $this->enterprise->name;
@@ -95,11 +96,18 @@ class FinancialRecordController extends AdminController
         $show = new Show(FinancialRecord::findOrFail($id));
 
         $show->field('id', __('Id'));
+        $show->filed('type', __('Type'));
         $show->field('created_at', __('Created at'));
         $show->field('updated_at', __('Updated at'));
-        $show->field('garden_id', __('Garden id'));
-        $show->field('administrator_id', __('Administrator id'));
-        $show->field('created_by', __('Created by'));
+        $show->field('garden_id', __('Garden'))->as(function () {
+            return $this->enterprise->name;
+        });
+        $show->field('administrator_id', __('Administrator'))->as(function () {
+            return $this->owner->name;
+        });
+        $show->field('created_by', __('Created by'))->as(function () {
+            return $this->creator->name;
+        });
         $show->field('description', __('Description'));
         $show->field('amount', __('Amount'));
 
@@ -120,14 +128,15 @@ class FinancialRecordController extends AdminController
         $form->select('garden_id', __('Enterprise'))
             ->options(
                 Garden::where('administrator_id', $u->id)->get()->pluck('name', 'id')
-            )
-            ->rules('required');
+            )->rules('required');
         $form->hidden('created_by', __('created_by'))->default($u->id)->value($u->id);
+        $form->select('type', __('Type'))->options([
+            'expense' => 'Expense',
+            'income' => 'Income',
+        ])->rules('required');
         $form->text('description', __('Description'))->rules('required');
         $form->text('amount', __('Amount'))
-            ->attribute('type', 'number')
-            ->help('Start with a negative (-) for expense transaction.')
-            ->rules('required');
+            ->rules('required| numeric ');
         return $form;
     }
 }

@@ -41,11 +41,15 @@ class FarmController extends AdminController
         $grid->column('created_at', __('Created'))->sortable();
         $grid->column('name', __('Farm Name'))->sortable();
 
+        $grid->column('running',__('Operational'))->bool();
+
         $grid->column('administrator_id', __('Owner'))->display(function () {
             return $this->owner->name;
         })->sortable();
+
         $grid->column('location_id', __('Subcounty'))->display(function () {
             return $this->location->get_name();
+            
         })->sortable();
         $grid->column('latitude', __('GPS'))->display(function () {
             return $this->latitude . ", " . $this->longitude;
@@ -69,6 +73,13 @@ class FarmController extends AdminController
         $show->field('administrator_id', __('Administrator id'));
         $show->field('location_id', __('Location id'));
         $show->field('name', __('Name'));
+        $show->field('running', __('Operational'))->display(function ($running) {
+            if ($running) {
+                return "<span class='label label-success'>Yes</span>";
+            } else {
+                return "<span class='label label-danger'>No</span>";
+            }
+        });
         $show->field('details', __('Details'));
         $show->field('latitude', __('Latitude'));
         $show->field('longitude', __('Longitude'));
@@ -95,6 +106,14 @@ class FarmController extends AdminController
         }
         $form->text('name', __('Farm Name'))->rules('required');
 
+        $states = [
+            'on'  => ['value' => 1, 'text' => 'Open', 'color' => 'success'],
+            'off' => ['value' => 0, 'text' => 'Closed', 'color' => 'danger'],
+        ];
+        
+        $form->switch('running', 'Operational')->states($states);
+        
+        
         $form->select('location_id', __('Farm Location (Sub-county)'))
             ->options(Location::get_subcounties())
             ->rules('required');

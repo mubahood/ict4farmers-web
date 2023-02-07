@@ -33,15 +33,13 @@ return [
 
         'local' => [
             'driver' => 'local',
-            'root' => $_SERVER['DOCUMENT_ROOT'] . '/',
-            'url' => env('APP_URL') . '/',
-            'visibility' => 'public',
+            'root' => storage_path('app'),
         ],
 
         'public' => [
             'driver' => 'local',
-            'root' => $_SERVER['DOCUMENT_ROOT'] . 'public/storage',
-            'url' => env('APP_URL') . 'public/storage',
+            'root' => storage_path('app/public'),
+            'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
         ],
 
@@ -57,8 +55,8 @@ return [
         ],
         'admin' => [
             'driver' => 'local',
-            'root' => $_SERVER['DOCUMENT_ROOT'] . '/public/',
-            'url' => env('APP_URL') . '/',
+            'root' => storage_path('app/public'),
+            'url' => env('APP_URL').'/uploads/',
             'visibility' => 'public',
         ],
     ],
@@ -75,7 +73,7 @@ return [
     */
 
     'links' => [
-        public_path('storage') => storage_path('app/public'),
+        public_path('uploads') => storage_path('app/public'),
     ],
 
 ];

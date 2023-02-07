@@ -214,20 +214,38 @@
                     <div class="offcanvas-body">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item">
-                                <a href="https://play.google.com/store/apps/details?id=net.eighttechnologes.ict4farmers&hl=en&gl=US"
-                                    target="_blank" class="nav-link">Mobile App</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="https://app2.unffeict4farmers.org/market" target="_blank"
+                                <a href="{{ url('/market') }}"
                                     class="nav-link">Marketplace</a>
                             </li>
                             <li class="nav-item">
-                                <a href="https://app2.unffeict4farmers.org/admin" target="_blank"
+                                <a href="{{ url('/admin') }}"
                                     class="nav-link">Dashboard</a>
                             </li>
                             <li class="nav-item">
                                 <a href="https://academy.unffeict4farmers.org" target="_blank"
                                     class="nav-link">E-Academy</a>
+                            </li>
+                            <!-- dropdown ul -->
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    Policies
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    @foreach ($policies as $policy)
+                                        <li><a class="dropdown-item" href="{{ asset('uploads/'.$policy->path) }}" target="_blank">{{ $policy->name }}</a></li>
+                                    @endforeach
+                                </ul>
+                            </li>
+                            <!-- <li class="nav-item">
+                                <a href="#"
+                                 class="nav-link">Policies</a>
+                            </li> -->
+                            <li>
+                                <a href="tel:0800209003" style="text-decoration:none">
+                                    <i class="bx bxs-phone-call d-block fs-2 text-primary mb-2 py-1"></i>
+                                </a>
+      
                             </li>
                         </ul>
                     </div>
@@ -235,7 +253,7 @@
                         <a href="https://play.google.com/store/apps/details?id=net.eighttechnologes.ict4farmers&hl=en&gl=US"
                             class="btn btn-primary w-100" target="_blank" rel="noopener">
                             <i class="bx bx-cart fs-4 lh-1 me-1"></i>
-                            &nbsp;Download App
+                            &nbsp;Mobile App
                         </a>
                     </div>
                 </div>
@@ -264,8 +282,7 @@
             <div class="container pt-3 pt-sm-4 pt-xl-5">
                 <div class="row pt-md-2 pt-lg-5">
                     <div class="col-md-5 d-flex flex-column mt-md-4 pt-5 pb-3 pb-sm-4 py-md-5">
-                        <h1 class="display-4 text-center text-md-start mb-4">Manage All <span
-                                class="text-primary">Your Farms</span> in One App</h1>
+                        <h1 class="display-4 text-center text-md-start mb-4">Manage All Your Farms in One App</h1>
                         <p class="fs-lg text-center text-md-start pb-2 pb-md-3 mb-4 mb-lg-5">We offer you a new
                             generation farm management system.<br>Say goodbye to note books, spreadsheets, and slips of
                             paper!</p>
@@ -365,6 +382,14 @@
                         <a href="javascript:;" class="card card-body card-hover px-2 mx-2">
                             <img src="muhindo/img/brands/UNFFE.png" class="d-block mx-auto my-2" width="154"
                                 alt="Brand">
+                        </a>
+                    </div>
+
+                    <!-- Item -->
+                    <div class="swiper-slide py-3">
+                        <a href="javascript:;" class="card card-body card-hover px-2 mx-2">
+                            <img src="muhindo/img/brands/UNYFA.png" class="d-block mx-auto my-2" width="154"
+                            alt="Brand">
                         </a>
                     </div>
 
@@ -667,7 +692,7 @@
                             Remotely manage your farms
                         </li>
                     </ul>
-                    <a href="https://app2.unffeict4farmers.org/admin" target="_blank" class="btn btn-primary">
+                    <a href="/admin" class="btn btn-primary">
                         Login to Dashboard
                         <i class="bx bx-right-arrow-alt fs-xl ms-2 me-n1"></i>
                     </a>
@@ -706,7 +731,7 @@
                                 visualization on your <b>Web Dashboard</b>.</p>
                         </div>
                     </div>
-                    <a href="https://app2.unffeict4farmers.org/admin" class="btn btn-primary">
+                    <a href="/admin" class="btn btn-primary">
                         Login to Dashboard
                         <i class="bx bx-right-arrow-alt fs-xl ms-2 me-n1"></i>
                     </a>
