@@ -9,6 +9,8 @@ class Organisation extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
     //has Many Farmers Groups
     public function farmers_groups()
     {
