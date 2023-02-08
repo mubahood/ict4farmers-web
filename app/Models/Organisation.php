@@ -17,9 +17,9 @@ class Organisation extends Model
         return $this->hasMany(FarmersGroup::class);
     }
 
-    //belongsto self
-    public function organizations()
+    //has Many Agents
+    public function agents()
     {
-        return $this->hasMany(Organisation::class);
+        return $this->morphMany(User::class, 'groupable');
     }
 }

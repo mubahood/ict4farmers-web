@@ -201,7 +201,7 @@ class AgentUsersController extends AdminController
                 if ($id == null) {
                     return;
                 }
-                $loc = Group::find($id);
+                $loc = FarmersGroup::find($id);
                 if ($loc == null) {
                     return $id;
                 }
@@ -303,7 +303,7 @@ class AgentUsersController extends AdminController
 
         $form->saving(function (Form $f) {
             if (!$f->isEditing()) {
-
+                
                 $u = new User();
                 $u->name = $f->name;
                 $u->email = $f->email;
@@ -321,14 +321,15 @@ class AgentUsersController extends AdminController
                 $u->password = Hash::make(trim($f->password));
                 $u->marital_status = $f->marital_status;
                 $u->gender = $f->gender;
-                $u->group_id = $f->group_id;
                 $u->production_scale = $f->production_scale;
                 $u->number_of_dependants = $f->number_of_dependants;
                 $u->user_role = $f->user_role;
                 $u->access_to_credit = $f->access_to_credit;
                 $u->experience = $f->experience;
                 $u->profile_is_complete = false;
-                $u->save();
+
+                $farmergroup = FarmersGroup::find($f->group_id);
+                $farmergroup->farmers()->save($u);
                 return redirect(url('admin/agent-users'));
             } else {
 
@@ -402,6 +403,7 @@ class AgentUsersController extends AdminController
             ->required();
 
         $form->text('address', __('Address'));
+
 
         $form->select('group_id', __('Farmer\'s association'))
             ->options(FarmersGroup::all()->pluck('name', 'id'))

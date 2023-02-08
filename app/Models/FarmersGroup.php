@@ -18,4 +18,10 @@ class FarmersGroup extends Model
     {
         return $this->belongsTo(Organisation::class);
     }
+
+    //has Many Farmers
+    public function farmers()
+    {
+        return $this->morphMany(User::class, 'groupable', 'group_text', 'group_id');
+    }
 }

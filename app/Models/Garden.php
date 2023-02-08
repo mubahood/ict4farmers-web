@@ -51,6 +51,18 @@ class Garden extends Model
         return $this->belongsTo(CropCategory::class,'crop_category_id');
     }
 
+    //has many farms
+    public function farms()
+    {
+        return $this->hasMany(Farm::class);
+    }
+
+    //belongs to a user
+    public function owner()
+    {
+        return $this->belongsTo(User::class,'administrator_id');
+    }
+
     public function getCropCategoryNameAttribute()
     {
         if ($this->crop_category != null) {

@@ -28,8 +28,9 @@ class OrganisationController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new Organisation());
-
-        $grid->column('id', __('Id'));
+        //sort by latest
+        $grid->model()->latest();
+        // $grid->column('id', __('Id'));
         $grid->column('name', __('Name'));
         $grid->column('details', __('Details'));
         $grid->column('logo', __('Logo'))->image('', 100, 100);
@@ -53,7 +54,7 @@ class OrganisationController extends AdminController
     {
         $show = new Show(Organisation::findOrFail($id));
 
-        $show->field('id', __('Id'));
+        // $show->field('id', __('Id'));
         $show->field('name', __('Name'));
         $show->field('logo', __('Logo'))->image();
         $show->field('address', __('Address'));

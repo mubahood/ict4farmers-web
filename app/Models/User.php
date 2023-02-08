@@ -199,4 +199,17 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    //grouped morph with group_id and group_text
+    public function groupable()
+    {
+        return $this->morphTo(__FUNCTION__, 'group_text', 'group_id');
+    }
+
+    //has many enterprises/ gardens
+    public function enterprises()
+    {
+        return $this->hasMany(Garden::class,'administrator_id');
+    }
+
 }

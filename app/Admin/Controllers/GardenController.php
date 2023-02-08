@@ -35,6 +35,7 @@ class GardenController extends AdminController
         }
 
         $grid = new Grid(new Garden());
+        $grid->model()->latest();
         if (
             Admin::user()->isRole('administrator') ||
             Admin::user()->isRole('admin')
@@ -52,6 +53,7 @@ class GardenController extends AdminController
         $grid->column('name', __('Enterpeise Name'));
 
         $grid->column('administrator_id', __('Owner'))->sortable();
+        $grid->column('size', __('Size (acres)'));
         $grid->column('crop_category_id', __('Sector'))->display(function () {
             return $this->sector->get_name();
         })->sortable();
@@ -87,6 +89,7 @@ class GardenController extends AdminController
         $show->field('crop_category_id', __('Crop category id'));
         $show->field('location_id', __('Location id'));
         $show->field('name', __('Name'));
+        $show->field('size', __('Acres'));
         $show->field('image', __('Image'));
         $show->field('plant_date', __('Plant date'));
         $show->field('harvest_date', __('Harvest date'));
@@ -134,11 +137,14 @@ class GardenController extends AdminController
             ->help("E.g, your poultry project, your garden, your cattle herd, etc.")
             ->rules('required');
         $form->image('image', __('Image'));
+        $form->number('size', __('Size in Acres'))
+            ->help("E.g, 1 acre, 2 acres, 3 acres, etc.")
+            ->rules('required|numeric|min:1');
 
         $form->date('plant_date', __('Start date'))
-            ->help("Select the date when this enterprise started.")->required();
-        $form->text('latitude', __('GPS Latitude'))->default("0.00");
-        $form->text('longitude', __('GPS Longitude'))->default("0.00");
+            ->help("Select the date when this enterprise started.")->required()->rules('before_or_equal:today');
+        $form->text('latitude', __('GPS Latitude'))->default("0.00")->rules('numeric|min:0');
+        $form->text('longitude', __('GPS Longitude'))->default("0.00")->rules('numeric|min:0');
 
         $form->textarea('details', __('Details'))
             ->help("Write something about this enterprise.");

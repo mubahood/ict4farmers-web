@@ -48,12 +48,12 @@ class FarmController extends AdminController
         })->sortable();
 
         $grid->column('location_id', __('Subcounty'))->display(function () {
-            return $this->location->get_name();
+            return $this->enterprise->location->get_name();
             
         })->sortable();
-        $grid->column('latitude', __('GPS'))->display(function () {
-            return $this->latitude . ", " . $this->longitude;
-        });
+        // $grid->column('latitude', __('GPS'))->display(function () {
+        //     return $this->latitude . ", " . $this->longitude;
+        // });
         //$grid->column('details', __('Details'));
 
         return $grid;
@@ -113,16 +113,20 @@ class FarmController extends AdminController
         
         $form->switch('running', 'Operational')->states($states);
         
-        
-        $form->select('location_id', __('Farm Location (Sub-county)'))
-            ->options(Location::get_subcounties())
-            ->rules('required');
+        //this sub-county should match that from the enterprise as a rule
+        // $form->select('location_id', __('Farm Location (Sub-county)'))
+        //     ->options(Location::get_subcounties())
+        //     ->rules('required|');
 
-
+        // dd(->id);
+        //gardens /enterprises that belong to current user as a select field
+        $form->select('garden_id', __('Enterprise'))
+            ->options(\App\Models\User::find($user->id)->enterprises()->pluck('name', 'id'))
+            ->rules('required| numeric');
 
         //        $form->latlong('latitude', 'longitude', 'Position')->default(['lat' => 90, 'lng' => 90]);
-        $form->text('latitude', __('GPS Latitude'))->rules('required')->default('0.00');
-        $form->text('longitude', __('GPS Longitude'))->rules('required')->default('0.00');
+        // $form->text('latitude', __('GPS Latitude'))->rules('required')->default('0.00');
+        // $form->text('longitude', __('GPS Longitude'))->rules('required')->default('0.00');
         $form->textarea('details', __('Farm Details'))->help("Write something about this farm");
 
         return $form;
