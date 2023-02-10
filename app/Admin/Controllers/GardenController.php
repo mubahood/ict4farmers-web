@@ -13,6 +13,8 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
 use Illuminate\Support\Facades\Auth;
+use Stevebauman\Location\Facades\Location as LocationFacade;
+
 
 class GardenController extends AdminController
 {
@@ -107,6 +109,7 @@ class GardenController extends AdminController
      */
     protected function form()
     {
+        $current_location = LocationFacade::get();
         $form = new Form(new Garden());
 
         $form->disableReset();
@@ -143,8 +146,16 @@ class GardenController extends AdminController
 
         $form->date('plant_date', __('Start date'))
             ->help("Select the date when this enterprise started.")->required()->rules('before_or_equal:today');
-        $form->text('latitude', __('GPS Latitude'))->default("0.00")->rules('numeric|min:0');
-        $form->text('longitude', __('GPS Longitude'))->default("0.00")->rules('numeric|min:0');
+        
+        //info user that there current location will be used
+        $form->html('<div class="alert alert-info">Your current location will be used for this enterprise. If you want to change it, please edit it later.</div>');
+        if($current_location){
+            $form->hidden('latitude', __('GPS Latitude'))->default($current_location->latitude)->value($current_location->latitude);
+            $form->hidden('longitude', __('GPS Longitude'))->default($current_location->longitude)->value($current_location->longitude);
+        }else{
+            $form->text('latitude', __('GPS Latitude'))->default("0.00")->rules('numeric|min:0');
+            $form->text('longitude', __('GPS Longitude'))->default("0.00")->rules('numeric|min:0');
+        }
 
         $form->textarea('details', __('Details'))
             ->help("Write something about this enterprise.");

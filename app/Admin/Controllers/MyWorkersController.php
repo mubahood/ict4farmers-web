@@ -35,9 +35,9 @@ class MyWorkersController extends AdminController
         $u = Auth::user();
 
 
-        $grid->model()->where('owner_id', $u->id);
+        $grid->model()->where('owner_id', $u->id)->latest();
 
-        $grid->column('id', __('Id'))->sortable();
+        // $grid->column('id', __('Id'))->sortable();
         //$grid->column('username', __('Username'));
         //$grid->column('password', __('Password'));
         //$grid->column('avatar', __('Avatar'));
@@ -46,45 +46,45 @@ class MyWorkersController extends AdminController
 
 
         $grid->column('name', __('Name'))->sortable();
-        $grid->column('last_name', __('Last name'))->sortable();
-        $grid->column('email', __('Email'));
+        // $grid->column('last_name', __('Last name'))->sortable();
+        // $grid->column('email', __('Email'));
         $grid->column('phone_number', __('Phone number'));
-        $grid->column('address', __('Address'));
-        $grid->column('about', __('About'))->hide();
-        $grid->column('services', __('Services'))->hide();
-        $grid->column('longitude', __('Longitude'))->hide();
-        $grid->column('latitude', __('Latitude'))->hide();
-        $grid->column('division', __('Division'))->hide();
-        $grid->column('opening_hours', __('Opening hours'))->hide();
-        $grid->column('cover_photo', __('Cover photo'))->hide();
-        $grid->column('facebook', __('Facebook'))->hide();
-        $grid->column('twitter', __('Twitter'))->hide();
-        $grid->column('whatsapp', __('Whatsapp'))->hide();
-        $grid->column('youtube', __('Youtube'))->hide();
-        $grid->column('instagram', __('Instagram'))->hide();
-        $grid->column('last_seen', __('Last seen'))->hide();
-        $grid->column('status', __('Status'))->hide();
-        $grid->column('linkedin', __('Linkedin'))->hide();
-        $grid->column('category_id', __('Category id'))->hide();
-        $grid->column('status_comment', __('Status comment'))->hide();
-        $grid->column('country_id', __('Country id'))->hide();
-        $grid->column('region', __('Region'))->hide();
-        $grid->column('district', __('District'))->hide();
-        $grid->column('sub_county', __('Sub county'))->hide();
-        $grid->column('user_type', __('User type'))->hide();
-        $grid->column('location_id', __('Location id'))->hide();
-        $grid->column('owner_id', __('Owner id'))->hide();
-        $grid->column('date_of_birth', __('Date of birth'));
-        $grid->column('marital_status', __('Marital status'));
-        $grid->column('gender', __('Gender'));
-        $grid->column('group_id', __('Group id'))->hide();
-        $grid->column('group_text', __('Group'));
-        $grid->column('sector', __('Sector'));
-        $grid->column('production_scale', __('Production scale'));
-        $grid->column('number_of_dependants', __('Number of dependants'));
-        //$grid->column('user_role', __('User role'));
-        $grid->column('access_to_credit', __('Access to credit'));
-        $grid->column('experience', __('Experience'));
+        // $grid->column('address', __('Address'));
+        // $grid->column('about', __('About'));
+        // $grid->column('services', __('Services'))->hide();
+        // $grid->column('longitude', __('Longitude'))->hide();
+        // $grid->column('latitude', __('Latitude'))->hide();
+        // $grid->column('division', __('Division'))->hide();
+        // $grid->column('opening_hours', __('Opening hours'))->hide();
+        // $grid->column('cover_photo', __('Cover photo'))->hide();
+        // $grid->column('facebook', __('Facebook'))->hide();
+        // $grid->column('twitter', __('Twitter'))->hide();
+        // $grid->column('whatsapp', __('Whatsapp'))->hide();
+        // $grid->column('youtube', __('Youtube'))->hide();
+        // $grid->column('instagram', __('Instagram'))->hide();
+        // $grid->column('last_seen', __('Last seen'))->hide();
+        // $grid->column('status', __('Status'))->hide();
+        // $grid->column('linkedin', __('Linkedin'))->hide();
+        // $grid->column('category_id', __('Category id'))->hide();
+        // $grid->column('status_comment', __('Status comment'))->hide();
+        // $grid->column('country_id', __('Country id'))->hide();
+        // $grid->column('region', __('Region'))->hide();
+        // $grid->column('district', __('District'))->hide();
+        // $grid->column('sub_county', __('Sub county'))->hide();
+        // $grid->column('user_type', __('User type'))->hide();
+        // $grid->column('location_id', __('Location id'))->hide();
+        // $grid->column('owner_id', __('Owner id'))->hide();
+        // $grid->column('date_of_birth', __('Date of birth'));
+        // $grid->column('marital_status', __('Marital status'));
+        // $grid->column('gender', __('Gender'));
+        // $grid->column('group_id', __('Group id'))->hide();
+        // $grid->column('group_text', __('Group'));
+        // $grid->column('sector', __('Sector'));
+        // $grid->column('production_scale', __('Production scale'));
+        // $grid->column('number_of_dependants', __('Number of dependants'));
+        // //$grid->column('user_role', __('User role'));
+        // $grid->column('access_to_credit', __('Access to credit'));
+        // $grid->column('experience', __('Experience'));
         //$grid->column('profile_is_complete', __('Profile is complete'));
 
         return $grid;
@@ -101,54 +101,53 @@ class MyWorkersController extends AdminController
         $show = new Show(User::findOrFail($id));
 
         $show->field('id', __('Id'));
-        $show->field('username', __('Username'));
-        $show->field('password', __('Password'));
+        // $show->field('username', __('Username'));
         $show->field('name', __('Name'));
-        $show->field('avatar', __('Avatar'));
-        $show->field('remember_token', __('Remember token'));
-        $show->field('created_at', __('Created at'));
-        $show->field('updated_at', __('Updated at'));
-        $show->field('last_name', __('Last name'));
-        $show->field('company_name', __('Company name'));
-        $show->field('email', __('Email'));
+        // $show->field('avatar', __('Avatar'));
+        // $show->field('remember_token', __('Remember token'));
+        // $show->field('created_at', __('Created at'));
+        // $show->field('updated_at', __('Updated at'));
+        // $show->field('last_name', __('Last name'));
+        // $show->field('company_name', __('Company name'));
+        // $show->field('email', __('Email'));
         $show->field('phone_number', __('Phone number'));
-        $show->field('address', __('Address'));
+        // $show->field('address', __('Address'));
         $show->field('about', __('About'));
-        $show->field('services', __('Services'));
-        $show->field('longitude', __('Longitude'));
-        $show->field('latitude', __('Latitude'));
-        $show->field('division', __('Division'));
-        $show->field('opening_hours', __('Opening hours'));
-        $show->field('cover_photo', __('Cover photo'));
-        $show->field('facebook', __('Facebook'));
-        $show->field('twitter', __('Twitter'));
-        $show->field('whatsapp', __('Whatsapp'));
-        $show->field('youtube', __('Youtube'));
-        $show->field('instagram', __('Instagram'));
-        $show->field('last_seen', __('Last seen'));
-        $show->field('status', __('Status'));
-        $show->field('linkedin', __('Linkedin'));
-        $show->field('category_id', __('Category id'));
-        $show->field('status_comment', __('Status comment'));
-        $show->field('country_id', __('Country id'));
-        $show->field('region', __('Region'));
-        $show->field('district', __('District'));
-        $show->field('sub_county', __('Sub county'));
-        $show->field('user_type', __('User type'));
-        $show->field('location_id', __('Location id'));
-        $show->field('owner_id', __('Owner id'));
-        $show->field('date_of_birth', __('Date of birth'));
-        $show->field('marital_status', __('Marital status'));
-        $show->field('gender', __('Gender'));
-        $show->field('group_id', __('Group id'));
-        $show->field('group_text', __('Group text'));
-        $show->field('sector', __('Sector'));
-        $show->field('production_scale', __('Production scale'));
-        $show->field('number_of_dependants', __('Number of dependants'));
-        $show->field('user_role', __('User role'));
-        $show->field('access_to_credit', __('Access to credit'));
-        $show->field('experience', __('Experience'));
-        $show->field('profile_is_complete', __('Profile is complete'));
+        // $show->field('services', __('Services'));
+        // $show->field('longitude', __('Longitude'));
+        // $show->field('latitude', __('Latitude'));
+        // $show->field('division', __('Division'));
+        // $show->field('opening_hours', __('Opening hours'));
+        // $show->field('cover_photo', __('Cover photo'));
+        // $show->field('facebook', __('Facebook'));
+        // $show->field('twitter', __('Twitter'));
+        // $show->field('whatsapp', __('Whatsapp'));
+        // $show->field('youtube', __('Youtube'));
+        // $show->field('instagram', __('Instagram'));
+        // $show->field('last_seen', __('Last seen'));
+        // $show->field('status', __('Status'));
+        // $show->field('linkedin', __('Linkedin'));
+        // $show->field('category_id', __('Category id'));
+        // $show->field('status_comment', __('Status comment'));
+        // $show->field('country_id', __('Country id'));
+        // $show->field('region', __('Region'));
+        // $show->field('district', __('District'));
+        // $show->field('sub_county', __('Sub county'));
+        // $show->field('user_type', __('User type'));
+        // $show->field('location_id', __('Location id'));
+        // $show->field('owner_id', __('Owner id'));
+        // $show->field('date_of_birth', __('Date of birth'));
+        // $show->field('marital_status', __('Marital status'));
+        // $show->field('gender', __('Gender'));
+        // $show->field('group_id', __('Group id'));
+        // $show->field('group_text', __('Group text'));
+        // $show->field('sector', __('Sector'));
+        // $show->field('production_scale', __('Production scale'));
+        // $show->field('number_of_dependants', __('Number of dependants'));
+        // $show->field('user_role', __('User role'));
+        // $show->field('access_to_credit', __('Access to credit'));
+        // $show->field('experience', __('Experience'));
+        // $show->field('profile_is_complete', __('Profile is complete'));
 
         return $show;
     }
@@ -160,9 +159,9 @@ class MyWorkersController extends AdminController
      */
     protected function form()
     {
-        $u = Auth::user();
+        $user = Auth::user();
         $group_id = 0;
-        $user = Administrator::find($u->id);
+        $user = Administrator::find($user->id);
         if ($user == null) {
             die("User account not set.");
         }
@@ -182,16 +181,18 @@ class MyWorkersController extends AdminController
         $form = new Form(new User());
 
 
-        $form->saving(function (Form $f) {
+        $form->saving(function (Form $f) use($user) {
             if (!$f->isEditing()) {
                 $u = new User();
+                $u->about = $f->about;
                 $u->name = $f->name;
                 $u->email = $f->email;
                 $u->longitude = '0.00';
                 $u->latitude = '0.00';
-                $u->owner_id = $u->id;
+                $u->owner_id = $user->id;
                 $u->address = $f->address;
                 $u->username = $f->phone_number;
+                $u->phone_number = $f->phone_number;
                 $u->category_id = $f->sector;
                 $u->sector = $f->sector;
                 $u->region = $f->location_id;
@@ -210,12 +211,16 @@ class MyWorkersController extends AdminController
                 $u->experience = $f->experience;
                 $u->profile_is_complete = false;
                 $u->save();
-                return redirect(admin_url('my-users'));
             } else {
-
-                die($f->id);
-                die("is editng...");
+                $u = User::find($f->model()->id);
+                $u->about = $f->about;
+                $u->name = $f->name;
+                $u->username = $f->phone_number;
+                $u->phone_number = $f->phone_number;
+                $u->save();
             }
+            return redirect(admin_url('my-workers'));
+
         });
 
 
@@ -228,7 +233,6 @@ class MyWorkersController extends AdminController
         //$form->image('avatar', __('Avatar'));
         //$form->textarea('last_name', __('Last name'));
         //$form->textarea('company_name', __('Company name'));
-        //$form->textarea('about', __('About'));
         //$form->textarea('services', __('Services'));
         // $form->textarea('longitude', __('Longitude'));
         // $form->textarea('latitude', __('Latitude'));
@@ -245,18 +249,24 @@ class MyWorkersController extends AdminController
         $form->hidden('user_type', __('User type'))->default('Worker');
         $form->hidden('owner_id', __('User type'))->default($user->id);
         $form->hidden('id', __('id'));
-        $form->text('phone_number', __('Phone number'))
+        if(!$form->isEditing()) {
+            $form->text('phone_number', __('Phone number'))
             ->help('Phone number will act as username to  login.')
             ->required()
             ->rules('unique:users');
-
-
-        $form->password('password', trans('admin.password'))->rules('confirmed|required');
-        $form->password('password_confirmation', trans('admin.password_confirmation'))->rules('required')
-            ->default(function ($fo) {
-                return $fo->model()->password;
-            });
+        }else{
+            $form->text('phone_number', __('Phone number'))
+            ->help('Phone number will act as username to  login.')
+            ->required();
+            
+        }
+      
+        if(!$form->isEditing()) {
+            $form->password('password', trans('admin.password'))->rules('confirmed|required');
+            $form->password('password_confirmation', trans('admin.password_confirmation'))->rules('required');
+        }
         $form->ignore(['password_confirmation']);
+        $form->textarea('about', __('About'));
 
         $form->saving(function (Form $form) {
             if ($form->password && $form->model()->password != $form->password) {
@@ -269,76 +279,76 @@ class MyWorkersController extends AdminController
         $form->text('name', __('Full Name'))
             ->required();
 
-        $form->text('date_of_birth', __('Age'))
-            ->attribute('type', 'number')
-            ->required();
+        // $form->text('date_of_birth', __('Age'))
+        //     ->attribute('type', 'number')
+        //     ->required();
 
 
-        $form->select('gender', __('Gender'))
-            ->options([
-                'Male' => 'Male',
-                'Female' => 'Female',
-            ])
-            ->required();
+        // $form->select('gender', __('Gender'))
+        //     ->options([
+        //         'Male' => 'Male',
+        //         'Female' => 'Female',
+        //     ])
+        //     ->required();
 
 
-        $form->select('marital_status', __('Marital status'))
-            ->options([
-                'Single' => 'Single',
-                'Married' => 'Married',
-            ])
-            ->required();
+        // $form->select('marital_status', __('Marital status'))
+        //     ->options([
+        //         'Single' => 'Single',
+        //         'Married' => 'Married',
+        //     ])
+        //     ->required();
 
 
-        $form->text('email', __('Email'))->rules('unique:users');
+        // $form->text('email', __('Email'))->rules('unique:users');
 
 
-        $form->select('location_id', __('Sub-county'))
-            ->options(Location::get_subcounties())
-            ->required();
+        // $form->select('location_id', __('Sub-county'))
+        //     ->options(Location::get_subcounties())
+        //     ->required();
 
-        $form->text('address', __('Address'));
-
-
-        $form->select('group_id', __('Farmer\'s association'))
-            ->options(FarmersGroup::all()->pluck('name', 'id'))
-            ->default($group_id)
-            ->readOnly()
-            ->required();
+        // $form->text('address', __('Address'));
 
 
-        $form->select('sector', __('Farming sector'))
-            ->options([
-                'Crop farming' => 'Crop farming',
-                'Livestock farming' => 'Livestock farming',
-                'Fisheries' => 'Fisheries',
-            ])
-            ->required();
-
-        $form->text('experience', __('Experience (in years)'))->attribute('type', 'number')
-            ->required();
-
-        $form->select('production_scale', __('Production scale'))
-            ->options([
-                'Subsistence production' => 'Subsistence production',
-                'Small Commercial Production' => 'Small Commercial Production',
-                'Large Commercial Production' => 'Large Commercial Production',
-            ])
-            ->required();
+        // $form->select('group_id', __('Farmer\'s association'))
+        //     ->options(FarmersGroup::all()->pluck('name', 'id'))
+        //     ->default($group_id)
+        //     ->readOnly()
+        //     ->required();
 
 
-        $form->text('number_of_dependants', __('Number of dependants'))->attribute('type', 'number')
-            ->required();
+        // $form->select('sector', __('Farming sector'))
+        //     ->options([
+        //         'Crop farming' => 'Crop farming',
+        //         'Livestock farming' => 'Livestock farming',
+        //         'Fisheries' => 'Fisheries',
+        //     ])
+        //     ->required();
 
-        $form->select('access_to_credit', __('Production scale'))
-            ->options([
-                'No any access' => 'No any access',
-                'SACCO' => 'SACCO',
-                'Bank' => 'Bank',
-                'VSLA' => 'VSLA',
-                'Family' => 'Family',
-            ])
-            ->required();
+        // $form->text('experience', __('Experience (in years)'))->attribute('type', 'number')
+        //     ->required();
+
+        // $form->select('production_scale', __('Production scale'))
+        //     ->options([
+        //         'Subsistence production' => 'Subsistence production',
+        //         'Small Commercial Production' => 'Small Commercial Production',
+        //         'Large Commercial Production' => 'Large Commercial Production',
+        //     ])
+        //     ->required();
+
+
+        // $form->text('number_of_dependants', __('Number of dependants'))->attribute('type', 'number')
+        //     ->required();
+
+        // $form->select('access_to_credit', __('Production scale'))
+        //     ->options([
+        //         'No any access' => 'No any access',
+        //         'SACCO' => 'SACCO',
+        //         'Bank' => 'Bank',
+        //         'VSLA' => 'VSLA',
+        //         'Family' => 'Family',
+        //     ])
+        //     ->required();
 
 
         $form->hidden('user_role', __('User role'))->default('Farmer')->readonly();
