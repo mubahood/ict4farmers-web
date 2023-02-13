@@ -10,9 +10,9 @@
     <meta property="og:locale" content="en_US" />
     <meta property="og:type" content="article" />
     <meta property="og:title"
-        content="Metronic - Bootstrap 5 HTML, VueJS, React, Angular &amp; Laravel Admin Dashboard Theme" />
+        content="ICT4Farmers" />
     <meta property="og:url" content="<?= url('assets/images/favicon.png') ?>" />
-    <meta property="og:site_name" content="Keenthemes | Metronic" />
+    <meta property="og:site_name" content="{{ config('app.app_slogan') }}" />
     <link rel="canonical" href="<?= url('/') ?>" />
     <link rel="shortcut icon" href="<?= url('assets/images/favicon.png') ?>" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" async />

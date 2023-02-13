@@ -1,121 +1,115 @@
-@extends('metro.layout.layout-main')
-<?php
-use App\Models\Product;
-use App\Models\Category;
-use App\Models\Utils;
+<!DOCTYPE html>
+<html lang="en">
 
-$top_categories = Category::get_top_categories(8);
-$page_title = "Popular items";
-
-$products = [];
-$conds = [];
-$per_page = 24;
-
-$seg = request()->segment(1);
-$cat = Category::where('slug', $seg)->first();
-if ($cat !=null ) {
-    if ($cat->id != null) {
-        $conds['category_id'] = $cat->id;
-        $page_title = $cat->name;
-    }
-}
-$all_cats = Category::all();
-
-$products = Product::where($conds)
-    ->orderBy('id', 'desc')
-    ->paginate($per_page)
-    ->withQueryString();
+<head>
+    <title>{{ config('app.app_slogan') }}</title>
+    <meta charset="utf-8" />
+    <link rel="canonical" href="<?= url('/') ?>" />
+    <link rel="shortcut icon" href="<?= url('assets/images/favicon.png') ?>" />
+    <link href="{{ url('/') }}/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" async />
 
 
-/*  for ($i=1; $i < 100; $i++) { 
-    $p['source'] = 'public/storage/'.$i.'.jpg'; 
-    $p['target'] = 'public/storage/'.$i.'_thumb.jpg'; 
-    Utils::create_thumbail($p);
-} 
+</head>
 
-$x = 5;
-foreach (Product::all() as $key => $p) {
-    
-     $x++;
-    $i = $x%98;
-    $i = $i - 2;
-    $d['src'] = $i.'.jpg';
-    $d['thumbnail'] = $i.'_thumb.jpg';
-    $d['user_id'] = 1;
-    $p->thumbnail = json_encode($d);
-    
-    
-}  */   
-?>
-@section('main-content')
-    <div class="row mt-5">
-        <div class="col-md-3 bg-white p-5 border border-left-0 border-top-0 border-bottom-0  border-secondary">
-            <h2 class="m-0 fs-3 fw-bold">Browse by category</h2>
-            <div class="accordion accordion-icon-toggle py-1" id="kt_accordion_2">
-                @foreach ($all_cats as $cat)
-                    <?php
-                    if ($cat->parent > 0) {
-                        continue;
-                    }
-                    $kids = $cat->kids;
-                    $collapsed = ' collapsed ';
-                    $aria_expanded = 'false';
-                    $show = '';
-                    foreach ($kids as $k) {
-                        if ($k->slug == $seg) {
-                            $collapsed = '';
-                            $aria_expanded = 'true';
-                            $show = ' show ';
-                        }
-                    }
-                    
-                    ?>
-                    <div class="mb-0">
-                        <div class="accordion-header py-1 d-flex {{$collapsed}}" data-bs-toggle="collapse"
-                            data-bs-target="#accordion_item_{{ $cat->id }}" aria-expanded="{{$aria_expanded}}">
-                            <span class="accordion-icon">
-                                <i class="las la-angle-double-right fs-1"></i>
-                            </span>
-                            <h3 class="fs-4 fw-normal m-0 text-gray-800">{{ $cat->name }}</h3>
+
+<body id="kt_body" class="bg-body">
+    <!--begin::Main-->
+    <!--begin::Root-->
+    <div class="d-flex flex-column flex-root">
+        <!--begin::Authentication - Sign-in -->
+        <div class="d-flex flex-column flex-lg-row flex-column-fluid">
+            <!--begin::Aside-->
+            <div class="d-flex flex-column flex-lg-row-auto w-xl-600px positon-xl-relative py-5 py-md-20"
+                style="    background-size:     cover;                      /* <------ */
+                background-repeat:   no-repeat;
+                background-position: center center; background-color: #baf0d4;background-image: url({{ url('assets/images/digital-value-chain-for-small-holder-farmers.png') }})">
+
+            </div>
+            <!--end::Aside-->
+            <!--begin::Body-->
+            <div class="d-flex flex-column flex-lg-row-fluid ">
+                <!--begin::Content-->
+                <div class="d-flex flex-center flex-column flex-column-fluid">
+                    <!--begin::Wrapper-->
+                    <div class="w-lg-500px p-10 p-lg-15 mx-auto">
+
+                        <div class="row">
+                            <div class="col-12">
+                                <center>
+                                    <a href="{{ url("market") }}" class="py-9 mb-5">
+                                        <img alt="Logo" src="assets/images/logo.png" class="h-90px" />
+                                    </a>
+                                </center>
+
+                                <h1 class="fw-bolder fs-2qx mb-0 text-center pb-0 mt-5 mb-2 text-uppercase "
+                                    style="color: #145a32;">ICT4farmers</h1>
+
+                                <i>
+                                    <p class="fw-light  text-center mt-1 pt-0" style="color: #636363; font-size:16px;">
+                                        "Making ICT work for farmers."
+                                    </p>
+                                </i>
+
+
+                                <div class="separator my-10 separator-dashed border-1 border-primary  "></div>
+
+
+                                @if (session('success_message'))
+                                    <div class="alert alert-success">{{ session('success_message')}}</div>
+                                @endif
+
+                            </div>
                         </div>
-                        <div id="accordion_item_{{ $cat->id }}" class="fs-6 collapse  ps-10 {{$show}}"
-                            data-bs-parent="#kt_accordion_2">
-                            @foreach ($kids as $kid)
-                                @php
-                                    $active = " text-gray-600  ";
-                                    if($kid->slug == $seg){
-                                        $active = " text-primary ";
-                                    }
-                                @endphp
-                                <a href="{{ url($kid->slug) }}">
-                                    <h4 class="fs-5 fw-normal m-0 my-1 text-hover-primary {{$active}}">{{ $kid->name }}
-                                    </h4>
-                                </a>
-                            @endforeach
+                        <div>
+
                         </div>
+                        <h1 class="fw-bolder fs-2qx mb-0 text-center pb-0 mt-5 mb-2 text-uppercase "
+                        style="color: #145a32;">404</h1>
+
+                        <i>
+                            <p class="fw-light  text-center mt-1 pt-0" style="color: #636363; font-size:16px;">
+                                "We could not Find What you are looking for"
+                            </p>
+                        </i>
+                        <center>
+                            <a class="btn btn-primary btn-sm mt-5" href="{{ url('/market') }}">Visit Our Market Place</a>
+                        </center>
+
+
                     </div>
-                @endforeach
-            </div>
-
-        </div>
-        <div class="col-md-9 bg-white">
-            <div class="row">
-                <div class="d-flex d-flex align-items-stretch justify-content-between pt-4
-                border border-left-0 border-right-0 border-top-0 border-bottom-1  border-secondary
-                ">
-                    <h2 class="m-0 mb-4 h1 fw-bold">{{$page_title}}</h2>
-                    <a class="m-0 d-block mt-0 fs-4 text-hover-primary text-dark" href="{{ url('product-listing') }}">Clear filter</a>
+                    <!--end::Wrapper-->
                 </div>
-
-                <div class="row pt-0 m-0 p-0">
-                    <h1 class="text-center text-danger">
-                    ITEM NOT FOUND 
-                    </h1>
-                    <h3 class="text-center">
-                        Check in on the other options on this platform
-                    </h3>
+                <!--end::Content-->
+                <!--begin::Footer-->
+                <div class="d-flex flex-center flex-wrap fs-6 p-5 pb-0">
+                    <!--begin::Links-->
+                    <div class="d-flex flex-center fw-bold fs-6">
+                        <a href="javascript:;" class="text-muted text-hover-primary px-2" target="_blank">About</a>
+                        <a href="javascript:;" class="text-muted text-hover-primary px-2" target="_blank">Support</a>
+                        <a href="javascript:;" class="text-muted text-hover-primary px-2"
+                            target="_blank">8Technologies</a>
+                    </div>
+                    <!--end::Links-->
                 </div>
+                <!--end::Footer-->
             </div>
+            <!--end::Body-->
         </div>
+        <!--end::Authentication - Sign-in-->
     </div>
-@endsection
+    <!--end::Root-->
+    <!--end::Main-->
+    <!--begin::Javascript-->
+    <script>
+        var hostUrl = "assets/";
+    </script>
+    <!--begin::Global Javascript Bundle(used by all pages)-->
+    <script src="assets/plugins/global/plugins.bundle.js"></script>
+    <script src="assets/js/scripts.bundle.js"></script>
+    <!--end::Global Javascript Bundle-->
+    <!--begin::Page Custom Javascript(used by this page)-->
+    <script src="assets/js/custom/authentication/sign-in/general.js"></script>
+    <!--end::Page Custom Javascript-->
+    <!--end::Javascript-->
+</body>
+</html>
