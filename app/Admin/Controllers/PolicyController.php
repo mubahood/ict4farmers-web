@@ -63,7 +63,6 @@ class PolicyController extends AdminController
     protected function form()
     {
         $form = new Form(new Policy());
-
         $form->text('name', __('Name'));
         $form->textarea('description', __('Description'))->rows();
         $form->file('path',__('Upload Document'),)->rules('mimes:doc,docx,pdf')

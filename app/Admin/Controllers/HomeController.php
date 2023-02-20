@@ -7,20 +7,16 @@ use App\Models\FinancialRecord;
 use App\Models\Garden;
 use App\Models\GardenActivity;
 use App\Models\GardenProductionRecord;
-use App\Models\Location;
-use App\Models\Product;
 use App\Models\User;
 use App\Models\Utils;
 use Carbon\Carbon;
 use Encore\Admin\Auth\Database\Administrator;
-use Encore\Admin\Controllers\Dashboard;
 use Encore\Admin\Facades\Admin;
 use Encore\Admin\Layout\Column;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Layout\Row;
 use Encore\Admin\Widgets\Box;
 use Illuminate\Support\Str;
-use Excel;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
@@ -322,27 +318,33 @@ class HomeController extends Controller
             else if (
                 Admin::user()->isRole('agent')
             ) {
-                //Get all the farms agent represents
-                $farmers = User::where('group_id', Admin::user()->group_id)->pluck('id')->toArray();
-                $farms = \App\Models\Farm::whereIn('administrator_id', $farmers)->get();
 
+               //get all enterprises
+               $organisation = \App\Models\Organisation::find(Admin::user()->group_id);
+               $farmer_groups = \App\Models\FarmersGroup::where('organisation_id', $organisation->id)->pluck('id')->toArray();
+               $farmers = User::whereIn('group_id', $farmer_groups)->pluck('id')->toArray();
+               $enterprises = \App\Models\Garden::whereIn('administrator_id', $farmers)->get();
                 $markers = '';
-                foreach($farms as $farm){
+                $icon_path = '';
+                foreach($enterprises as $enterprise){
                     $status ='';
-                    if($farm->running) {
-                        $status = 'Operational';
-                    }else{
-                        $status = 'Closed';
+                    //check has closed farm
+                    if($enterprise->farms()->where('running', 0)->exists()){
+                        $status = 'Has Closed farm';
+                        $icon_path = "'/assets/icons/pin-closed.png'";
+                    }else {
+                        $status = 'All farms Operational';
+                        $icon_path = "'/assets/icons/pin-open.png'";
                     }
 
-                    $markers .= ' new L.marker(['.$farm->latitude.','.$farm->longitude.']).addTo(mymap).bindPopup("<a href=\"/admin/farms/'.$farm->id. '\">'.$farm->name.'</a><br>'.$status.'");';
+                    $markers .= 'new L.marker(['.$enterprise->latitude.','.$enterprise->longitude.'],{icon:L.icon({iconUrl:'.$icon_path.',
+                        iconSize:     [40, 50], // size of the icon
+                        iconAnchor:   [22, 94], // point of the icon which will correspond to marker\'s location
+                        popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+                            })}).addTo(mymap).bindPopup("<a href=\"/admin/gardens/'.$enterprise->id. '\">'.$enterprise->name.'</a><br>'.$status.'");';
                 }
                 Admin::css('https://unpkg.com/leaflet@1.9.3/dist/leaflet.css');
                 Admin::js('https://unpkg.com/leaflet@1.9.3/dist/leaflet.js');
-                Admin::js('https://unpkg.com/axios/dist/axios.min.js');
-                
-
-          
 
                 Admin::script("
                     //use leafletjs

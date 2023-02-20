@@ -22,4 +22,10 @@ class Organisation extends Model
     {
         return $this->morphMany(User::class, 'groupable');
     }
+
+    //has many farmers
+    public function farmers()
+    {
+        return $this->throughFarmersGroups()->hasFarmers();
+    }
 }
