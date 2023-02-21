@@ -13,7 +13,6 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
 use Illuminate\Support\Facades\Auth;
-use StevebaumanLocation;
 
 
 class GardenController extends AdminController
@@ -52,10 +51,17 @@ class GardenController extends AdminController
 
         $grid->column('created_at', __('Created'))->sortable();
 
-        $grid->column('name', __('Enterpeise Name'));
+        $grid->column('name', __('Enterprise Name'))->sortable();
 
-        $grid->column('administrator_id', __('Owner'))->sortable();
-        $grid->column('size', __('Size (acres)'));
+        $grid->column('administrator_id', __('Owner'))->display(function() {
+            return $this->farm->name;
+        })->sortable();
+        $grid->column('farm_id', __('Farm'))->display(function () {
+            return $this->farm->name;
+        })->sortable()->link(function () {
+            return admin_url('farms/' . $this->farm_id);
+        });
+        // $grid->column('size', __('Size (acres)'));
         $grid->column('crop_category_id', __('Sector'))->display(function () {
             return $this->sector->get_name();
         })->sortable();
@@ -63,11 +69,11 @@ class GardenController extends AdminController
         $grid->column('plant_date', __('Started'));
 
         $grid->column('location_id', __('Subcounty'))->display(function () {
-            return $this->location->get_name();
+            return $this->farm->location->get_name();
         })->sortable();
 
-        $grid->column('longitude', __('Longitude'));
-        $grid->column('latitude', __('Latitude'));
+        // $grid->column('longitude', __('Longitude'));
+        // $grid->column('latitude', __('Latitude'));
 
         return $grid;
     }
@@ -83,21 +89,27 @@ class GardenController extends AdminController
 
 
         $show = new Show(Garden::findOrFail($id));
-
+        
         $show->field('id', __('Id'));
         $show->field('created_at', __('Created at'));
         $show->field('updated_at', __('Updated at'));
         $show->field('administrator_id', __('Administrator id'));
         $show->field('crop_category_id', __('Crop category id'));
-        $show->field('location_id', __('Location id'));
+        $show->field('location_id', __('Location id'))->as(function () {
+            return $this->farm->location->get_name();
+        });
         $show->field('name', __('Name'));
-        $show->field('size', __('Acres'));
+        // $show->field('size', __('Acres'));
         $show->field('image', __('Image'));
         $show->field('plant_date', __('Plant date'));
         $show->field('harvest_date', __('Harvest date'));
         $show->field('details', __('Details'));
-        $show->field('latitude', __('Latitude'));
-        $show->field('longitude', __('Longitude'));
+        $show->field('latitude', __('Latitude'))->as(function () {
+            return $this->farm->latitude;
+        });
+        $show->field('longitude', __('Longitude'))->as(function () {
+            return $this->farm->longitude;
+        });
 
         return $show;
     }
@@ -109,7 +121,6 @@ class GardenController extends AdminController
      */
     protected function form()
     {
-        $current_location = StevebaumanLocation::get();
         $form = new Form(new Garden());
 
         $form->disableReset();
@@ -118,8 +129,6 @@ class GardenController extends AdminController
         $form->disableCreatingCheck();
 
         $u = Auth::user();
-        $form->hidden('administrator_id', __('Administrator id'))->default($u->id)->value($u->id);
-
 
         $form->select('farm_id', __('Farm'))
             ->help('Select a farm where this enterprise is')
@@ -132,30 +141,18 @@ class GardenController extends AdminController
             ->options(CropCategory::get_subcategories())
             ->rules('required');
 
-        $form->select('location_id', __('Sub-county'))
-            ->options(Location::get_subcounties())
-            ->rules('required');
-
         $form->text('name', __('Enterprise Name'))
             ->help("E.g, your poultry project, your garden, your cattle herd, etc.")
             ->rules('required');
         $form->image('image', __('Image'));
-        $form->number('size', __('Size in Acres'))
-            ->help("E.g, 1 acre, 2 acres, 3 acres, etc.")
-            ->rules('required|numeric|min:1');
+        // $form->number('size', __('Size in Acres'))
+        //     ->help("E.g, 1 acre, 2 acres, 3 acres, etc.")
+        //     ->rules('required|numeric|min:1');
 
         $form->date('plant_date', __('Start date'))
             ->help("Select the date when this enterprise started.")->required()->rules('before_or_equal:today');
         
-        //info user that there current location will be used
-        $form->html('<div class="alert alert-info">Your current location will be used for this enterprise. If you want to change it, please edit it later.</div>');
-        if($current_location){
-            $form->hidden('latitude', __('GPS Latitude'))->default($current_location->latitude)->value($current_location->latitude);
-            $form->hidden('longitude', __('GPS Longitude'))->default($current_location->longitude)->value($current_location->longitude);
-        }else{
-            $form->text('latitude', __('GPS Latitude'))->default("0.00")->rules('numeric|min:0');
-            $form->text('longitude', __('GPS Longitude'))->default("0.00")->rules('numeric|min:0');
-        }
+
 
         $form->textarea('details', __('Details'))
             ->help("Write something about this enterprise.");

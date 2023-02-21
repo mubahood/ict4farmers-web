@@ -37,10 +37,10 @@ class Farm extends Model
         return $this->belongsTo(Location::class,'location_id');
     }
 
-    //belongs to a garden / enterprise
-    public function enterprise()
+    //has many enterprises
+    public function enterprises()
     {
-        return $this->belongsTo(Garden::class,'garden_id');
+        return $this->hasMany(Garden::class,'farm_id');
     }
 
 }

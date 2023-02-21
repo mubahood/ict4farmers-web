@@ -164,9 +164,11 @@ class Utils
         ################################################
 
         ################################################
-        $enterprises = Garden::where([
-            'administrator_id' => $user_id
-        ])->get();
+        // $enterprises = Garden::where([
+        //     'administrator_id' => $user_id
+        // ])->get();
+        //check if the user has any enterprise relationship
+        $enterprises = User::find(Auth::user()->id)->enterprises;
         $item  = new WizardItem();
         if (count($enterprises) < 1) {
             $item->is_done = 0;

@@ -323,25 +323,25 @@ class HomeController extends Controller
                $organisation = \App\Models\Organisation::find(Admin::user()->group_id);
                $farmer_groups = \App\Models\FarmersGroup::where('organisation_id', $organisation->id)->pluck('id')->toArray();
                $farmers = User::whereIn('group_id', $farmer_groups)->pluck('id')->toArray();
-               $enterprises = \App\Models\Garden::whereIn('administrator_id', $farmers)->get();
+               $farms = \App\Models\Farm::whereIn('administrator_id', $farmers)->get();
                 $markers = '';
                 $icon_path = '';
-                foreach($enterprises as $enterprise){
+                foreach($farms as $farm){
                     $status ='';
                     //check has closed farm
-                    if($enterprise->farms()->where('running', 0)->exists()){
-                        $status = 'Has Closed farm';
+                    if(!$farm->running){
+                        $status = 'Closed';
                         $icon_path = "'/assets/icons/pin-closed.png'";
                     }else {
                         $status = 'All farms Operational';
                         $icon_path = "'/assets/icons/pin-open.png'";
                     }
 
-                    $markers .= 'new L.marker(['.$enterprise->latitude.','.$enterprise->longitude.'],{icon:L.icon({iconUrl:'.$icon_path.',
+                    $markers .= 'new L.marker(['.$farm->latitude.','.$farm->longitude.'],{icon:L.icon({iconUrl:'.$icon_path.',
                         iconSize:     [40, 50], // size of the icon
                         iconAnchor:   [22, 94], // point of the icon which will correspond to marker\'s location
                         popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
-                            })}).addTo(mymap).bindPopup("<a href=\"/admin/gardens/'.$enterprise->id. '\">'.$enterprise->name.'</a><br>'.$status.'");';
+                            })}).addTo(mymap).bindPopup("<a href=\"/admin/farms/'.$farm->id. '\">'.$farm->name.'</a><br>'.$status.'");';
                 }
                 Admin::css('https://unpkg.com/leaflet@1.9.3/dist/leaflet.css');
                 Admin::js('https://unpkg.com/leaflet@1.9.3/dist/leaflet.js');

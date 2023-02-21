@@ -209,7 +209,7 @@ class User extends Authenticatable
     //has many enterprises/ gardens
     public function enterprises()
     {
-        return $this->hasMany(Garden::class,'administrator_id');
+        return $this->hasManyThrough(Garden::class, Farm::class,'administrator_id','farm_id');
     }
 
 }

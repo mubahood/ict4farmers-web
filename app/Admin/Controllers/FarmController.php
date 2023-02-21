@@ -11,6 +11,8 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
 use Illuminate\Support\Facades\Auth;
+use StevebaumanLocation;
+
 
 class FarmController extends AdminController
 {
@@ -32,7 +34,7 @@ class FarmController extends AdminController
             return redirect(admin_url("/"));
         }
         $grid = new Grid(new Farm());
-
+        $grid->model()->latest();
         $grid->model()->where('administrator_id', Admin::user()->id);
 
 
@@ -42,19 +44,15 @@ class FarmController extends AdminController
         $grid->column('name', __('Farm Name'))->sortable();
 
         $grid->column('running',__('Operational'))->bool();
-
+        $grid->column('size', __('Size (acres)'));
         $grid->column('administrator_id', __('Owner'))->display(function () {
             return $this->owner->name;
         })->sortable();
 
         $grid->column('location_id', __('Subcounty'))->display(function () {
-            return $this->enterprise->location->get_name();
+            return $this->location->get_name();
             
         })->sortable();
-        // $grid->column('latitude', __('GPS'))->display(function () {
-        //     return $this->latitude . ", " . $this->longitude;
-        // });
-        //$grid->column('details', __('Details'));
 
         return $grid;
     }
@@ -80,10 +78,11 @@ class FarmController extends AdminController
                 return "<span class='label label-danger'>No</span>";
             }
         });
-        $show->field('details', __('Details'));
+        $show->field('size', __('Acres'));
         $show->field('latitude', __('Latitude'));
         $show->field('longitude', __('Longitude'));
-
+        $show->field('details', __('Details'));
+    
         return $show;
     }
 
@@ -94,6 +93,8 @@ class FarmController extends AdminController
      */
     protected function form()
     {
+        $current_location = StevebaumanLocation::get();
+
         $form = new Form(new Farm());
         $form->disableReset();
         $form->disableViewCheck();
@@ -114,19 +115,24 @@ class FarmController extends AdminController
         $form->switch('running', 'Operational')->states($states);
         
         //this sub-county should match that from the enterprise as a rule
-        // $form->select('location_id', __('Farm Location (Sub-county)'))
-        //     ->options(Location::get_subcounties())
-        //     ->rules('required|');
+        $form->select('location_id', __('Farm Location (Sub-county)'))
+            ->options(Location::get_subcounties())
+            ->rules('required');
+            
+        $form->number('size', __('Size in Acres'))
+            ->help("E.g, 1 acre, 2 acres, 3 acres, etc.")
+            ->rules('required|numeric|min:1');
 
-        // dd(->id);
-        //gardens /enterprises that belong to current user as a select field
-        $form->select('garden_id', __('Enterprise'))
-            ->options(\App\Models\User::find($user->id)->enterprises()->pluck('name', 'id'))
-            ->rules('required| numeric');
 
-        //        $form->latlong('latitude', 'longitude', 'Position')->default(['lat' => 90, 'lng' => 90]);
-        // $form->text('latitude', __('GPS Latitude'))->rules('required')->default('0.00');
-        // $form->text('longitude', __('GPS Longitude'))->rules('required')->default('0.00');
+        //info user that there current location will be used
+        $form->html('<div class="alert alert-info">Your current location will be used for this farm. If you want to change it, please edit it later.</div>');
+        if($current_location){
+            $form->hidden('latitude', __('GPS Latitude'))->default($current_location->latitude)->value($current_location->latitude);
+            $form->hidden('longitude', __('GPS Longitude'))->default($current_location->longitude)->value($current_location->longitude);
+        }else{
+            $form->text('latitude', __('GPS Latitude'))->default("0.00")->rules('numeric|min:0');
+            $form->text('longitude', __('GPS Longitude'))->default("0.00")->rules('numeric|min:0');
+        }
         $form->textarea('details', __('Farm Details'))->help("Write something about this farm");
 
         return $form;
