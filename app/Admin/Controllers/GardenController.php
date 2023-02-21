@@ -13,7 +13,7 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
 use Illuminate\Support\Facades\Auth;
-use Stevebauman\Location\Facades\Location as LocationFacade;
+use StevebaumanLocation;
 
 
 class GardenController extends AdminController
@@ -109,7 +109,7 @@ class GardenController extends AdminController
      */
     protected function form()
     {
-        $current_location = LocationFacade::get();
+        $current_location = StevebaumanLocation::get();
         $form = new Form(new Garden());
 
         $form->disableReset();

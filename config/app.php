@@ -185,6 +185,7 @@ return [
         /*
          * Package Service Providers...
          */
+        Stevebauman\Location\LocationServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -252,6 +253,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'OneSignal' => Berkayk\OneSignal\OneSignalFacade::class,
+        'StevebaumanLocation' => Stevebauman\Location\Facades\Location::class,
 
         //'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 
