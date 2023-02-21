@@ -9,22 +9,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta property="og:locale" content="en_US" />
     <meta property="og:type" content="article" />
-    <meta property="og:title"
-        content="ICT4Farmers" />
-    <meta property="og:url" content="<?= url('assets/images/favicon.png') ?>" />
+    <meta property="og:title" content="ICT4Farmers" />
+    <meta property="og:url" content="{{ URL::asset('assets/images/favicon.png') }}" />
     <meta property="og:site_name" content="{{ config('app.app_slogan') }}" />
     <link rel="canonical" href="<?= url('/') ?>" />
-    <link rel="shortcut icon" href="<?= url('assets/images/favicon.png') ?>" />
+    <link rel="shortcut icon" href="{{ URL::asset('assets/images/favicon.png') }}" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" async />
-    <link href="{{ url('/') }}/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" async />
+    <link href="{{ URL::asset('assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" async />
 
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-PNLCGK3S63"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
         gtag('js', new Date());
-    
+
         gtag('config', 'G-PNLCGK3S63');
     </script>
 
@@ -84,8 +86,9 @@
                         <div class="row">
                             <div class="col-12">
                                 <center>
-                                    <a href="{{ url("market") }}" class="py-9 mb-5">
-                                        <img alt="Logo" src="assets/images/logo.png" class="h-90px" />
+                                    <a href="{{ url('/') }}" class="py-9 mb-5">
+                                        <img alt="Logo" src="{{ URL::asset('assets/images/logo.png') }}"
+                                            class="h-90px" />
                                     </a>
                                 </center>
 
@@ -103,7 +106,7 @@
 
 
                                 @if (session('success_message'))
-                                    <div class="alert alert-success">{{ session('success_message')}}</div>
+                                    <div class="alert alert-success">{{ session('success_message') }}</div>
                                 @endif
 
                             </div>

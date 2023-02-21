@@ -5,8 +5,8 @@
     <title>{{ config('app.app_slogan') }}</title>
     <meta charset="utf-8" />
     <link rel="canonical" href="<?= url('/') ?>" />
-    <link rel="shortcut icon" href="<?= url('assets/images/favicon.png') ?>" />
-    <link href="{{ url('/') }}/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" async />
+    <link rel="shortcut icon" href="{{ URL::asset('assets/images/favicon.png') }}" />
+    <link href="{{ URL::asset('assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" async />
 
 
 </head>
@@ -36,8 +36,9 @@
                         <div class="row">
                             <div class="col-12">
                                 <center>
-                                    <a href="{{ url("market") }}" class="py-9 mb-5">
-                                        <img alt="Logo" src="assets/images/logo.png" class="h-90px" />
+                                    <a href="{{ url('/') }}" class="py-9 mb-5">
+                                        <img alt="Logo" src="{{ URL::asset('assets/images/logo.png') }}"
+                                            class="h-90px" />
                                     </a>
                                 </center>
 
@@ -55,13 +56,14 @@
 
                             </div>
                         </div>
-        
+
                         <h1 class="fw-bolder fs-2qx mb-0 text-center pb-0 mt-5 mb-2 text-uppercase "
-                        style="color: #145a32;">500</h1>
+                            style="color: #145a32;">500</h1>
 
                         <i>
                             <p class="fw-light  text-center mt-1 pt-0" style="color: #636363; font-size:16px;">
-                                "We encountered and issue on our end"<br>Our team is working around the clock to have this fixed<br>Try again Later
+                                "We encountered and issue on our end"<br>Our team is working around the clock to have
+                                this fixed<br>Try again Later
                             </p>
                         </i>
 
@@ -100,5 +102,5 @@
     <!--end::Page Custom Javascript-->
     <!--end::Javascript-->
 </body>
+
 </html>
-    
