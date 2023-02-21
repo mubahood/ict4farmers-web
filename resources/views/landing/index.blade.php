@@ -237,25 +237,9 @@
                                     @endforeach
                                 </ul>
                             </li>
-                            <!-- <li class="nav-item">
-                                <a href="#"
-                                 class="nav-link">Policies</a>
-                            </li> -->
-                            <li>
-                                <a href="tel:0800209003" style="text-decoration:none">
-                                    <i class="bx bxs-phone-call d-block fs-2 text-primary mb-2 py-1"></i>
-                                </a>
-      
-                            </li>
                         </ul>
                     </div>
-                    <div class="offcanvas-header border-top">
-                        <a href="https://play.google.com/store/apps/details?id=net.eighttechnologes.ict4farmers&hl=en&gl=US"
-                            class="btn btn-primary w-100" target="_blank" rel="noopener">
-                            <i class="bx bx-cart fs-4 lh-1 me-1"></i>
-                            &nbsp;Mobile App
-                        </a>
-                    </div>
+         
                 </div>
                 <div class="form-check form-switch mode-switch pe-lg-1 ms-auto me-4" data-bs-toggle="mode">
                     <input type="checkbox" class="form-check-input" id="theme-mode">
@@ -273,8 +257,15 @@
                     &nbsp;Download App
                 </a>
             </div>
-        </header>
 
+        </header>
+        <div class="fixed-top mt-5">
+            <div class="container px-3 mt-1">
+            <a href="tel:0800209003" style="text-decoration:none" class="navbar-brand">
+                <p>Toll Free: 0800 209 003</p>
+            </a>
+            </div>
+        </div>
 
         <!-- Hero -->
         <section class="overflow-hidden pt-5"
